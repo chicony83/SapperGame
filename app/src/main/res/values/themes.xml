@@ -13,4 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="MainMenuButtons" parent="Theme.SapperGame">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:textSize">@dimen/H1</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/marginTriple</item>
+        <item name="android:layout_marginStart">@dimen/marginDouble</item>
+        <item name="android:layout_marginEnd">@dimen/marginDouble</item>
+    </style>
 </resources>
