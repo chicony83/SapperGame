@@ -23,4 +23,13 @@
         <item name="android:layout_marginStart">@dimen/marginDouble</item>
         <item name="android:layout_marginEnd">@dimen/marginDouble</item>
     </style>
+
+    <style name="Theme.SapperGame.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.SapperGame.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.SapperGame.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
