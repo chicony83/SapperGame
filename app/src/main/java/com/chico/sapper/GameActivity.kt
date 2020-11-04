@@ -16,9 +16,8 @@ class GameActivity : AppCompatActivity() {
 
         val gameArea = GameArea()
 
-//        gameArea.newCleanGameArea()
-//        gameArea.setMinesOnGameArea()
-
+        gameArea.newCleanArea()
+        gameArea.setMinesOnMinesArea()
 
     }
 }
