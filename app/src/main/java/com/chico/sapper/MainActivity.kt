@@ -9,7 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         val mainMenuFragment = MainMenuFragment()
 
         CoroutineScope(Dispatchers.IO).launch {
-            delay(5000)
-            launchFragment(mainMenuFragment,splashScreenFragment)
+            delay(1000)
+            launchFragment(mainMenuFragment, splashScreenFragment)
         }
 
     }
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun launchFragment(addFragment: Fragment,remFragment: Fragment) {
+    private fun launchFragment(addFragment: Fragment, remFragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
 //            .remove(remFragment)
