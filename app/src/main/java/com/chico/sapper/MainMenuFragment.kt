@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 
 class MainMenuFragment : Fragment(), View.OnClickListener {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,8 +40,11 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val buttonIndex = translateToIndex(v!!.id)
+        val levelGame = translateToIndex(v!!.id)
+        val intent = Intent(activity,GameActivity::class.java)
 
-        startActivity(Intent(activity, GameActivity::class.java))
+        intent.putExtra("LEVEL_GAME",levelGame)
+
+        startActivity(intent)
     }
 }

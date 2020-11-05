@@ -1,8 +1,10 @@
 package com.chico.sapper
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +17,13 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //        drawView.setOnTouchListener(listenersGameArea.handleTouch);
+
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         val splashScreenFragment = SplashScreenFragment()
         val mainMenuFragment = MainMenuFragment()
@@ -26,9 +35,9 @@ class MainActivity : AppCompatActivity(){
 
     }
 
-    private fun logIsLaunch(isLaunch: Boolean) {
-        Log.i("TAG", "isLaunch = $isLaunch")
-    }
+//    private fun logIsLaunch(isLaunch: Boolean) {
+//        Log.i("TAG", "isLaunch = $isLaunch")
+//    }
 
 
     private fun launchFragment(addFragment: Fragment, remFragment: Fragment) {

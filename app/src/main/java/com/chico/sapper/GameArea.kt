@@ -5,9 +5,10 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 class GameArea(
-    val widthGameArea: Int = 10,
-    val heightGameArea: Int = 10,
-    val maxMines: Int = 10
+    currentGameSetting:CurrentGameSetting,
+    val widthGameArea: Int = currentGameSetting.sizeGameArea,
+    val heightGameArea: Int = currentGameSetting.sizeGameArea,
+    val maxMines: Int = currentGameSetting.mines
 ) {
 
     private val minesArea = Array(widthGameArea) {
@@ -28,7 +29,7 @@ class GameArea(
                 shirtArea[x][y] = 0
             }
         }
-//        Log.i("TAG", "clean game Area created")
+        Log.i("TAG", "clean game Area created")
     }
 
     fun setMinesOnMinesArea() {
@@ -41,9 +42,9 @@ class GameArea(
 
             minesArea[x][y] = 1
             mines++
-//            Log.i("TAG", "mine $mines create on x = $x y = $y")
+            Log.i("TAG", "mine $mines create on x = $x y = $y")
         }
-//        Log.i("TAG", "all mines created")
+        Log.i("TAG", "all mines created")
     }
 
     private fun Int.rndNum(): Int {
