@@ -29,10 +29,12 @@ class GameActivity : AppCompatActivity() {
         val gameArea = GameArea(currentGameSetting)
         val metrics = Metrics()
 
+        sizeDisplay(metrics)
+
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea()
 
-        sizeDisplay(metrics)
+
 
 //        val onePicture = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 //            getDrawable(R.drawable.one)

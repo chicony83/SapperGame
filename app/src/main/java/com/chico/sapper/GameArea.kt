@@ -40,7 +40,7 @@ class GameArea(
             x = (widthGameArea.rndNum()) - 1
             y = (heightGameArea.rndNum()) - 1
 
-            minesArea[x][y] = 1
+            minesArea[x][y] = 9
             mines++
             Log.i("TAG", "mine $mines create on x = $x y = $y")
         }
