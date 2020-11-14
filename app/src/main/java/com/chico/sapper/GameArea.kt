@@ -4,12 +4,11 @@ import android.util.Log
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class GameArea(
-    currentGameSetting:CurrentGameSetting,
-    val widthGameArea: Int = currentGameSetting.sizeGameArea,
-    val heightGameArea: Int = currentGameSetting.sizeGameArea,
+class GameArea(currentGameSetting: CurrentGameSetting) {
+
+    val heightGameArea: Int = currentGameSetting.sizeArrayOfGameArea
+    val widthGameArea: Int = currentGameSetting.sizeArrayOfGameArea
     val maxMines: Int = currentGameSetting.mines
-) {
 
     private val minesArea = Array(widthGameArea) {
         IntArray(

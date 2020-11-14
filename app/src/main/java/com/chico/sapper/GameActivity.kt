@@ -3,59 +3,133 @@ package com.chico.sapper
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 
 class GameActivity : AppCompatActivity() {
-    private var LEVEL_GAME: Int = 0
+
+    private var settingLevels = SettingLevels()
+    private val currentGameSetting = CurrentGameSetting()
+    private val metrics = Metrics()
+    private val gameArea = GameArea(currentGameSetting)
+    private var cellsDB = com.chico.sapper.dto.cellsDB
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
         setActivityFlags()
         setActivityOrientation()
-
-        LEVEL_GAME = intent.getIntExtra("LEVEL_GAME", 1)
-
-        val settingLevels = SettingLevels()
-        val currentGameSetting = CurrentGameSetting()
+        var LEVEL_GAME: Int = intent.getIntExtra("LEVEL_GAME", 1)
 
         preparationOfLevelData(LEVEL_GAME, currentGameSetting, settingLevels)
 
-        val gameArea = GameArea(currentGameSetting)
-        val metrics = Metrics()
-
         sizeDisplay(metrics)
-        countCellSize(metrics,currentGameSetting)
+        countCellSize(metrics, currentGameSetting)
 
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea()
 
-        addElementsOnGameElementsHolder(metrics)
-
-
-//        val onePicture = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-//            getDrawable(R.drawable.one)
-//        } else {
-//            TODO("VERSION.SDK_INT < LOLLIPOP")
-//        }
+        Log.wtf("TAG", "onCreateView: ", )
+        addCellsInDB(metrics, currentGameSetting)
 
         infoToast(metrics)
     }
 
-    private fun countCellSize(metrics: Metrics, currentGameSetting: CurrentGameSetting) {
-        metrics.gameCellSize = (metrics.sizeDisplayX/currentGameSetting.sizeGameArea).toDouble()
+    override fun onStart() {
+        super.onStart()
+
+        val sizeDB = cellsDB.cellsDataBase.size
+        val cellsDB = cellsDB.cellsDataBase
+        var idCell:String
+        val gameElementsHolder = findViewById<RelativeLayout>(R.id.game_elements_holder)
+        for (id in 0 until sizeDB){
+            idCell = cellsDB[id].toString()
+
+//            Log.i("TAG","id =$id  idCell =$idCell")
+            createGameElement(id,gameElementsHolder)
+        }
     }
 
-    private fun addElementsOnGameElementsHolder(metrics: Metrics) {
-        val gameElementsHolder = findViewById<ConstraintLayout>(R.id.game_elements_holder)
-        val shirtCell = ImageView(this)
+    private fun createGameElement(id: Int, gameElementsHolder: RelativeLayout) {
         val sizeCell = metrics.gameCellSize.toInt()
-        shirtCell.setImageResource(R.drawable.shirt)
-        gameElementsHolder.addView(shirtCell,sizeCell,sizeCell)
+        val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
+
+        val gameElement = ImageView(this)
+        param.topMargin = cellsDB.cellsDataBase[id].yMargin
+        param.leftMargin = cellsDB.cellsDataBase[id].xMargin
+        gameElement.setImageResource(R.drawable.shirt)
+
+        gameElementsHolder.addView(gameElement,param)
+        Log.i("TAG","game Element Created")
+
+    }
+
+    private fun countCellSize(metrics: Metrics, currentGameSetting: CurrentGameSetting) {
+        metrics.gameCellSize =
+            (metrics.sizeDisplayX / currentGameSetting.sizeArrayOfGameArea).toDouble()
+    }
+
+    private fun addCellsInDB(
+        metrics: Metrics,
+        currentGameSetting: CurrentGameSetting
+    ) {
+//        Log.wtf("TAG", "addCellsInDB: ", )
+        var numberOfCells = currentGameSetting.numberOfCellsOnGameArea
+
+        var widthArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
+        var heightArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
+
+//        val gameElementsHolder = findViewById<RelativeLayout>(R.id.game_elements_holder)
+
+        val sizeCell = metrics.gameCellSize.toInt()
+//        val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
+
+        var idX: String = ""
+        var idY: String = ""
+        var id:String
+
+        for (y in 0..heightArraySizeOfGameArray) {
+
+//            Log.i("TAG", "y = $y")
+
+            idY = "Y$y"
+
+            for (x in 0..widthArraySizeOfGameArray) {
+                idX = "X$x"
+                id = idY + idX
+
+                val name: String = id
+
+//                Log.i("TAG", "x = $x")
+//                val shirtCell = ImageView(this)
+//                val shirtCell2 = ImageView(this)
+//                shirtCell.setImageResource(R.drawable.shirt)
+//                shirtCell2.setImageResource(R.drawable.shirt)
+
+//                param.topMargin = y * sizeCell
+//                param.leftMargin = x * sizeCell
+
+                val yMargin = y * sizeCell
+                val xMargin = x * sizeCell
+
+//                shirtCell.id = id
+//
+//                gameElementsHolder.addView(shirtCell, param)
+//                gameElementsHolder.addView(shirtCell2)
+
+                cellsDB.addCell(id = name,yMargin = yMargin, xMargin = xMargin)
+
+//                Log.i(
+//                    "TAG",
+//                    "leftMargin = ${y * sizeCell} , topMargin = ${x * sizeCell}"
+//                )
+            }
+        }
     }
 
     private fun setActivityOrientation() {
@@ -76,18 +150,25 @@ class GameActivity : AppCompatActivity() {
     ) {
         when (LEVEL_GAME) {
             1 -> {
-                currentGameSetting.sizeGameArea = settingLevels.easyGameAreaSize
+                currentGameSetting.sizeArrayOfGameArea = settingLevels.easyGameAreaSize
                 currentGameSetting.mines = settingLevels.easyGameMines
             }
             2 -> {
-                currentGameSetting.sizeGameArea = settingLevels.normalGameAreaSize
-                currentGameSetting.mines  = settingLevels.normalGameMines
+                currentGameSetting.sizeArrayOfGameArea = settingLevels.normalGameAreaSize
+                currentGameSetting.mines = settingLevels.normalGameMines
             }
             3 -> {
-                currentGameSetting.sizeGameArea = settingLevels.hardGameAreaSize
-                currentGameSetting.mines  = settingLevels.hardGameMines
+                currentGameSetting.sizeArrayOfGameArea = settingLevels.hardGameAreaSize
+                currentGameSetting.mines = settingLevels.hardGameMines
             }
         }
+        currentGameSetting.numberOfCellsOnGameArea = countCellsOnGameArea(
+            currentGameSetting.sizeArrayOfGameArea
+        )
+    }
+
+    private fun countCellsOnGameArea(sizeGameArea: Int): Int {
+        return sizeGameArea * sizeGameArea
     }
 
     private fun infoToast(metrics: Metrics) {
@@ -107,9 +188,6 @@ class GameActivity : AppCompatActivity() {
         metrics.sizeDisplayX = size.x
         metrics.sizeDisplayY = size.y
 
-
-        //Log.i("widthDisplay", String.valueOf(SettingGame.getWidthDisplay()));
-        //Log.i("heightDisplay", String.valueOf(SettingGame.getHeightDisplay()));
     }
 
 }
