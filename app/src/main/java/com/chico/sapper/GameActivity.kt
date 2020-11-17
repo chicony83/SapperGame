@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -21,6 +20,10 @@ class GameActivity : AppCompatActivity(){
     private val metrics = Metrics()
     private val gameArea = GameArea(currentGameSetting)
     private var cellsDB = com.chico.sapper.dto.cellsDB
+
+    private var touch = Touch(0,0)
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,7 @@ class GameActivity : AppCompatActivity(){
         Log.wtf("TAG", "onCreateView: ")
         addCellsInDB(metrics, currentGameSetting)
 
-        infoToast(metrics)
+//        infoToast(metrics)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -50,22 +53,20 @@ class GameActivity : AppCompatActivity(){
         val gameElementsHolder = findViewById<RelativeLayout>(R.id.game_elements_holder)
 
         fillingThePlayingArea(gameElementsHolder)
+
         val listenersGame = ListenersGame()
         gameElementsHolder.setOnTouchListener { v: View, m: MotionEvent ->
-            listenersGame.handleTouch(m)
+            listenersGame.handleTouch(m,touch)
             false
         }
-    }
 
+
+
+    }
 
     private fun fillingThePlayingArea(gameElementsHolder: RelativeLayout) {
         val sizeDB = cellsDB.cellsDataBase.size
-        val cellsDB = cellsDB.cellsDataBase
-        var idCell: String
         for (id in 0 until sizeDB) {
-            idCell = cellsDB[id].toString()
-
-            //            Log.i("TAG","id =$id  idCell =$idCell")
             createGameElement(id, gameElementsHolder)
         }
     }
@@ -86,7 +87,7 @@ class GameActivity : AppCompatActivity(){
 
     private fun countCellSize(metrics: Metrics, currentGameSetting: CurrentGameSetting) {
         metrics.gameCellSize =
-            (metrics.sizeDisplayX / currentGameSetting.sizeArrayOfGameArea).toDouble()
+            (metrics.sizeDisplayX / currentGameSetting.widthArrayOfGameArea).toDouble()
     }
 
     private fun addCellsInDB(
@@ -96,8 +97,8 @@ class GameActivity : AppCompatActivity(){
 //        Log.wtf("TAG", "addCellsInDB: ", )
         var numberOfCells = currentGameSetting.numberOfCellsOnGameArea
 
-        var widthArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
-        var heightArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
+        val widthArraySizeOfGameArray = currentGameSetting.widthArrayOfGameArea - 1
+        val heightArraySizeOfGameArray = currentGameSetting.heightArrayOfGameArea - 1
 
 //        val gameElementsHolder = findViewById<RelativeLayout>(R.id.game_elements_holder)
 
@@ -165,20 +166,20 @@ class GameActivity : AppCompatActivity(){
     ) {
         when (LEVEL_GAME) {
             1 -> {
-                currentGameSetting.sizeArrayOfGameArea = settingLevels.easyGameAreaSize
+                currentGameSetting.widthArrayOfGameArea = settingLevels.easyGameAreaSize
                 currentGameSetting.mines = settingLevels.easyGameMines
             }
             2 -> {
-                currentGameSetting.sizeArrayOfGameArea = settingLevels.normalGameAreaSize
+                currentGameSetting.widthArrayOfGameArea = settingLevels.normalGameAreaSize
                 currentGameSetting.mines = settingLevels.normalGameMines
             }
             3 -> {
-                currentGameSetting.sizeArrayOfGameArea = settingLevels.hardGameAreaSize
+                currentGameSetting.widthArrayOfGameArea = settingLevels.hardGameAreaSize
                 currentGameSetting.mines = settingLevels.hardGameMines
             }
         }
         currentGameSetting.numberOfCellsOnGameArea = countCellsOnGameArea(
-            currentGameSetting.sizeArrayOfGameArea
+            currentGameSetting.widthArrayOfGameArea
         )
     }
 

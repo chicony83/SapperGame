@@ -6,8 +6,8 @@ import kotlin.random.nextInt
 
 class GameArea(currentGameSetting: CurrentGameSetting) {
 
-    val heightGameArea: Int = currentGameSetting.sizeArrayOfGameArea
-    val widthGameArea: Int = currentGameSetting.sizeArrayOfGameArea
+    val heightGameArea: Int = currentGameSetting.widthArrayOfGameArea
+    val widthGameArea: Int = currentGameSetting.widthArrayOfGameArea
     val maxMines: Int = currentGameSetting.mines
 
     private val minesArea = Array(widthGameArea) {

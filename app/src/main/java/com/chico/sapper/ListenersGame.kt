@@ -1,19 +1,23 @@
 package com.chico.sapper
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
+import android.widget.Toast
 
-class ListenersGame{
+class ListenersGame {
+    private var move = Move()
+    fun handleTouch(m: MotionEvent, touch: Touch){
+        touch.yTouch = m.y.toInt()
+        touch.xTouch = m.x.toInt()
 
-     fun handleTouch(m: MotionEvent) {
-        val xTouch = m.x
-        val yTouch = m.y
+//        val yTouch = m.y
+//        val xTouch = m.x
 
-       Log.i("TAG","xTouch = $xTouch")
-       Log.i("TAG","yTouch = $yTouch")
 
+        Log.i("TAG", "xTouch = ${touch.xTouch}")
+        Log.i("TAG", "yTouch = ${touch.yTouch}")
+
+        move.getTouch(touch)
     }
 
 }
