@@ -13,7 +13,7 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class GameActivity : AppCompatActivity(){
+class GameActivity : AppCompatActivity() {
 
     private var settingLevels = SettingLevels()
     private val currentGameSetting = CurrentGameSetting()
@@ -21,9 +21,8 @@ class GameActivity : AppCompatActivity(){
     private val gameArea = GameArea(currentGameSetting)
     private var cellsDB = com.chico.sapper.dto.cellsDB
 
-    private var touch = Touch(0,0)
-
-
+    private var touch = Touch(0, 0)
+    private var prevoivTouch = Touch(0,0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,16 +50,26 @@ class GameActivity : AppCompatActivity(){
     override fun onStart() {
         super.onStart()
         val gameElementsHolder = findViewById<RelativeLayout>(R.id.game_elements_holder)
+        val listenersGame = ListenersGame()
 
         fillingThePlayingArea(gameElementsHolder)
 
-        val listenersGame = ListenersGame()
         gameElementsHolder.setOnTouchListener { v: View, m: MotionEvent ->
-            listenersGame.handleTouch(m,touch)
+            handleTouch(m, touch)
             false
         }
 
+    }
+    fun handleTouch(m: MotionEvent, touch: Touch) {
+        touch.yTouch = m.y.toInt()
+        touch.xTouch = m.x.toInt()
 
+//        val yTouch = m.y
+//        val xTouch = m.x
+
+
+//        Log.i("TAG", "xTouch = ${touch.xTouch}")
+//        Log.i("TAG", "yTouch = ${touch.yTouch}")
 
     }
 
