@@ -42,7 +42,7 @@ class GameActivity : AppCompatActivity() {
         gameArea = GameArea(currentGameSetting)
         gameArea.newCleanArea()
 
-//        gameArea.setMinesOnMinesArea()
+        gameArea.setMinesOnMinesArea(currentGameSetting)
 
 
         Log.wtf("TAG", "onCreateView: ")
@@ -68,59 +68,74 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun handleTouch(m: MotionEvent) {
-//        val xTouch = m.x.toInt()
-//        val yTouch = m.y.toInt()
         touch.yTouch = m.y.toInt()
         touch.xTouch = m.x.toInt()
 
-        gameMove()
-//        Log.i("TAG","xTouch = $xTouch")
-//        Log.i("TAG","yTouch = $yTouch")
-
+        nextMove()
     }
 
-    private fun gameMove() {
+    private fun nextMove() {
 
         var xTouchOnAreaDoule = touch.xTouch / metrics.gameCellSize
         var yTouchOnAreaDouble = touch.yTouch / metrics.gameCellSize
         xTouchOnAreaDoule = ceil(xTouchOnAreaDoule)
         yTouchOnAreaDouble = ceil(yTouchOnAreaDouble)
 
-        var yTouchOnAreaInt = yTouchOnAreaDouble.toInt()
-        var xTouchOnAreaInt = xTouchOnAreaDoule.toInt()
+        var yTouchOnAreaInt = yTouchOnAreaDouble.toInt()-1
+        var xTouchOnAreaInt = xTouchOnAreaDoule.toInt()-1
 
         Log.i("TAG", "xTouchOnArea = $xTouchOnAreaInt")
         Log.i("TAG", "yTouchOnArea = $yTouchOnAreaInt")
-        val result = gameArea.getMinesCellValue(yTouchOnAreaInt,xTouchOnAreaInt)
-        Log.i("TAG","value un mines area $result")
-//        val isOpen:Boolean = gameArea.isCellOpenCheck(yTouchOnAreaInt,xTouchOnAreaInt)
-//        Log.i("TAG","is cell open $isOpen")
+
+
+        if (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt)) {
+            val result = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
+            val yMargin = yTouchOnAreaInt * metrics.gameCellSize
+            val xMargin = xTouchOnAreaInt * metrics.gameCellSize
+
+            val sizeCell = metrics.gameCellSize.toInt()
+            val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
+
+            param.topMargin = yMargin.toInt()
+            param.leftMargin = xMargin.toInt()
+            val imageSource = ImageView(this)
+            if (result == 9) {
+
+                imageSource.setImageResource(R.drawable.mine)
+
+                Log.i("TAG", "---WARNING MINE IS HIRE!!!---")
+            }
+            Log.i("TAG", "value in mines area $result")
+
+            gameElementsHolder.addView(imageSource,param)
+        }
     }
 
     private fun fillingThePlayingArea() {
         val sizeDB = cellsDB.cellsDataBase.size
         val cellsDB = cellsDB.cellsDataBase
         var idCell: String
+
+
         for (id in 0 until sizeDB) {
             idCell = cellsDB[id].toString()
 
-            //            Log.i("TAG","id =$id  idCell =$idCell")
-            createGameElement(id)
+            createGameElementById(id)
         }
     }
 
-    private fun createGameElement(id: Int) {
+    private fun createGameElementById(id: Int) {
         val sizeCell = metrics.gameCellSize.toInt()
         val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
 
-        val gameElement = ImageView(this)
         param.topMargin = cellsDB.cellsDataBase[id].yMargin
         param.leftMargin = cellsDB.cellsDataBase[id].xMargin
-        gameElement.setImageResource(R.drawable.shirt)
 
-        gameElementsHolder.addView(gameElement, param)
+        val imageSource = ImageView(this)
+        imageSource.setImageResource(R.drawable.shirt)
+
+        gameElementsHolder.addView(imageSource, param)
         Log.i("TAG", "game Element Created")
-
     }
 
     private fun countCellSize(metrics: Metrics) {
@@ -166,11 +181,10 @@ class GameActivity : AppCompatActivity() {
                     xPosition = xPosition
                 )
 
-                Log.i(
-                    "TAG",
-//                    "leftMargin = ${y * sizeCell} , topMargin = ${x * sizeCell}"
-                    "yPosition = $yPosition , xPosition = $xPosition "
-                )
+//                Log.i(
+//                    "TAG",
+//                    "yPosition = $yPosition , xPosition = $xPosition "
+//                )
             }
         }
     }
@@ -208,7 +222,7 @@ class GameActivity : AppCompatActivity() {
         currentGameSetting.numberOfCellsOnGameArea = countCellsOnGameArea(
             currentGameSetting.sizeArrayOfGameArea
         )
-        Log.i("TAG","size game area = ${currentGameSetting.sizeArrayOfGameArea}")
+        Log.i("TAG", "size game area = ${currentGameSetting.sizeArrayOfGameArea}")
     }
 
     private fun countCellsOnGameArea(sizeGameArea: Int): Int {
@@ -219,7 +233,6 @@ class GameActivity : AppCompatActivity() {
         Toast.makeText(
             this,
             "size display x= ${metrics.sizeDisplayX},y = ${metrics.sizeDisplayY}",
-//            "size cell = ${metrics.gameCellSize}",
             Toast.LENGTH_SHORT
         ).show()
     }
@@ -233,19 +246,4 @@ class GameActivity : AppCompatActivity() {
         metrics.sizeDisplayY = size.y
 
     }
-
-//    override fun onClick(v: View?) {
-//
-////        val perent = v as ViewGroup
-////        var count = perent.childCount
-////        for(i in 0 ..count){
-//
-////        }
-//
-//
-//        val id:String = v?.id.toString()
-//        Toast.makeText(this, "$id", Toast.LENGTH_SHORT).show()
-//
-//    }
-
 }

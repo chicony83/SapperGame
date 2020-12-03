@@ -11,7 +11,6 @@
 package com.chico.sapper
 
 import android.util.Log
-import kotlin.math.log
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -37,23 +36,23 @@ class GameArea(
 
 
     fun newCleanArea() {
-        Log.i("TAG","size gameArea height = $heightGameArea, width = $widthGameArea")
+//        Log.i("TAG","size gameArea height = $heightGameArea, width = $widthGameArea")
         for (y in 0 until heightGameArea) {
             for (x in 0 until widthGameArea) {
                 minesArea[y][x] = 0
                 isCellOpen[y][x] = false
 
-                Log.i("TAG","minesArea y $y , x $x = ${minesArea[y][x]}")
+//                Log.i("TAG","minesArea y $y , x $x = ${minesArea[y][x]}")
             }
         }
         Log.i("TAG", "clean game Area created")
     }
 
-    fun setMinesOnMinesArea() {
+    fun setMinesOnMinesArea(currentGameSetting: CurrentGameSetting) {
         var mines = 0
         var x: Int
         var y: Int
-        while (mines < 9) {
+        while (mines < currentGameSetting.mines) {
             x = rndNum()
             y = rndNum()
 
@@ -78,7 +77,7 @@ class GameArea(
 
 
     private fun rndNum(): Int {
-        return Random.nextInt(0..heightGameArea)
+        return Random.nextInt(0 until heightGameArea)
     }
 //    private fun Int.rndNum(): Int {
 //        return Random.nextInt(1..this)
@@ -86,8 +85,8 @@ class GameArea(
 
     fun getMinesCellValue(yTouchOnArea: Int, xTouchOnArea: Int): Int {
         val size = minesArea.size
-        Log.i("TAG", "size = $size")
-        Log.i("TAG", "yTouch = $yTouchOnArea , xTouch = $xTouchOnArea")
+//        Log.i("TAG", "size = $size")
+//        Log.i("TAG", "yTouch = $yTouchOnArea , xTouch = $xTouchOnArea")
         val result = minesArea[yTouchOnArea][xTouchOnArea]
         Log.i("TAG", "result = $result")
         return result

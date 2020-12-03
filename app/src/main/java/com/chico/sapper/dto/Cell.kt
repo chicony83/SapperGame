@@ -31,7 +31,6 @@ object cellsDB {
                 )
 
             )
-        Log.wtf("TAG", "addCell: id = $id")
     }
 
 }
