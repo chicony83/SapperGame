@@ -5,7 +5,9 @@ import android.util.Log
 data class Cell(
     val id: String,
     val yMargin: Int,
-    val xMargin: Int
+    val xMargin: Int,
+    val yPosition: Int,
+    val xPosition: Int
 )
 
 object cellsDB {
@@ -14,18 +16,22 @@ object cellsDB {
     fun addCell(
         id: String,
         yMargin: Int,
-        xMargin: Int
+        xMargin: Int,
+        yPosition: Int,
+        xPosition: Int
     ) {
         cellsDataBase
             .add(
                 Cell(
                     id = id,
                     yMargin = yMargin,
-                    xMargin = xMargin
+                    xMargin = xMargin,
+                    yPosition = yPosition,
+                    xPosition = xPosition
                 )
 
             )
-        Log.wtf("TAG", "addCell: id = $id", )
+        Log.wtf("TAG", "addCell: id = $id")
     }
 
 }
