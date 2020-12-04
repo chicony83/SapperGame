@@ -87,7 +87,7 @@ class GameActivity : AppCompatActivity() {
 
             gameArea.isCellOpenSetTry(yTouchOnAreaInt,xTouchOnAreaInt)
 
-            val result = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
+            val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
             val yMargin = yTouchOnAreaInt * metrics.gameCellSize
             val xMargin = xTouchOnAreaInt * metrics.gameCellSize
 
@@ -97,14 +97,14 @@ class GameActivity : AppCompatActivity() {
             param.topMargin = yMargin.toInt()
             param.leftMargin = xMargin.toInt()
             val imageSource = ImageView(this)
-            if (result == 9) {
+            if (value == 9) {
                 imageSource.setImageResource(R.drawable.mine)
 
                 Log.i("TAG", "---WARNING MINE IS HIRE!!!---")
             }else{
                 imageSource.setImageResource(R.drawable.open)
             }
-            Log.i("TAG", "value in mines area $result")
+            Log.i("TAG", "value in mines area $value")
 
             gameElementsHolder.addView(imageSource,param)
         }
