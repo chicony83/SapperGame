@@ -35,11 +35,6 @@ class MainActivity : AppCompatActivity(){
 
     }
 
-//    private fun logIsLaunch(isLaunch: Boolean) {
-//        Log.i("TAG", "isLaunch = $isLaunch")
-//    }
-
-
     private fun launchFragment(addFragment: Fragment, remFragment: Fragment) {
         supportFragmentManager
             .beginTransaction()

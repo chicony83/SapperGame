@@ -1,6 +1,8 @@
 package com.chico.sapper
 
-class Touch (
-    var yTouch:Int,
-    var xTouch:Int
-)
+class Touch(
+) {
+    var xTouch: Int = 0
+    var yTouch: Int = 0
+
+}

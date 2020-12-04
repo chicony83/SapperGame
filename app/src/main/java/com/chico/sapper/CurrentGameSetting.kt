@@ -6,5 +6,4 @@ class CurrentGameSetting (){
 
     var mines:Int = 0
     var numberOfCellsOnGameArea = 0
-
 }
