@@ -96,6 +96,11 @@ class GameArea(
     fun isCellOpenCheck(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
         return isCellOpen[yTouchOnArea][xTouchOnArea]
     }
+    fun isCellOpenSetTry(yTouchOnArea: Int, xTouchOnArea: Int){
+        isCellOpen[yTouchOnArea][xTouchOnArea] = true
+
+        Log.i("TAG","cell y = $yTouchOnArea , x = $xTouchOnArea is open")
+    }
 
 
 }

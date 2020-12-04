@@ -58,7 +58,6 @@ class GameActivity : AppCompatActivity() {
         gameElementsHolder = findViewById(R.id.game_elements_holder)
 
         fillingThePlayingArea()
-        val listenersGame = ListenersGame()
 
         gameElementsHolder.setOnTouchListener { v: View, m: MotionEvent ->
             handleTouch(m)
@@ -84,11 +83,10 @@ class GameActivity : AppCompatActivity() {
         var yTouchOnAreaInt = yTouchOnAreaDouble.toInt()-1
         var xTouchOnAreaInt = xTouchOnAreaDoule.toInt()-1
 
-        Log.i("TAG", "xTouchOnArea = $xTouchOnAreaInt")
-        Log.i("TAG", "yTouchOnArea = $yTouchOnAreaInt")
-
-
         if (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt)) {
+
+            gameArea.isCellOpenSetTry(yTouchOnAreaInt,xTouchOnAreaInt)
+
             val result = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
             val yMargin = yTouchOnAreaInt * metrics.gameCellSize
             val xMargin = xTouchOnAreaInt * metrics.gameCellSize
@@ -100,10 +98,11 @@ class GameActivity : AppCompatActivity() {
             param.leftMargin = xMargin.toInt()
             val imageSource = ImageView(this)
             if (result == 9) {
-
                 imageSource.setImageResource(R.drawable.mine)
 
                 Log.i("TAG", "---WARNING MINE IS HIRE!!!---")
+            }else{
+                imageSource.setImageResource(R.drawable.open)
             }
             Log.i("TAG", "value in mines area $result")
 
@@ -132,7 +131,7 @@ class GameActivity : AppCompatActivity() {
         param.leftMargin = cellsDB.cellsDataBase[id].xMargin
 
         val imageSource = ImageView(this)
-        imageSource.setImageResource(R.drawable.shirt)
+        imageSource.setImageResource(R.drawable.shirt2)
 
         gameElementsHolder.addView(imageSource, param)
         Log.i("TAG", "game Element Created")
