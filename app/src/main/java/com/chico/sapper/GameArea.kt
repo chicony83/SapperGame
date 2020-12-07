@@ -53,11 +53,15 @@ class GameArea(
 
     fun setMinesOnMinesArea(currentGameSetting: CurrentGameSetting) {
         var minesInstalled = 0
-        var x: Int
-        var y: Int
+        var x: Int = 0
+        var y: Int = 0
         while (minesInstalled < currentGameSetting.mines) {
             x = rndNum()
             y = rndNum()
+            while (minesArea[y][x] == mine) {
+                x = rndNum()
+                y = rndNum()
+            }
 
             minesArea[y][x] = mine
             minesInstalled++
@@ -79,13 +83,13 @@ class GameArea(
 
     private fun testRightMines() {
         minesArea[1][widthGameArea] = mine
-        setMarkersNearMines(1,widthGameArea)
+        setMarkersNearMines(1, widthGameArea)
 
         minesArea[4][widthGameArea] = mine
-        setMarkersNearMines(4,widthGameArea)
+        setMarkersNearMines(4, widthGameArea)
 
         minesArea[8][widthGameArea] = mine
-        setMarkersNearMines(8,widthGameArea)
+        setMarkersNearMines(8, widthGameArea)
     }
 
     private fun testLeftMines() {
@@ -146,20 +150,20 @@ class GameArea(
         if (x == 0) {
             setMarkersNearLeftMines(y, x)
         }
-        if (x==widthGameArea){
-            setMarkersnearRightMines(y,x)
+        if (x == widthGameArea) {
+            setMarkersnearRightMines(y, x)
         }
 
         setMarkersNearMinesWithoutBorders(y, x)
     }
 
     private fun setMarkersnearRightMines(y: Int, x: Int) {
-        if ((y>0)and(y<heightGameArea)){
-            leftTop(y,x)
-            centerTop(y,x)
-            leftMiddle(y,x)
-            leftBottom(y,x)
-            centerBottom(y,x)
+        if ((y > 0) and (y < heightGameArea)) {
+            leftTop(y, x)
+            centerTop(y, x)
+            leftMiddle(y, x)
+            leftBottom(y, x)
+            centerBottom(y, x)
         }
     }
 
