@@ -11,7 +11,6 @@
 package com.chico.sapper
 
 import android.util.Log
-import kotlin.math.min
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -56,38 +55,62 @@ class GameArea(
         var minesInstalled = 0
         var x: Int
         var y: Int
-//        while (minesInstalled < currentGameSetting.mines) {
-//            x = rndNum()
-//            y = rndNum()
-//
-//            minesArea[y][x] = mine
-//            minesInstalled++
-//
-//            setMarkersNearMines(y, x)
-//
-//            Log.i("TAG", "mine $minesInstalled create on x = $x y = $y = ${minesArea[x][y]}")
-//        }
-        testMines()
+        while (minesInstalled < currentGameSetting.mines) {
+            x = rndNum()
+            y = rndNum()
+
+            minesArea[y][x] = mine
+            minesInstalled++
+
+            setMarkersNearMines(y, x)
+
+            Log.i("TAG", "mine $minesInstalled create on x = $x y = $y = ${minesArea[x][y]}")
+        }
+//        testMines()
         Log.i("TAG", "all mines created")
     }
 
     private fun testMines() {
 //        testTopMines()
-        testBottomMines()
+//        testBottomMines()
+//        testLeftMines()
+//        testRightMines()
+    }
+
+    private fun testRightMines() {
+        minesArea[1][widthGameArea] = mine
+        setMarkersNearMines(1,widthGameArea)
+
+        minesArea[4][widthGameArea] = mine
+        setMarkersNearMines(4,widthGameArea)
+
+        minesArea[8][widthGameArea] = mine
+        setMarkersNearMines(8,widthGameArea)
+    }
+
+    private fun testLeftMines() {
+        minesArea[1][0] = mine
+        setMarkersNearMines(1, 0)
+
+        minesArea[2][0] = mine
+        setMarkersNearMines(2, 0)
+
+        minesArea[5][0] = mine
+        setMarkersNearMines(5, 0)
     }
 
     private fun testBottomMines() {
         minesArea[heightGameArea][0] = mine
-        setMarkersNearMines(heightGameArea,0)
+        setMarkersNearMines(heightGameArea, 0)
 
         minesArea[heightGameArea][1] = mine
-        setMarkersNearMines(heightGameArea,1)
+        setMarkersNearMines(heightGameArea, 1)
 
         minesArea[heightGameArea][5] = mine
-        setMarkersNearMines(heightGameArea,5)
+        setMarkersNearMines(heightGameArea, 5)
 
         minesArea[heightGameArea][widthGameArea] = mine
-        setMarkersNearMines(heightGameArea,widthGameArea)
+        setMarkersNearMines(heightGameArea, widthGameArea)
     }
 
     private fun testTopMines() {
@@ -115,8 +138,65 @@ class GameArea(
             setMarkersNearTopMines(x, y)
             setMarkersNearRightTopMine(x, y)
         }
+        if (y == heightGameArea) {
+            setMarkersNearLeftBottomMine(y, x)
+            setMarkersNearBottomMines(y, x)
+            setMarkersNearRightBottomMines(y, x)
+        }
+        if (x == 0) {
+            setMarkersNearLeftMines(y, x)
+        }
+        if (x==widthGameArea){
+            setMarkersnearRightMines(y,x)
+        }
 
         setMarkersNearMinesWithoutBorders(y, x)
+    }
+
+    private fun setMarkersnearRightMines(y: Int, x: Int) {
+        if ((y>0)and(y<heightGameArea)){
+            leftTop(y,x)
+            centerTop(y,x)
+            leftMiddle(y,x)
+            leftBottom(y,x)
+            centerBottom(y,x)
+        }
+    }
+
+    private fun setMarkersNearLeftMines(y: Int, x: Int) {
+        if ((y > 0) and (y < heightGameArea)) {
+            centerTop(y, x)
+            rightTop(y, x)
+            rightMiddle(y, x)
+            centerBottom(y, x)
+            rightBottom(y, x)
+        }
+    }
+
+    private fun setMarkersNearBottomMines(y: Int, x: Int) {
+        if ((x > 0) and (x < widthGameArea)) {
+            leftTop(y, x)
+            centerTop(y, x)
+            rightTop(y, x)
+            leftMiddle(y, x)
+            rightMiddle(y, x)
+        }
+    }
+
+    private fun setMarkersNearRightBottomMines(y: Int, x: Int) {
+        if (x == widthGameArea) {
+            leftTop(y, x)
+            centerTop(y, x)
+            leftMiddle(y, x)
+        }
+    }
+
+    private fun setMarkersNearLeftBottomMine(y: Int, x: Int) {
+        if (x == 0) {
+            centerTop(y, x)
+            rightTop(y, x)
+            rightMiddle(y, x)
+        }
     }
 
     private fun setMarkersNearMinesWithoutBorders(y: Int, x: Int) {
@@ -135,7 +215,7 @@ class GameArea(
     }
 
     private fun setMarkersNearRightTopMine(x: Int, y: Int) {
-        if (x == heightGameArea) {
+        if (x == widthGameArea) {
             leftMiddle(y, x)
             leftBottom(y, x)
             centerBottom(y, x)
@@ -151,7 +231,7 @@ class GameArea(
     }
 
     private fun setMarkersNearTopMines(x: Int, y: Int) {
-        if ((x > 0) and (x < heightGameArea)) {
+        if ((x > 0) and (x < widthGameArea)) {
             leftMiddle(y, x)
             rightMiddle(y, x)
             leftBottom(y, x)
