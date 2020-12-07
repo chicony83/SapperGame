@@ -39,11 +39,11 @@ class GameActivity : AppCompatActivity() {
 
         sizeDisplay(metrics)
         countCellSize(metrics)
+
         gameArea = GameArea(currentGameSetting)
         gameArea.newCleanArea()
-
         gameArea.setMinesOnMinesArea(currentGameSetting)
-
+        gameArea.setNumberNearMines()
 
         Log.wtf("TAG", "onCreateView: ")
         addCellsInDB(metrics, currentGameSetting)

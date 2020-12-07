@@ -56,9 +56,6 @@ class GameArea(
             x = rndNum()
             y = rndNum()
 
-//            x = (widthGameArea.rndNum()) - 1
-//            y = (heightGameArea.rndNum()) - 1
-
             minesArea[x][y] = 9
             mines++
 //            Log.i("TAG", "mine $mines create on x = $x y = $y")
@@ -100,6 +97,10 @@ class GameArea(
         isCellOpen[yTouchOnArea][xTouchOnArea] = true
 
         Log.i("TAG","cell y = $yTouchOnArea , x = $xTouchOnArea is open")
+    }
+
+    fun setNumberNearMines() {
+
     }
 
 
