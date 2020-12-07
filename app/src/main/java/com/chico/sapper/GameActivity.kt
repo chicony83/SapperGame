@@ -83,13 +83,13 @@ class GameActivity : AppCompatActivity() {
 
     private fun nextMove() {
 
-        var xTouchOnAreaDoule = touch.xTouch / metrics.gameCellSize
+        var xTouchOnAreaDouble = touch.xTouch / metrics.gameCellSize
         var yTouchOnAreaDouble = touch.yTouch / metrics.gameCellSize
-        xTouchOnAreaDoule = ceil(xTouchOnAreaDoule)
+        xTouchOnAreaDouble = ceil(xTouchOnAreaDouble)
         yTouchOnAreaDouble = ceil(yTouchOnAreaDouble)
 
         var yTouchOnAreaInt = yTouchOnAreaDouble.toInt() - 1
-        var xTouchOnAreaInt = xTouchOnAreaDoule.toInt() - 1
+        var xTouchOnAreaInt = xTouchOnAreaDouble.toInt() - 1
 
         if (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt)) {
 
