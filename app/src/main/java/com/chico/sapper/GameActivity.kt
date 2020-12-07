@@ -14,7 +14,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.ceil
 
+val TAG = "TAG"
+
 class GameActivity : AppCompatActivity() {
+
 
     private var settingLevels = SettingLevels()
     private val currentGameSetting = CurrentGameSetting()
@@ -43,7 +46,7 @@ class GameActivity : AppCompatActivity() {
         gameArea = GameArea(currentGameSetting)
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea(currentGameSetting)
-        gameArea.setNumberNearMines()
+
 
         Log.wtf("TAG", "onCreateView: ")
         addCellsInDB(metrics, currentGameSetting)
@@ -67,10 +70,15 @@ class GameActivity : AppCompatActivity() {
     }
 
     fun handleTouch(m: MotionEvent) {
-        touch.yTouch = m.y.toInt()
-        touch.xTouch = m.x.toInt()
 
-        nextMove()
+        if ((m.y > 0) and (m.y < metrics.gameCellSize*currentGameSetting.sizeArrayOfGameArea)) {
+            if ((m.x > 0) and (m.x < metrics.gameCellSize*currentGameSetting.sizeArrayOfGameArea)) {
+                touch.yTouch = m.y.toInt()
+                touch.xTouch = m.x.toInt()
+
+                nextMove()
+            }
+        }
     }
 
     private fun nextMove() {
@@ -80,12 +88,12 @@ class GameActivity : AppCompatActivity() {
         xTouchOnAreaDoule = ceil(xTouchOnAreaDoule)
         yTouchOnAreaDouble = ceil(yTouchOnAreaDouble)
 
-        var yTouchOnAreaInt = yTouchOnAreaDouble.toInt()-1
-        var xTouchOnAreaInt = xTouchOnAreaDoule.toInt()-1
+        var yTouchOnAreaInt = yTouchOnAreaDouble.toInt() - 1
+        var xTouchOnAreaInt = xTouchOnAreaDoule.toInt() - 1
 
         if (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt)) {
 
-            gameArea.isCellOpenSetTry(yTouchOnAreaInt,xTouchOnAreaInt)
+            gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
 
             val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
             val yMargin = yTouchOnAreaInt * metrics.gameCellSize
@@ -97,16 +105,41 @@ class GameActivity : AppCompatActivity() {
             param.topMargin = yMargin.toInt()
             param.leftMargin = xMargin.toInt()
             val imageSource = ImageView(this)
+            if (value == 0) {
+                imageSource.setImageResource(R.drawable.open)
+            }
+            if (value == 1) {
+                imageSource.setImageResource(R.drawable.one)
+            }
+            if (value == 2) {
+                imageSource.setImageResource(R.drawable.two)
+            }
+            if (value == 3) {
+                imageSource.setImageResource(R.drawable.three)
+            }
+            if (value == 4) {
+                imageSource.setImageResource(R.drawable.four)
+            }
+            if (value == 5) {
+                imageSource.setImageResource(R.drawable.five)
+            }
+            if (value == 6) {
+                imageSource.setImageResource(R.drawable.six)
+            }
+            if (value == 7) {
+                imageSource.setImageResource(R.drawable.seven)
+            }
+            if (value == 8) {
+                imageSource.setImageResource(R.drawable.eight)
+            }
             if (value == 9) {
                 imageSource.setImageResource(R.drawable.mine)
 
                 Log.i("TAG", "---WARNING MINE IS HIRE!!!---")
-            }else{
-                imageSource.setImageResource(R.drawable.open)
             }
             Log.i("TAG", "value in mines area $value")
 
-            gameElementsHolder.addView(imageSource,param)
+            gameElementsHolder.addView(imageSource, param)
         }
     }
 
