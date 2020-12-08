@@ -77,18 +77,19 @@
 
         <Button
             android:id="@+id/button_open"
-            android:text="open"
-            style="@style/GameFlags" />
+            android:text="@string/buttonOpen_text"
+            style="@style/GameFlags"
+            />
 
         <Button
             android:id="@+id/button_mayBe"
-            android:text="may be?"
+            android:text="@string/buttonMayBe_text"
             style="@style/GameFlags"
             />
 
         <Button
             android:id="@+id/button_mineIsHire"
-            android:text="mine is hire!"
+            android:text="@string/buttonMineIsHere_text"
             style="@style/GameFlags"
             />
     </LinearLayout>

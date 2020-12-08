@@ -34,9 +34,10 @@
     <style name="Theme.SapperGame.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="GameFlags">
-        <item name="android:layout_margin">@dimen/marginNormal</item>
+        <item name="android:textSize">@dimen/H3</item>
+        <item name="android:layout_margin">@dimen/marginHalfNormal</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:scaleType">center</item>
 

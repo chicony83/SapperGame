@@ -11,16 +11,16 @@
     <Button
         android:id="@+id/easy_game_button"
         style="@style/MainMenuButtons"
-        android:text="easy" />
+        android:text="@string/buttonEasy_text" />
 
     <Button
         android:id="@+id/normal_game_button"
         style="@style/MainMenuButtons"
-        android:text="normal" />
+        android:text="@string/buttonNormal_text" />
 
     <Button
         android:id="@+id/hard_game_button"
         style="@style/MainMenuButtons"
-        android:text="hard" />
+        android:text="@string/buttonHard_text" />
 
 </LinearLayout>

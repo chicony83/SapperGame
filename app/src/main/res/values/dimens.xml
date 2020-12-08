@@ -3,9 +3,12 @@
     <dimen name="H0">36sp</dimen>
     <dimen name="H1">32sp</dimen>
 
+    <dimen name="marginHalfNormal">4dp</dimen>
     <dimen name="marginNormal">8dp</dimen>
     <dimen name="marginDouble">16dp</dimen>
     <dimen name="marginTriple">24dp</dimen>
     <dimen name="H2">16sp</dimen>
+    <dimen name="H3">12sp</dimen>
+    <dimen name="H4">8sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>
