@@ -61,6 +61,10 @@
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="@+id/textView2" />
 
+        <include
+            layout="@layout/loose_game"
+            android:visibility="gone" />
+
         <!--        <include layout="@layout/content_game" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 

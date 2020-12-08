@@ -1,6 +1,7 @@
 package com.chico.sapper
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
@@ -8,10 +9,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.ceil
 
@@ -30,11 +28,16 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var gameElementsHolder: RelativeLayout
 
+    private lateinit var looseGameMessageLayout: LinearLayout
     private lateinit var buttonOpen: Button
     private lateinit var buttonMayBe: Button
     private lateinit var buttonMineIsHire: Button
+    private lateinit var buttonSelectLevel: Button
+
 
     private var selectStateWhatDo = 0
+
+    private var isLoose=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +63,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonOpen = findViewById(R.id.button_open)
         buttonMayBe = findViewById<Button>(R.id.button_mayBe)
         buttonMineIsHire = findViewById<Button>(R.id.button_mineIsHire)
+        buttonSelectLevel = findViewById(R.id.button_selectLevel)
 
         buttonOpen.setOnClickListener(this)
         buttonMayBe.setOnClickListener(this)
         buttonMineIsHire.setOnClickListener(this)
+        buttonSelectLevel.setOnClickListener(this)
+
 
 //        infoToast(metrics)
     }
@@ -72,6 +78,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         gameElementsHolder = findViewById(R.id.game_elements_holder)
+        looseGameMessageLayout = findViewById(R.id.looseGameMessage_layout)
 
         gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
 
@@ -84,15 +91,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-
     fun handleTouch(m: MotionEvent) {
-
-        if ((m.y > 0) and (m.y < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
-            if ((m.x > 0) and (m.x < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
-                touch.yTouch = m.y.toInt()
-                touch.xTouch = m.x.toInt()
-
-                nextMove()
+        if (!isLoose){
+            if ((m.y > 0) and (m.y < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
+                if ((m.x > 0) and (m.x < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
+                    touch.yTouch = m.y.toInt()
+                    touch.xTouch = m.x.toInt()
+                    nextMove()
+                }
             }
         }
     }
@@ -116,13 +122,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         param.leftMargin = xMargin.toInt()
 
         if (selectStateWhatDo == 0) {
-            openGameCell(yTouchOnAreaInt,xTouchOnAreaInt,param)
+            openGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
         }
-        if (selectStateWhatDo == 1){
-            mayBeMineIsHere(yTouchOnAreaInt,xTouchOnAreaInt,param)
+        if (selectStateWhatDo == 1) {
+            mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
         }
-        if (selectStateWhatDo == 2){
-            mineIsHere(yTouchOnAreaInt,xTouchOnAreaInt,param)
+        if (selectStateWhatDo == 2) {
+            mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
         }
     }
 
@@ -188,8 +194,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             }
             if (value == 9) {
                 imageSource.setImageResource(R.drawable.mine)
+                isLoose=true
+                buttonOpen.setOnClickListener(null)
+                buttonMayBe.setOnClickListener(null)
+                buttonMineIsHire.setOnClickListener(null)
+                gameElementsHolder.setOnClickListener(null)
 
-                Log.i("TAG", "---WARNING MINE IS HIRE!!!---")
+                looseGameMessageLayout.visibility = View.VISIBLE
+
             }
             Log.i("TAG", "value in mines area $value")
 
@@ -333,7 +345,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        var text: String = " "
+        var text: String = ""
         if (v == buttonOpen) {
             selectStateWhatDo = 0
             text = "open"
@@ -346,7 +358,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             selectStateWhatDo = 2
             text = "mine is here"
         }
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        if (v == buttonSelectLevel) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        if (text.isNotEmpty()){
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        }
     }
-
 }
