@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -16,18 +17,24 @@ import kotlin.math.ceil
 
 val TAG = "TAG"
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private var settingLevels = SettingLevels()
     private val currentGameSetting = CurrentGameSetting()
     private val metrics = Metrics()
-    lateinit var gameArea: GameArea
+    private lateinit var gameArea: GameArea
 
     private var cellsDB = com.chico.sapper.dto.cellsDB
     private val touch = Touch()
 
     private lateinit var gameElementsHolder: RelativeLayout
+
+    private lateinit var buttonOpen: Button
+    private lateinit var buttonMayBe: Button
+    private lateinit var buttonMineIsHire: Button
+
+    private var selectStateWhatDo = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +54,16 @@ class GameActivity : AppCompatActivity() {
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea(currentGameSetting)
 
-
         Log.wtf("TAG", "onCreateView: ")
         addCellsInDB(metrics, currentGameSetting)
 
+        buttonOpen = findViewById(R.id.button_open)
+        buttonMayBe = findViewById<Button>(R.id.button_mayBe)
+        buttonMineIsHire = findViewById<Button>(R.id.button_mineIsHire)
+
+        buttonOpen.setOnClickListener(this)
+        buttonMayBe.setOnClickListener(this)
+        buttonMineIsHire.setOnClickListener(this)
 
 //        infoToast(metrics)
     }
@@ -59,6 +72,8 @@ class GameActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         gameElementsHolder = findViewById(R.id.game_elements_holder)
+
+        gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
 
         fillingThePlayingArea()
 
@@ -69,10 +84,11 @@ class GameActivity : AppCompatActivity() {
 
     }
 
+
     fun handleTouch(m: MotionEvent) {
 
-        if ((m.y > 0) and (m.y < metrics.gameCellSize*currentGameSetting.sizeArrayOfGameArea)) {
-            if ((m.x > 0) and (m.x < metrics.gameCellSize*currentGameSetting.sizeArrayOfGameArea)) {
+        if ((m.y > 0) and (m.y < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
+            if ((m.x > 0) and (m.x < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
                 touch.yTouch = m.y.toInt()
                 touch.xTouch = m.x.toInt()
 
@@ -82,7 +98,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun nextMove() {
-
         var xTouchOnAreaDouble = touch.xTouch / metrics.gameCellSize
         var yTouchOnAreaDouble = touch.yTouch / metrics.gameCellSize
         xTouchOnAreaDouble = ceil(xTouchOnAreaDouble)
@@ -91,19 +106,58 @@ class GameActivity : AppCompatActivity() {
         var yTouchOnAreaInt = yTouchOnAreaDouble.toInt() - 1
         var xTouchOnAreaInt = xTouchOnAreaDouble.toInt() - 1
 
+        val yMargin = yTouchOnAreaInt * metrics.gameCellSize
+        val xMargin = xTouchOnAreaInt * metrics.gameCellSize
+
+        val sizeCell = metrics.gameCellSize.toInt()
+        val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
+
+        param.topMargin = yMargin.toInt()
+        param.leftMargin = xMargin.toInt()
+
+        if (selectStateWhatDo == 0) {
+            openGameCell(yTouchOnAreaInt,xTouchOnAreaInt,param)
+        }
+        if (selectStateWhatDo == 1){
+            mayBeMineIsHere(yTouchOnAreaInt,xTouchOnAreaInt,param)
+        }
+        if (selectStateWhatDo == 2){
+            mineIsHere(yTouchOnAreaInt,xTouchOnAreaInt,param)
+        }
+    }
+
+    private fun mineIsHere(
+        yTouchOnAreaInt: Int,
+        xTouchOnAreaInt: Int,
+        param: RelativeLayout.LayoutParams
+    ) {
+        val imageSource = ImageView(this)
+        imageSource.setImageResource(R.drawable.mineishire)
+        gameElementsHolder.addView(imageSource, param)
+    }
+
+    private fun mayBeMineIsHere(
+        yTouchOnAreaInt: Int,
+        xTouchOnAreaInt: Int,
+        param: RelativeLayout.LayoutParams
+    ) {
+        val imageSource = ImageView(this)
+        imageSource.setImageResource(R.drawable.maybe)
+        gameElementsHolder.addView(imageSource, param)
+
+    }
+
+    private fun openGameCell(
+        yTouchOnAreaInt: Int,
+        xTouchOnAreaInt: Int,
+        param: RelativeLayout.LayoutParams
+    ) {
         if (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt)) {
 
             gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
 
             val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
-            val yMargin = yTouchOnAreaInt * metrics.gameCellSize
-            val xMargin = xTouchOnAreaInt * metrics.gameCellSize
 
-            val sizeCell = metrics.gameCellSize.toInt()
-            val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
-
-            param.topMargin = yMargin.toInt()
-            param.leftMargin = xMargin.toInt()
             val imageSource = ImageView(this)
             if (value == 0) {
                 imageSource.setImageResource(R.drawable.open)
@@ -276,6 +330,23 @@ class GameActivity : AppCompatActivity() {
 
         metrics.sizeDisplayX = size.x
         metrics.sizeDisplayY = size.y
-
     }
+
+    override fun onClick(v: View?) {
+        var text: String = " "
+        if (v == buttonOpen) {
+            selectStateWhatDo = 0
+            text = "open"
+        }
+        if (v == buttonMayBe) {
+            selectStateWhatDo = 1
+            text = "may be"
+        }
+        if (v == buttonMineIsHire) {
+            selectStateWhatDo = 2
+            text = "mine is here"
+        }
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
 }
