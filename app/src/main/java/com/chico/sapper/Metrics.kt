@@ -7,6 +7,4 @@ class Metrics (){
     var sizeDisplayY:Int = 0
 
     var gameCellSize:Double = 0.0
-
-
 }

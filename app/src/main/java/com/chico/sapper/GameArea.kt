@@ -33,10 +33,15 @@ class GameArea(
         BooleanArray(
             widthGameAreaForCreate
         )
+    },
+    private val markers: Array<IntArray> = Array(heightGameAreaForCreate) {
+        IntArray(
+            widthGameAreaForCreate
+        )
     }
 
-) {
 
+) {
 
     fun newCleanArea() {
         Log.i("TAG", "size gameArea height = $heightGameArea, width = $widthGameArea")
@@ -44,6 +49,7 @@ class GameArea(
             for (x in 0..widthGameArea) {
                 minesArea[y][x] = 0
                 isCellOpen[y][x] = false
+                markers[y][x] = 0
 
 //                Log.i("TAG","minesArea y $y , x $x = ${minesArea[y][x]}")
             }
@@ -66,7 +72,7 @@ class GameArea(
             minesArea[y][x] = mine
             minesInstalled++
 
-            setMarkersNearMines(y, x)
+            setNumbersNearMines(y, x)
 
             Log.i("TAG", "mine $minesInstalled create on x = $x y = $y = ${minesArea[x][y]}")
         }
@@ -74,90 +80,90 @@ class GameArea(
         Log.i("TAG", "all mines created")
     }
 
-    private fun testMines() {
+//    private fun testMines() {
 //        testTopMines()
 //        testBottomMines()
 //        testLeftMines()
 //        testRightMines()
-    }
+//    }
 
     private fun testRightMines() {
         minesArea[1][widthGameArea] = mine
-        setMarkersNearMines(1, widthGameArea)
+        setNumbersNearMines(1, widthGameArea)
 
         minesArea[4][widthGameArea] = mine
-        setMarkersNearMines(4, widthGameArea)
+        setNumbersNearMines(4, widthGameArea)
 
         minesArea[8][widthGameArea] = mine
-        setMarkersNearMines(8, widthGameArea)
+        setNumbersNearMines(8, widthGameArea)
     }
 
     private fun testLeftMines() {
         minesArea[1][0] = mine
-        setMarkersNearMines(1, 0)
+        setNumbersNearMines(1, 0)
 
         minesArea[2][0] = mine
-        setMarkersNearMines(2, 0)
+        setNumbersNearMines(2, 0)
 
         minesArea[5][0] = mine
-        setMarkersNearMines(5, 0)
+        setNumbersNearMines(5, 0)
     }
 
     private fun testBottomMines() {
         minesArea[heightGameArea][0] = mine
-        setMarkersNearMines(heightGameArea, 0)
+        setNumbersNearMines(heightGameArea, 0)
 
         minesArea[heightGameArea][1] = mine
-        setMarkersNearMines(heightGameArea, 1)
+        setNumbersNearMines(heightGameArea, 1)
 
         minesArea[heightGameArea][5] = mine
-        setMarkersNearMines(heightGameArea, 5)
+        setNumbersNearMines(heightGameArea, 5)
 
         minesArea[heightGameArea][widthGameArea] = mine
-        setMarkersNearMines(heightGameArea, widthGameArea)
+        setNumbersNearMines(heightGameArea, widthGameArea)
     }
 
     private fun testTopMines() {
         //leftTop
         minesArea[0][0] = mine
-        setMarkersNearMines(0, 0)
+        setNumbersNearMines(0, 0)
 
         minesArea[0][1] = mine
-        setMarkersNearMines(0, 1)
+        setNumbersNearMines(0, 1)
 
         //RightTop
         minesArea[0][widthGameArea] = mine
-        setMarkersNearMines(0, widthGameArea)
+        setNumbersNearMines(0, widthGameArea)
 
         minesArea[0][5] = mine
-        setMarkersNearMines(0, 5)
+        setNumbersNearMines(0, 5)
     }
 
-    private fun setMarkersNearMines(y: Int, x: Int) {
+    private fun setNumbersNearMines(y: Int, x: Int) {
 
         Log.i(TAG, "x = $x, y = $y")
 //        minesArea[y][x]
         if (y == 0) {
-            setMarkersNearLeftTopMine(x, y)
-            setMarkersNearTopMines(x, y)
-            setMarkersNearRightTopMine(x, y)
+            setNumbersNearLeftTopMine(x, y)
+            setNumbersNearTopMines(x, y)
+            setNumbersNearRightTopMine(x, y)
         }
         if (y == heightGameArea) {
-            setMarkersNearLeftBottomMine(y, x)
-            setMarkersNearBottomMines(y, x)
-            setMarkersNearRightBottomMines(y, x)
+            setNumbersNearLeftBottomMine(y, x)
+            setNumbersNearBottomMines(y, x)
+            setNumbersNearRightBottomMines(y, x)
         }
         if (x == 0) {
-            setMarkersNearLeftMines(y, x)
+            setNumbersNearLeftMines(y, x)
         }
         if (x == widthGameArea) {
-            setMarkersnearRightMines(y, x)
+            setNumbersNearRightMines(y, x)
         }
 
-        setMarkersNearMinesWithoutBorders(y, x)
+        setNumbersNearMinesWithoutBorders(y, x)
     }
 
-    private fun setMarkersnearRightMines(y: Int, x: Int) {
+    private fun setNumbersNearRightMines(y: Int, x: Int) {
         if ((y > 0) and (y < heightGameArea)) {
             leftTop(y, x)
             centerTop(y, x)
@@ -167,7 +173,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearLeftMines(y: Int, x: Int) {
+    private fun setNumbersNearLeftMines(y: Int, x: Int) {
         if ((y > 0) and (y < heightGameArea)) {
             centerTop(y, x)
             rightTop(y, x)
@@ -177,7 +183,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearBottomMines(y: Int, x: Int) {
+    private fun setNumbersNearBottomMines(y: Int, x: Int) {
         if ((x > 0) and (x < widthGameArea)) {
             leftTop(y, x)
             centerTop(y, x)
@@ -187,7 +193,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearRightBottomMines(y: Int, x: Int) {
+    private fun setNumbersNearRightBottomMines(y: Int, x: Int) {
         if (x == widthGameArea) {
             leftTop(y, x)
             centerTop(y, x)
@@ -195,7 +201,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearLeftBottomMine(y: Int, x: Int) {
+    private fun setNumbersNearLeftBottomMine(y: Int, x: Int) {
         if (x == 0) {
             centerTop(y, x)
             rightTop(y, x)
@@ -203,7 +209,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearMinesWithoutBorders(y: Int, x: Int) {
+    private fun setNumbersNearMinesWithoutBorders(y: Int, x: Int) {
         if ((y > 0) and (y < heightGameArea)) {
             if ((x > 0) and (x < widthGameArea)) {
                 leftTop(y, x)
@@ -218,7 +224,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearRightTopMine(x: Int, y: Int) {
+    private fun setNumbersNearRightTopMine(x: Int, y: Int) {
         if (x == widthGameArea) {
             leftMiddle(y, x)
             leftBottom(y, x)
@@ -226,7 +232,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearLeftTopMine(x: Int, y: Int) {
+    private fun setNumbersNearLeftTopMine(x: Int, y: Int) {
         if (x == 0) {
             rightMiddle(y, x)
             centerBottom(y, x)
@@ -234,7 +240,7 @@ class GameArea(
         }
     }
 
-    private fun setMarkersNearTopMines(x: Int, y: Int) {
+    private fun setNumbersNearTopMines(x: Int, y: Int) {
         if ((x > 0) and (x < widthGameArea)) {
             leftMiddle(y, x)
             rightMiddle(y, x)
@@ -332,5 +338,21 @@ class GameArea(
         isCellOpen[yTouchOnArea][xTouchOnArea] = true
 
         Log.i("TAG", "cell y = $yTouchOnArea , x = $xTouchOnArea is open")
+    }
+
+    fun setMarkerOnMarkerArea(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int, marker: Int) {
+        markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+    }
+
+    fun countMarkers(): Int {
+        var result = 0
+        for (y in 0..heightGameArea){
+            for (x in 0..widthGameArea){
+                if (markers[y][x]==2){
+                    result++
+                }
+            }
+        }
+        return result
     }
 }
