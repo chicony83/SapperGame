@@ -61,9 +61,6 @@
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="@+id/textView2" />
 
-        <include
-            layout="@layout/loose_game"
-            android:visibility="gone" />
 
         <!--        <include layout="@layout/content_game" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -72,7 +69,10 @@
         android:id="@+id/game_elements_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"        >
+
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,21 +81,27 @@
 
         <Button
             android:id="@+id/button_open"
-            android:text="@string/buttonOpen_text"
             style="@style/GameFlags"
-            />
+            android:text="@string/buttonOpen_text" />
 
         <Button
             android:id="@+id/button_mayBe"
-            android:text="@string/buttonMayBe_text"
             style="@style/GameFlags"
-            />
+            android:text="@string/buttonMayBe_text" />
 
         <Button
             android:id="@+id/button_mineIsHire"
-            android:text="@string/buttonMineIsHere_text"
             style="@style/GameFlags"
-            />
+            android:text="@string/buttonMineIsHere_text" />
     </LinearLayout>
+
+    <include
+        layout="@layout/layout_loose_game"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/layout_win_game"
+        android:visibility="gone" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

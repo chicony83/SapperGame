@@ -356,4 +356,24 @@ class GameArea(
         }
         return result
     }
+
+    fun isMineMarkerHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Boolean {
+        return markers[yTouchOnAreaInt][xTouchOnAreaInt]==2
+    }
+
+    fun checkTheFlagsSet():Boolean {
+        var isFlagsSetWright:Boolean = true
+
+        for (y in 0..heightGameArea){
+            for (x in 0..widthGameArea){
+                if (markers[y][x]==2){
+                    if (minesArea[y][x]!=mine)
+                        return false
+                }
+            }
+        }
+
+        return isFlagsSetWright
+    }
+
 }

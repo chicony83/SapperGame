@@ -32,11 +32,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var gameElementsHolder: RelativeLayout
     private lateinit var looseGameMessageLayout: LinearLayout
+    private lateinit var winGameMessageLayout: LinearLayout
 
     private lateinit var buttonOpen: Button
     private lateinit var buttonMayBe: Button
     private lateinit var buttonMineIsHire: Button
     private lateinit var buttonSelectLevel: Button
+    private lateinit var buttonSelectLevel2: Button
 
     private lateinit var minesLeftValue: TextView
 
@@ -44,7 +46,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var selectStateWhatDo = 0
 
-    private var isLoose = false
+    private var isLoose: Boolean = false
+    private var isWin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +78,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMayBe = findViewById<Button>(R.id.button_mayBe)
         buttonMineIsHire = findViewById<Button>(R.id.button_mineIsHire)
         buttonSelectLevel = findViewById(R.id.button_selectLevel)
+        buttonSelectLevel2 = findViewById(R.id.button_selectLevel2)
 
         minesLeftValue = findViewById(R.id.mines_left_value)
 
@@ -82,11 +86,31 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMayBe.setOnClickListener(this)
         buttonMineIsHire.setOnClickListener(this)
         buttonSelectLevel.setOnClickListener(this)
+        buttonSelectLevel2.setOnClickListener(this)
 
         setValuesOnGameArea(currentGameSetting)
 
 //        infoToast(metrics)
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onStart() {
+        super.onStart()
+        gameElementsHolder = findViewById(R.id.game_elements_holder)
+        looseGameMessageLayout = findViewById(R.id.looseGameMessage_layout)
+        winGameMessageLayout = findViewById(R.id.winGameMessage_layout)
+
+        gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
+
+        fillingThePlayingArea()
+
+        gameElementsHolder.setOnTouchListener { v: View, m: MotionEvent ->
+            handleTouch(m)
+            false
+        }
+
+    }
+
 
     private fun setValuesOnGameArea(currentGameSetting: CurrentGameSetting) {
         viewModelProvider.counterMines.postValue(currentGameSetting.mines)
@@ -98,24 +122,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 minesLeftValue.text = it.toString()
             }
         )
-    }
-
-
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onStart() {
-        super.onStart()
-        gameElementsHolder = findViewById(R.id.game_elements_holder)
-        looseGameMessageLayout = findViewById(R.id.looseGameMessage_layout)
-
-        gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
-
-        fillingThePlayingArea()
-
-        gameElementsHolder.setOnTouchListener { v: View, m: MotionEvent ->
-            handleTouch(m)
-            false
-        }
-
     }
 
     fun handleTouch(m: MotionEvent) {
@@ -150,8 +156,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         param.topMargin = yMargin.toInt()
         param.leftMargin = xMargin.toInt()
 
-        if (selectStateWhatDo == 0) {
-            openGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+        if (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
+            if (selectStateWhatDo == 0) {
+                openGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+            }
         }
         if (selectStateWhatDo == 1) {
             mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
@@ -163,9 +171,18 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
         gameArea.setMarkerOnMarkerArea(yTouchOnAreaInt, xTouchOnAreaInt, mineMarkerForMarkerArea)
         val markers = gameArea.countMarkers()
-        var mines = currentGameSetting.mines-markers
+        var mines = currentGameSetting.mines - markers
         viewModelProvider.counterMines.postValue(mines)
-//        Log.i(TAG,"markers = $markers")
+
+        if (mines == 0) {
+            isWin = gameArea.checkTheFlagsSet()
+            if (isWin) {
+                endLevel()
+            }
+            if (!isWin) {
+
+            }
+        }
 
     }
 
@@ -231,19 +248,30 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             }
             if (value == 9) {
                 imageSource.setImageResource(R.drawable.mine)
-                isLoose = true
-                buttonOpen.setOnClickListener(null)
-                buttonMayBe.setOnClickListener(null)
-                buttonMineIsHire.setOnClickListener(null)
-                gameElementsHolder.setOnClickListener(null)
 
-                looseGameMessageLayout.visibility = View.VISIBLE
+                isLoose = true
+
+                endLevel()
 
             }
             Log.i("TAG", "value in mines area $value")
 
             gameElementsHolder.addView(imageSource, param)
         }
+    }
+
+    private fun endLevel() {
+        buttonOpen.setOnClickListener(null)
+        buttonMayBe.setOnClickListener(null)
+        buttonMineIsHire.setOnClickListener(null)
+        gameElementsHolder.setOnClickListener(null)
+        if (isWin) {
+            winGameMessageLayout.visibility = View.VISIBLE
+        }
+        if (isLoose) {
+            looseGameMessageLayout.visibility = View.VISIBLE
+        }
+
     }
 
     private fun fillingThePlayingArea() {
@@ -395,7 +423,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             selectStateWhatDo = 2
             text = "mine is here"
         }
-        if (v == buttonSelectLevel) {
+        if ((v == buttonSelectLevel) or (v == buttonSelectLevel2)) {
             startActivity(Intent(this, MainActivity::class.java))
         }
         if (text.isNotEmpty()) {

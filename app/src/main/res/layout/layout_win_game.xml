@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/EndGameLayout"
+    android:id="@+id/winGameMessage_layout">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/H3"
+        android:text="ПОЗДАРВЛЯЕМ ВЫ НАШЛИ ВСЕ МИНЫ"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="выбрать уровень"
+        android:id="@+id/button_selectLevel2"
+        />
+
+</LinearLayout>
