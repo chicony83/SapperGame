@@ -46,6 +46,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var selectStateWhatDo = 0
 
+    private var leftToFindMines = 0
+
     private var isLoose: Boolean = false
     private var isWin: Boolean = false
 
@@ -89,6 +91,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonSelectLevel2.setOnClickListener(this)
 
         setValuesOnGameArea(currentGameSetting)
+
+        leftToFindMines = currentGameSetting.mines
 
 //        infoToast(metrics)
     }
@@ -166,15 +170,21 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             mineMarkerForMarkerArea = 1
         }
         if (selectStateWhatDo == 2) {
-            mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
-            mineMarkerForMarkerArea = 2
+            if (leftToFindMines>0){
+                mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
+                mineMarkerForMarkerArea = 2
+            }
         }
-        gameArea.setMarkerOnMarkerArea(yTouchOnAreaInt, xTouchOnAreaInt, mineMarkerForMarkerArea)
-        val markers = gameArea.countMarkers()
-        var mines = currentGameSetting.mines - markers
-        viewModelProvider.counterMines.postValue(mines)
 
-        if (mines == 0) {
+        gameArea.setMarkerOnMarkerArea(yTouchOnAreaInt, xTouchOnAreaInt, mineMarkerForMarkerArea)
+
+        val markers = gameArea.countMarkers()
+
+        leftToFindMines = currentGameSetting.mines - markers
+
+        viewModelProvider.counterMines.postValue(leftToFindMines)
+
+        if (leftToFindMines == 0) {
             isWin = gameArea.checkTheFlagsSet()
             if (isWin) {
                 endLevel()

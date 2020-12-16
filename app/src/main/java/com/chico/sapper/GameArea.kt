@@ -342,14 +342,26 @@ class GameArea(
     }
 
     fun setMarkerOnMarkerArea(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int, marker: Int) {
-        markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+        if (marker == 2) {
+            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 0) {
+                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+            } else if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
+                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+            }
+        } else if (marker == 1) {
+            markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+        } else if (marker == 0) {
+            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
+                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+            }
+        }
     }
 
     fun countMarkers(): Int {
         var result = 0
-        for (y in 0..heightGameArea){
-            for (x in 0..widthGameArea){
-                if (markers[y][x]==2){
+        for (y in 0..heightGameArea) {
+            for (x in 0..widthGameArea) {
+                if (markers[y][x] == 2) {
                     result++
                 }
             }
@@ -358,16 +370,16 @@ class GameArea(
     }
 
     fun isMineMarkerHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Boolean {
-        return markers[yTouchOnAreaInt][xTouchOnAreaInt]==2
+        return markers[yTouchOnAreaInt][xTouchOnAreaInt] == 2
     }
 
-    fun checkTheFlagsSet():Boolean {
-        var isFlagsSetWright:Boolean = true
+    fun checkTheFlagsSet(): Boolean {
+        var isFlagsSetWright: Boolean = true
 
-        for (y in 0..heightGameArea){
-            for (x in 0..widthGameArea){
-                if (markers[y][x]==2){
-                    if (minesArea[y][x]!=mine)
+        for (y in 0..heightGameArea) {
+            for (x in 0..widthGameArea) {
+                if (markers[y][x] == 2) {
+                    if (minesArea[y][x] != mine)
                         return false
                 }
             }
