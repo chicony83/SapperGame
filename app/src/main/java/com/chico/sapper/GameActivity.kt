@@ -17,10 +17,9 @@ import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.viewModel.CounterViewModel
 import kotlin.math.ceil
 
-val TAG = "TAG"
+const val TAG = "TAG"
 
 class GameActivity : AppCompatActivity(), View.OnClickListener {
-
 
     private var settingLevels = SettingLevels()
     private val currentGameSetting = CurrentGameSetting()
@@ -94,7 +93,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         leftToFindMines = currentGameSetting.mines
 
-//        infoToast(metrics)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -112,9 +110,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             handleTouch(m)
             false
         }
-
     }
-
 
     private fun setValuesOnGameArea(currentGameSetting: CurrentGameSetting) {
         viewModelProvider.counterMines.postValue(currentGameSetting.mines)
