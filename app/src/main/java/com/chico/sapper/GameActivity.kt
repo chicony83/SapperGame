@@ -166,12 +166,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         if (selectStateWhatDo == 1) {
-            mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
+            mayBeMineIsHere(param)
             mineMarkerForMarkerArea = 1
         }
         if (selectStateWhatDo == 2) {
             if (leftToFindMines>0){
-                mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
+                mineIsHere(param)
                 mineMarkerForMarkerArea = 2
             }
         }
@@ -193,12 +193,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
             }
         }
-
     }
 
     private fun mineIsHere(
-        yTouchOnAreaInt: Int,
-        xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
         val imageSource = ImageView(this)
@@ -207,14 +204,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun mayBeMineIsHere(
-        yTouchOnAreaInt: Int,
-        xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
         val imageSource = ImageView(this)
         imageSource.setImageResource(R.drawable.maybe)
         gameElementsHolder.addView(imageSource, param)
-
     }
 
     private fun openGameCell(
@@ -264,7 +258,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 endLevel()
 
             }
-            Log.i("TAG", "value in mines area $value")
+//            Log.i("TAG", "value in mines area $value")
 
             gameElementsHolder.addView(imageSource, param)
         }
@@ -281,7 +275,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (isLoose) {
             looseGameMessageLayout.visibility = View.VISIBLE
         }
-
     }
 
     private fun fillingThePlayingArea() {
@@ -289,10 +282,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val cellsDB = cellsDB.cellsDataBase
         var idCell: String
 
-
         for (id in 0 until sizeDB) {
-            idCell = cellsDB[id].toString()
 
+            idCell = cellsDB[id].toString()
             createGameElementById(id)
         }
     }
@@ -308,7 +300,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         imageSource.setImageResource(R.drawable.shirt2)
 
         gameElementsHolder.addView(imageSource, param)
-        Log.i("TAG", "game Element Created")
+//        Log.i("TAG", "game Element Created")
     }
 
     private fun countCellSize(metrics: Metrics) {
@@ -333,10 +325,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         for (y in 0..heightArraySizeOfGameArray) {
 
-            idY = "Y$y"
+//            idY = "Y$y"
 
             for (x in 0..widthArraySizeOfGameArray) {
-                idX = "X$x"
+//                idX = "X$x"
                 id = idY + idX
 
                 val name: String = id
@@ -395,19 +387,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         currentGameSetting.numberOfCellsOnGameArea = countCellsOnGameArea(
             currentGameSetting.sizeArrayOfGameArea
         )
-        Log.i("TAG", "size game area = ${currentGameSetting.sizeArrayOfGameArea}")
+//        Log.i("TAG", "size game area = ${currentGameSetting.sizeArrayOfGameArea}")
     }
 
     private fun countCellsOnGameArea(sizeGameArea: Int): Int {
         return sizeGameArea * sizeGameArea
-    }
-
-    private fun infoToast(metrics: Metrics) {
-        Toast.makeText(
-            this,
-            "size display x= ${metrics.sizeDisplayX},y = ${metrics.sizeDisplayY}",
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
     private fun sizeDisplay(metrics: Metrics) {

@@ -17,12 +17,11 @@ import kotlin.random.nextInt
 
 class GameArea(
     currentGameSetting: CurrentGameSetting,
-    private val mine: Int = 9,
+    private val mineValue: Int = 9,
     private val heightGameAreaForCreate: Int = currentGameSetting.sizeArrayOfGameArea,
     private val widthGameAreaForCreate: Int = currentGameSetting.sizeArrayOfGameArea,
     private val heightGameArea: Int = currentGameSetting.sizeArrayOfGameArea - 1,
     private val widthGameArea: Int = currentGameSetting.sizeArrayOfGameArea - 1,
-    val maxMines: Int = currentGameSetting.mines,
 
     private val minesArea: Array<IntArray> = Array(heightGameAreaForCreate) {
         IntArray(
@@ -40,8 +39,6 @@ class GameArea(
             widthGameAreaForCreate
         )
     }
-
-
 ) {
 
     fun newCleanArea() {
@@ -51,8 +48,6 @@ class GameArea(
                 minesArea[y][x] = 0
                 isCellOpen[y][x] = false
                 markers[y][x] = 0
-
-//                Log.i("TAG","minesArea y $y , x $x = ${minesArea[y][x]}")
             }
         }
         Log.i("TAG", "clean game Area created")
@@ -65,12 +60,12 @@ class GameArea(
         while (minesInstalled < currentGameSetting.mines) {
             x = rndNum()
             y = rndNum()
-            while (minesArea[y][x] == mine) {
+            while (minesArea[y][x] == mineValue) {
                 x = rndNum()
                 y = rndNum()
             }
 
-            minesArea[y][x] = mine
+            minesArea[y][x] = mineValue
             minesInstalled++
 
             setNumbersNearMines(y, x)
@@ -89,61 +84,60 @@ class GameArea(
 //    }
 
     private fun testRightMines() {
-        minesArea[1][widthGameArea] = mine
+        minesArea[1][widthGameArea] = mineValue
         setNumbersNearMines(1, widthGameArea)
 
-        minesArea[4][widthGameArea] = mine
+        minesArea[4][widthGameArea] = mineValue
         setNumbersNearMines(4, widthGameArea)
 
-        minesArea[8][widthGameArea] = mine
+        minesArea[8][widthGameArea] = mineValue
         setNumbersNearMines(8, widthGameArea)
     }
 
     private fun testLeftMines() {
-        minesArea[1][0] = mine
+        minesArea[1][0] = mineValue
         setNumbersNearMines(1, 0)
 
-        minesArea[2][0] = mine
+        minesArea[2][0] = mineValue
         setNumbersNearMines(2, 0)
 
-        minesArea[5][0] = mine
+        minesArea[5][0] = mineValue
         setNumbersNearMines(5, 0)
     }
 
     private fun testBottomMines() {
-        minesArea[heightGameArea][0] = mine
+        minesArea[heightGameArea][0] = mineValue
         setNumbersNearMines(heightGameArea, 0)
 
-        minesArea[heightGameArea][1] = mine
+        minesArea[heightGameArea][1] = mineValue
         setNumbersNearMines(heightGameArea, 1)
 
-        minesArea[heightGameArea][5] = mine
+        minesArea[heightGameArea][5] = mineValue
         setNumbersNearMines(heightGameArea, 5)
 
-        minesArea[heightGameArea][widthGameArea] = mine
+        minesArea[heightGameArea][widthGameArea] = mineValue
         setNumbersNearMines(heightGameArea, widthGameArea)
     }
 
     private fun testTopMines() {
         //leftTop
-        minesArea[0][0] = mine
+        minesArea[0][0] = mineValue
         setNumbersNearMines(0, 0)
 
-        minesArea[0][1] = mine
+        minesArea[0][1] = mineValue
         setNumbersNearMines(0, 1)
 
         //RightTop
-        minesArea[0][widthGameArea] = mine
+        minesArea[0][widthGameArea] = mineValue
         setNumbersNearMines(0, widthGameArea)
 
-        minesArea[0][5] = mine
+        minesArea[0][5] = mineValue
         setNumbersNearMines(0, 5)
     }
 
     private fun setNumbersNearMines(y: Int, x: Int) {
 
-        Log.i(TAG, "x = $x, y = $y")
-//        minesArea[y][x]
+//        Log.i(TAG, "x = $x, y = $y")
         if (y == 0) {
             setNumbersNearLeftTopMine(x, y)
             setNumbersNearTopMines(x, y)
@@ -252,49 +246,49 @@ class GameArea(
     }
 
     private fun rightBottom(y: Int, x: Int) {
-        if (minesArea[y + 1][x + 1] != mine) {
+        if (minesArea[y + 1][x + 1] != mineValue) {
             incValue(y + 1, x + 1)
         }
     }
 
     private fun centerBottom(y: Int, x: Int) {
-        if (minesArea[y + 1][x] != mine) {
+        if (minesArea[y + 1][x] != mineValue) {
             incValue(y + 1, x)
         }
     }
 
     private fun leftBottom(y: Int, x: Int) {
-        if (minesArea[y + 1][x - 1] != mine) {
+        if (minesArea[y + 1][x - 1] != mineValue) {
             incValue(y + 1, x - 1)
         }
     }
 
     private fun rightMiddle(y: Int, x: Int) {
-        if (minesArea[y][x + 1] != mine) {
+        if (minesArea[y][x + 1] != mineValue) {
             incValue(y, x + 1)
         }
     }
 
     private fun leftMiddle(y: Int, x: Int) {
-        if (minesArea[y][x - 1] != mine) {
+        if (minesArea[y][x - 1] != mineValue) {
             incValue(y, x - 1)
         }
     }
 
     private fun rightTop(y: Int, x: Int) {
-        if (minesArea[y - 1][x + 1] != mine) {
+        if (minesArea[y - 1][x + 1] != mineValue) {
             incValue(y - 1, x + 1)
         }
     }
 
     private fun centerTop(y: Int, x: Int) {
-        if (minesArea[y - 1][x] != mine) {
+        if (minesArea[y - 1][x] != mineValue) {
             incValue(y - 1, x)
         }
     }
 
     private fun leftTop(y: Int, x: Int) {
-        if (minesArea[y - 1][x - 1] != mine) {
+        if (minesArea[y - 1][x - 1] != mineValue) {
             incValue(y - 1, x - 1)
         }
     }
@@ -305,26 +299,12 @@ class GameArea(
         Log.i(TAG, "up number at y = $y, x = $x ${minesArea[y][x]}")
     }
 
-//    fun getMinesCellValue(
-//        Int: y,
-//        Int: x
-//    ): Int {
-//
-//        return minesArea[y][x]
-//    }
-
-
     private fun rndNum(): Int {
         return Random.nextInt(0..heightGameArea)
     }
-//    private fun Int.rndNum(): Int {
-//        return Random.nextInt(1..this)
-//    }
 
     fun getMinesCellValue(yTouchOnArea: Int, xTouchOnArea: Int): Int {
         val size = minesArea.size
-//        Log.i("TAG", "size = $size")
-//        Log.i("TAG", "yTouch = $yTouchOnArea , xTouch = $xTouchOnArea")
         val result = minesArea[yTouchOnArea][xTouchOnArea]
         Log.i("TAG", "result = $result")
         return result
@@ -379,7 +359,7 @@ class GameArea(
         for (y in 0..heightGameArea) {
             for (x in 0..widthGameArea) {
                 if (markers[y][x] == 2) {
-                    if (minesArea[y][x] != mine)
+                    if (minesArea[y][x] != mineValue)
                         return false
                 }
             }
