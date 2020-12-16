@@ -1,4 +1,4 @@
-package com.chico.sapper
+package com.chico.sapper.settings
 
 data class SettingLevels(
     val easyGameAreaSize:Int = 10,

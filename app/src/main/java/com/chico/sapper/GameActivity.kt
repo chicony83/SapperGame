@@ -12,6 +12,8 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.chico.sapper.settings.CurrentGameSetting
+import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.viewModel.CounterViewModel
 import kotlin.math.ceil
 

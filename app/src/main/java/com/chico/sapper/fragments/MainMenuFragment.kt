@@ -1,4 +1,4 @@
-package com.chico.sapper
+package com.chico.sapper.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.chico.sapper.GameActivity
+import com.chico.sapper.R
 
 class MainMenuFragment : Fragment(), View.OnClickListener {
 
@@ -41,7 +43,7 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         val levelGame = translateToIndex(v!!.id)
-        val intent = Intent(activity,GameActivity::class.java)
+        val intent = Intent(activity, GameActivity::class.java)
 
         intent.putExtra("LEVEL_GAME",levelGame)
 

@@ -1,4 +1,4 @@
-package com.chico.sapper
+package com.chico.sapper.settings
 
 class CurrentGameSetting (){
     var sizeArrayOfGameArea:Int = 0

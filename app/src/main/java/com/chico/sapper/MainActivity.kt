@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.chico.sapper.fragments.MainMenuFragment
+import com.chico.sapper.fragments.SplashScreenFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
