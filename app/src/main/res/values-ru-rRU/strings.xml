@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Сапёр</string>
+    <string name="app_name">Sapper</string>
     <string name="title_activity_game">Игра</string>
     <string name="buttonOpen_text">открыть</string>
     <string name="buttonMayBe_text">может быть?</string>

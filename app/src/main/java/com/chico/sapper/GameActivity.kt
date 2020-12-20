@@ -63,8 +63,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var job: Job
 
-    private lateinit var timeUpdate: Job
-
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,14 +129,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         timeStart = System.currentTimeMillis()
 
         launchIoNotReturn { gameTime() }
-
-
     }
 
     override fun onPause() {
         super.onPause()
         job.cancel()
-
     }
 
     private fun gameTime() {
@@ -153,7 +148,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     timeOfGame = timeCurrent - timeStart
 
                     viewModelProvider.gameTime.postValue(parseTime.parseLongToString(timeOfGame))
-//                    Log.i(TAG, "reload time = $timeOfGame")
                 }
             }
         }
@@ -307,7 +301,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 isLoose = true
 
                 endLevel()
-
             }
 //            Log.i("TAG", "value in mines area $value")
 
@@ -323,25 +316,21 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMayBe.setOnClickListener(null)
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
+
+        timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
+
         if (isWin) {
             winGameMessageLayout.visibility = View.VISIBLE
         }
         if (isLoose) {
             looseGameMessageLayout.visibility = View.VISIBLE
         }
-
-        timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
-//        Log.i(TAG, "Time = $timeInMillis")
     }
 
     private fun fillingThePlayingArea() {
         val sizeDB = cellsDB.cellsDataBase.size
-        val cellsDB = cellsDB.cellsDataBase
-        var idCell: String
 
         for (id in 0 until sizeDB) {
-
-            idCell = cellsDB[id].toString()
             createGameElementById(id)
         }
     }
@@ -357,7 +346,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         imageSource.setImageResource(R.drawable.shirt2)
 
         gameElementsHolder.addView(imageSource, param)
-//        Log.i("TAG", "game Element Created")
     }
 
     private fun countCellSize(metrics: Metrics) {
@@ -369,8 +357,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         metrics: Metrics,
         currentGameSetting: CurrentGameSetting
     ) {
-        var numberOfCells = currentGameSetting.numberOfCellsOnGameArea
-
         var widthArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
         var heightArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
 
@@ -382,10 +368,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         for (y in 0..heightArraySizeOfGameArray) {
 
-//            idY = "Y$y"
-
             for (x in 0..widthArraySizeOfGameArray) {
-//                idX = "X$x"
                 id = idY + idX
 
                 val name: String = id
@@ -402,11 +385,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     yPosition = yPosition,
                     xPosition = xPosition
                 )
-
-//                Log.i(
-//                    "TAG",
-//                    "yPosition = $yPosition , xPosition = $xPosition "
-//                )
             }
         }
     }
@@ -444,7 +422,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         currentGameSetting.numberOfCellsOnGameArea = countCellsOnGameArea(
             currentGameSetting.sizeArrayOfGameArea
         )
-//        Log.i("TAG", "size game area = ${currentGameSetting.sizeArrayOfGameArea}")
     }
 
     private fun countCellsOnGameArea(sizeGameArea: Int): Int {
