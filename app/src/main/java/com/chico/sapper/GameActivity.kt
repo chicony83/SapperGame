@@ -14,8 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
+import com.chico.sapper.utils.ParseTime
+import com.chico.sapper.utils.launchIoNotReturn
 import com.chico.sapper.viewModel.CounterViewModel
+import kotlinx.coroutines.*
 import kotlin.math.ceil
+import kotlin.properties.Delegates
 
 const val TAG = "TAG"
 
@@ -24,6 +28,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var settingLevels = SettingLevels()
     private val currentGameSetting = CurrentGameSetting()
     private val metrics = Metrics()
+    private val parseTime = ParseTime()
     private lateinit var gameArea: GameArea
 
     private var cellsDB = com.chico.sapper.dto.cellsDB
@@ -40,6 +45,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var buttonSelectLevel2: Button
 
     private lateinit var minesLeftValue: TextView
+    private lateinit var timePassedValue: TextView
+    private lateinit var timeOfEndGameValue: TextView
 
     private lateinit var viewModelProvider: CounterViewModel
 
@@ -50,6 +57,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var isLoose: Boolean = false
     private var isWin: Boolean = false
 
+    private var timeStart by Delegates.notNull<Long>()
+    private var timeCurrent by Delegates.notNull<Long>()
+    private var timeOfGame by Delegates.notNull<Long>()
+
+    private lateinit var job: Job
+
+    private lateinit var timeUpdate: Job
+
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -82,6 +98,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonSelectLevel2 = findViewById(R.id.button_selectLevel2)
 
         minesLeftValue = findViewById(R.id.mines_left_value)
+        timePassedValue = findViewById(R.id.time_passed_value)
+        timeOfEndGameValue = findViewById(R.id.gameTime_textView)
 
         buttonOpen.setOnClickListener(this)
         buttonMayBe.setOnClickListener(this)
@@ -92,7 +110,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         setValuesOnGameArea(currentGameSetting)
 
         leftToFindMines = currentGameSetting.mines
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -110,16 +127,53 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             handleTouch(m)
             false
         }
+
+        timeStart = System.currentTimeMillis()
+
+        launchIoNotReturn { gameTime() }
+
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        job.cancel()
+
+    }
+
+    private fun gameTime() {
+        job = CoroutineScope(Dispatchers.IO).launch {
+            while (!isWin or !isLoose) {
+
+                timeCurrent = System.currentTimeMillis()
+                delay(10)
+
+                if ((timeCurrent - timeStart) > 1000) {
+
+                    timeOfGame = timeCurrent - timeStart
+
+                    viewModelProvider.gameTime.postValue(parseTime.parseLongToString(timeOfGame))
+//                    Log.i(TAG, "reload time = $timeOfGame")
+                }
+            }
+        }
     }
 
     private fun setValuesOnGameArea(currentGameSetting: CurrentGameSetting) {
         viewModelProvider.counterMines.postValue(currentGameSetting.mines)
+        viewModelProvider.gameTime.postValue("0")
     }
 
     private fun observersCounterViewModel(viewModelProvider: CounterViewModel) {
         viewModelProvider.counterMines.observe(
             this, {
                 minesLeftValue.text = it.toString()
+            }
+        )
+
+        viewModelProvider.gameTime.observe(
+            this, {
+                timePassedValue.text = it.toString()
             }
         )
     }
@@ -166,7 +220,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             mineMarkerForMarkerArea = 1
         }
         if (selectStateWhatDo == 2) {
-            if (leftToFindMines>0){
+            if (leftToFindMines > 0) {
                 mineIsHere(param)
                 mineMarkerForMarkerArea = 2
             }
@@ -179,6 +233,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         leftToFindMines = currentGameSetting.mines - markers
 
         viewModelProvider.counterMines.postValue(leftToFindMines)
+
 
         if (leftToFindMines == 0) {
             isWin = gameArea.checkTheFlagsSet()
@@ -261,6 +316,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun endLevel() {
+//        chronometer.stop()
+//        val time = viewModelProvider.gameTime.value
+
         buttonOpen.setOnClickListener(null)
         buttonMayBe.setOnClickListener(null)
         buttonMineIsHire.setOnClickListener(null)
@@ -271,6 +329,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (isLoose) {
             looseGameMessageLayout.visibility = View.VISIBLE
         }
+
+        timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
+//        Log.i(TAG, "Time = $timeInMillis")
     }
 
     private fun fillingThePlayingArea() {

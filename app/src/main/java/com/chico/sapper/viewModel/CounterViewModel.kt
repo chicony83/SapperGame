@@ -6,4 +6,5 @@ import androidx.lifecycle.ViewModel
 
 class CounterViewModel : ViewModel() {
     var counterMines = MutableLiveData(0)
+    var gameTime = MutableLiveData("")
 }
