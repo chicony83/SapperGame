@@ -11,4 +11,7 @@
     <string name="buttonPlayAgain_text">Еще раз</string>
     <string name="winGameMessage">Поздравляем вы нали все мины</string>
     <string name="LooseGAmeMessage">Вы проиграли</string>
+    <string name="toastText_openCell">Будем открывать</string>
+    <string name="toastText_mayBeMineIsHere">Возможно</string>
+    <string name="toastText_mineHire">Где мина?</string>
 </resources>

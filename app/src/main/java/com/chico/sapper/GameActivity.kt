@@ -52,6 +52,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var timePassedValue: TextView
     private lateinit var timeOfEndGameValue: TextView
 
+    private lateinit var toastTextOpen:String
+    private lateinit var toastTextMayBeMineIsHere:String
+    private lateinit var toastTextMineHere:String
+
     private lateinit var viewModelProvider: CounterViewModel
 
     private var selectStateWhatDo = 0
@@ -123,8 +127,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         leftToFindMines = currentGameSetting.mines
 
         getColorsResource()
-    }
 
+        getStringResources()
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
@@ -151,6 +156,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         colorPrimaryDay = ContextCompat.getColor(this, R.color.purple_200)
         colorPrimaryVariantDay = ContextCompat.getColor(this, R.color.purple_500)
     }
+    private fun getStringResources() {
+        toastTextOpen = getString(R.string.toastText_openCell)
+        toastTextMayBeMineIsHere = getString(R.string.toastText_mayBeMineIsHere)
+        toastTextMineHere = getString(R.string.toastText_mineHire)
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -458,19 +469,19 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         var text: String = ""
         if (v == buttonOpen) {
             selectStateWhatDo = 0
-            text = "open"
+            text = toastTextOpen
             setColorPrimary(v)
             setColorPrimaryVariant(buttonMayBe, buttonMineIsHire)
         }
         if (v == buttonMayBe) {
             selectStateWhatDo = 1
-            text = "may be"
+            text = toastTextMayBeMineIsHere
             setColorPrimary(v)
             setColorPrimaryVariant(buttonOpen, buttonMineIsHire)
         }
         if (v == buttonMineIsHire) {
             selectStateWhatDo = 2
-            text = "mine is here"
+            text = toastTextMineHere
             setColorPrimary(v)
             setColorPrimaryVariant(buttonOpen, buttonMayBe)
         }

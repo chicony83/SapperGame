@@ -16,5 +16,8 @@
     <string name="winGameMessage">Congratulations, you have found all the mines.</string>
     <string name="LooseGAmeMessage">You lost</string>
     <string name="VERSION" translatable="false">0.2.1</string>
+    <string name="toastText_openCell">Open</string>
+    <string name="toastText_mayBeMineIsHere">May be</string>
+    <string name="toastText_mineHire">Are you sure?</string>
 
 </resources>
