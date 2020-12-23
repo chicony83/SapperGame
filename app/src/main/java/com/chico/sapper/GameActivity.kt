@@ -46,7 +46,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var buttonMayBe: Button
     private lateinit var buttonMineIsHire: Button
     private lateinit var buttonSelectLevel: Button
-    private lateinit var buttonSelectLevel2: Button
+    private lateinit var buttonPlayAgain: Button
 
     private lateinit var minesLeftValue: TextView
     private lateinit var timePassedValue: TextView
@@ -73,6 +73,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var job: Job
 
+    private var gameLevel by Delegates.notNull<Int>()
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,9 +84,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         setActivityFlags()
         setActivityOrientation()
 
-        var LEVEL_GAME: Int = intent.getIntExtra("LEVEL_GAME", 1)
+        gameLevel = intent.getIntExtra("LEVEL_GAME", 1)
 
-        preparationOfLevelData(LEVEL_GAME, currentGameSetting, settingLevels)
+        preparationOfLevelData(gameLevel, currentGameSetting, settingLevels)
 
         viewModelProvider = ViewModelProvider(this).get(CounterViewModel::class.java)
 
@@ -101,10 +103,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         addCellsInDB(metrics, currentGameSetting)
 
         buttonOpen = findViewById(R.id.button_open)
-        buttonMayBe = findViewById<Button>(R.id.button_mayBe)
-        buttonMineIsHire = findViewById<Button>(R.id.button_mineIsHire)
+        buttonMayBe = findViewById(R.id.button_mayBe)
+        buttonMineIsHire = findViewById(R.id.button_mineIsHire)
         buttonSelectLevel = findViewById(R.id.button_selectLevel)
-        buttonSelectLevel2 = findViewById(R.id.button_selectLevel2)
+        buttonPlayAgain = findViewById(R.id.button_playAgain)
 
         minesLeftValue = findViewById(R.id.mines_left_value)
         timePassedValue = findViewById(R.id.time_passed_value)
@@ -114,7 +116,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMayBe.setOnClickListener(this)
         buttonMineIsHire.setOnClickListener(this)
         buttonSelectLevel.setOnClickListener(this)
-        buttonSelectLevel2.setOnClickListener(this)
+        buttonPlayAgain.setOnClickListener(this)
 
         setValuesOnGameArea(currentGameSetting)
 
@@ -321,15 +323,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
                 endLevel()
             }
-//            Log.i("TAG", "value in mines area $value")
-
             gameElementsHolder.addView(imageSource, param)
         }
     }
 
     private fun endLevel() {
-//        chronometer.stop()
-//        val time = viewModelProvider.gameTime.value
 
         buttonOpen.setOnClickListener(null)
         buttonMayBe.setOnClickListener(null)
@@ -462,22 +460,27 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             selectStateWhatDo = 0
             text = "open"
             setColorPrimary(v)
-            setColorPrimaryVariant(buttonMayBe,buttonMineIsHire)
+            setColorPrimaryVariant(buttonMayBe, buttonMineIsHire)
         }
         if (v == buttonMayBe) {
             selectStateWhatDo = 1
             text = "may be"
             setColorPrimary(v)
-            setColorPrimaryVariant(buttonOpen,buttonMineIsHire)
+            setColorPrimaryVariant(buttonOpen, buttonMineIsHire)
         }
         if (v == buttonMineIsHire) {
             selectStateWhatDo = 2
             text = "mine is here"
             setColorPrimary(v)
-            setColorPrimaryVariant(buttonOpen,buttonMayBe)
+            setColorPrimaryVariant(buttonOpen, buttonMayBe)
         }
-        if ((v == buttonSelectLevel) or (v == buttonSelectLevel2)) {
+        if (v == buttonSelectLevel) {
             startActivity(Intent(this, MainActivity::class.java))
+        }
+        if (v == buttonPlayAgain) {
+            val intent = Intent(this, GameActivity::class.java)
+            intent.putExtra("LEVEL_GAME", gameLevel)
+            startActivity(intent)
         }
         if (text.isNotEmpty()) {
             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()

@@ -8,16 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="ПОЗДАРВЛЯЕМ ВЫ НАШЛИ ВСЕ МИНЫ"
+        android:text="@string/winGameMessage"
         android:textSize="@dimen/H1" />
 
     <include layout="@layout/layout_game_time" />
 
-    <Button
-        android:id="@+id/button_selectLevel2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="выбрать уровень"
-        android:textSize="@dimen/H2" />
-
+    <include layout="@layout/layout_end_game_buttons" />
 </LinearLayout>

@@ -8,4 +8,7 @@
     <string name="buttonEasy_text">Легко</string>
     <string name="buttonNormal_text">Нормально</string>
     <string name="buttonHard_text">Сложно</string>
+    <string name="buttonPlayAgain_text">Еще раз</string>
+    <string name="winGameMessage">Поздравляем вы нали все мины</string>
+    <string name="LooseGAmeMessage">Вы проиграли</string>
 </resources>

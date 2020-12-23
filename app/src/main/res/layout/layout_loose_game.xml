@@ -9,14 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="вы проиграли"
+        android:text="@string/LooseGAmeMessage"
         android:textSize="@dimen/H1" />
 
     <include layout="@layout/layout_game_time" />
 
-    <Button
-        android:id="@+id/button_selectLevel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="выбрать уровень" />
+    <include layout="@layout/layout_end_game_buttons" />
 </LinearLayout>

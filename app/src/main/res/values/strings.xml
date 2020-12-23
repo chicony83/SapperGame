@@ -12,4 +12,8 @@
     <string name="buttonEasy_text">Easy</string>
     <string name="buttonNormal_text">Normal</string>
     <string name="buttonHard_text">Hard</string>
+    <string name="buttonPlayAgain_text">Play again</string>
+    <string name="winGameMessage">Congratulations, you have found all the mines.</string>
+    <string name="LooseGAmeMessage">You lost</string>
+
 </resources>
