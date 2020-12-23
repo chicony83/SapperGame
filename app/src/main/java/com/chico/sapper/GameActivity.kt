@@ -3,14 +3,18 @@ package com.chico.sapper
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
@@ -61,8 +65,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var timeCurrent by Delegates.notNull<Long>()
     private var timeOfGame by Delegates.notNull<Long>()
 
+    private var colorPrimaryDay by Delegates.notNull<Int>()
+    private var colorPrimaryVariantDay by Delegates.notNull<Int>()
+
+    private lateinit var colorPrimaryNight: Color
+    private lateinit var colorPrimaryVariantNight: Color
+
     private lateinit var job: Job
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,7 +119,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         setValuesOnGameArea(currentGameSetting)
 
         leftToFindMines = currentGameSetting.mines
+
+        getColorsResource()
     }
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
@@ -129,6 +143,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         timeStart = System.currentTimeMillis()
 
         launchIoNotReturn { gameTime() }
+    }
+
+    private fun getColorsResource() {
+        colorPrimaryDay = ContextCompat.getColor(this, R.color.purple_200)
+        colorPrimaryVariantDay = ContextCompat.getColor(this, R.color.purple_500)
     }
 
     override fun onPause() {
@@ -442,14 +461,20 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (v == buttonOpen) {
             selectStateWhatDo = 0
             text = "open"
+            setColorPrimary(v)
+            setColorPrimaryVariant(buttonMayBe,buttonMineIsHire)
         }
         if (v == buttonMayBe) {
             selectStateWhatDo = 1
             text = "may be"
+            setColorPrimary(v)
+            setColorPrimaryVariant(buttonOpen,buttonMineIsHire)
         }
         if (v == buttonMineIsHire) {
             selectStateWhatDo = 2
             text = "mine is here"
+            setColorPrimary(v)
+            setColorPrimaryVariant(buttonOpen,buttonMayBe)
         }
         if ((v == buttonSelectLevel) or (v == buttonSelectLevel2)) {
             startActivity(Intent(this, MainActivity::class.java))
@@ -457,5 +482,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (text.isNotEmpty()) {
             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setColorPrimaryVariant(button1: Button, button2: Button) {
+        button1.setBackgroundColor(colorPrimaryVariantDay)
+        button2.setBackgroundColor(colorPrimaryVariantDay)
+    }
+
+    private fun setColorPrimary(v: View) {
+        v.setBackgroundColor(colorPrimaryDay)
     }
 }

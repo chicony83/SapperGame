@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/buttonsGame_layout">
+
+    <Button
+        android:id="@+id/button_open"
+        style="@style/GameFlags"
+        android:text="@string/buttonOpen_text" />
+
+    <Button
+        android:id="@+id/button_mayBe"
+        style="@style/GameFlags"
+        android:text="@string/buttonMayBe_text" />
+
+    <Button
+        android:id="@+id/button_mineIsHire"
+        style="@style/GameFlags"
+        android:text="@string/buttonMineIsHere_text" />
+
+
+</LinearLayout>
