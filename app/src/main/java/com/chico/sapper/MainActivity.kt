@@ -29,18 +29,26 @@ class MainActivity : AppCompatActivity(){
         val splashScreenFragment = SplashScreenFragment()
         val mainMenuFragment = MainMenuFragment()
 
+        startActivity(splashScreenFragment)
+
         CoroutineScope(Dispatchers.IO).launch {
             delay(1000)
-            launchFragment(mainMenuFragment, splashScreenFragment)
+            changeFragment(mainMenuFragment, splashScreenFragment)
         }
 
     }
 
-    private fun launchFragment(addFragment: Fragment, remFragment: Fragment) {
+    private fun startActivity(splashScreenFragment: SplashScreenFragment) {
         supportFragmentManager
             .beginTransaction()
-//            .remove(remFragment)
-            .hide(remFragment)
+            .replace(R.id.fragment_holder, splashScreenFragment)
+            .commit()
+    }
+
+    private fun changeFragment(addFragment: Fragment, remFragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .remove(remFragment)
             .replace(R.id.fragment_holder, addFragment)
             .commit()
     }

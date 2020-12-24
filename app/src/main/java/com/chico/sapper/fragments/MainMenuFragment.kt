@@ -48,5 +48,7 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
         intent.putExtra("LEVEL_GAME",levelGame)
 
         startActivity(intent)
+
+
     }
 }
