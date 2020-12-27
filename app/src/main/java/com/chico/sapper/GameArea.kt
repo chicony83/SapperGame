@@ -296,7 +296,7 @@ class GameArea(
     private fun incValue(y: Int, x: Int) {
 //        Log.i(TAG,"number at y = $y, x = $x = ${minesArea[y][x]}")
         minesArea[y][x]++
-        Log.i(TAG, "up number at y = $y, x = $x ${minesArea[y][x]}")
+//        Log.i(TAG, "up number at y = $y, x = $x ${minesArea[y][x]}")
     }
 
     private fun rndNum(): Int {
@@ -325,12 +325,15 @@ class GameArea(
         if (marker == 2) {
             if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 0) {
                 markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-            } else if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
+            }
+            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
                 markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
             }
-        } else if (marker == 1) {
+        }
+        if (marker == 1) {
             markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-        } else if (marker == 0) {
+        }
+        if (marker == 0) {
             if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
                 markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
             }
@@ -351,6 +354,10 @@ class GameArea(
 
     fun isMineMarkerHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Boolean {
         return markers[yTouchOnAreaInt][xTouchOnAreaInt] == 2
+    }
+
+    fun isMayByMineIsHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Boolean {
+        return markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1
     }
 
     fun checkTheFlagsSet(): Boolean {

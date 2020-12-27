@@ -52,9 +52,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var timePassedValue: TextView
     private lateinit var timeOfEndGameValue: TextView
 
-    private lateinit var toastTextOpen:String
-    private lateinit var toastTextMayBeMineIsHere:String
-    private lateinit var toastTextMineHere:String
+    private lateinit var toastTextOpen: String
+    private lateinit var toastTextMayBeMineIsHere: String
+    private lateinit var toastTextMineHere: String
 
     private lateinit var viewModelProvider: CounterViewModel
 
@@ -156,6 +156,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         colorPrimaryDay = ContextCompat.getColor(this, R.color.purple_200)
         colorPrimaryVariantDay = ContextCompat.getColor(this, R.color.purple_500)
     }
+
     private fun getStringResources() {
         toastTextOpen = getString(R.string.toastText_openCell)
         toastTextMayBeMineIsHere = getString(R.string.toastText_mayBeMineIsHere)
@@ -229,6 +230,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val xMargin = xTouchOnAreaInt * metrics.gameCellSize
 
         val sizeCell = metrics.gameCellSize.toInt()
+
         val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
 
         var mineMarkerForMarkerArea = 0
@@ -236,18 +238,19 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         param.topMargin = yMargin.toInt()
         param.leftMargin = xMargin.toInt()
 
-        if (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
-            if (selectStateWhatDo == 0) {
-                openGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+        when (selectStateWhatDo) {
+
+            0 -> {
+//                Log.i(TAG, " select state what do = $selectStateWhatDo")
+                openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+                mineMarkerForMarkerArea = 0
             }
-        }
-        if (selectStateWhatDo == 1) {
-            mayBeMineIsHere(param)
-            mineMarkerForMarkerArea = 1
-        }
-        if (selectStateWhatDo == 2) {
-            if (leftToFindMines > 0) {
-                mineIsHere(param)
+            1 -> {
+                mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
+                mineMarkerForMarkerArea = 1
+            }
+            2 -> {
+                mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
                 mineMarkerForMarkerArea = 2
             }
         }
@@ -259,7 +262,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         leftToFindMines = currentGameSetting.mines - markers
 
         viewModelProvider.counterMines.postValue(leftToFindMines)
-
 
         if (leftToFindMines == 0) {
             isWin = gameArea.checkTheFlagsSet()
@@ -273,6 +275,41 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun mineIsHere(
+        yTouchOnAreaInt: Int,
+        xTouchOnAreaInt: Int,
+        param: RelativeLayout.LayoutParams
+    ) {
+        if (leftToFindMines > 0) {
+            drawMineIsHere(param)
+        }
+    }
+
+    private fun mayBeMineIsHere(
+        yTouchOnAreaInt: Int,
+        xTouchOnAreaInt: Int,
+        param: RelativeLayout.LayoutParams
+    ) {
+        drawMayBeMineIsHere(param)
+    }
+
+    private fun openCell(
+        yTouchOnAreaInt: Int,
+        xTouchOnAreaInt: Int,
+        param: RelativeLayout.LayoutParams
+    ) {
+
+        if (
+            (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt))
+//            or
+//            (gameArea.isMayByMineIsHire(yTouchOnAreaInt, xTouchOnAreaInt))
+        )
+        {
+            Log.i(TAG, "open cell")
+            drawOpenGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+        }
+    }
+
+    private fun drawMineIsHere(
         param: RelativeLayout.LayoutParams
     ) {
         val imageSource = ImageView(this)
@@ -280,7 +317,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameElementsHolder.addView(imageSource, param)
     }
 
-    private fun mayBeMineIsHere(
+    private fun drawMayBeMineIsHere(
         param: RelativeLayout.LayoutParams
     ) {
         val imageSource = ImageView(this)
@@ -288,7 +325,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameElementsHolder.addView(imageSource, param)
     }
 
-    private fun openGameCell(
+    private fun drawOpenGameCell(
         yTouchOnAreaInt: Int,
         xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
@@ -300,6 +337,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
 
             val imageSource = ImageView(this)
+
             if (value == 0) {
                 imageSource.setImageResource(R.drawable.open)
             }
