@@ -372,15 +372,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 imageSource.setImageResource(R.drawable.eight)
             }
             if (value == 9) {
-                imageSource.setImageResource(R.drawable.mine_exploded)
+                imageSource.setImageResource(R.drawable.mineexploded)
 
-                mAnimationDrawable = imageSource.background as AnimationDrawable
-                mAnimationDrawable!!.start()
+//                mAnimationDrawable = imageSource.background as AnimationDrawable
+//                mAnimationDrawable!!.start()
 
 //                mAnimationDrawable =
                 isLoose = true
 
-//                endLevel()
+                endLevel()
             }
             gameElementsHolder.addView(imageSource, param)
         }
