@@ -69,6 +69,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var timeCurrent by Delegates.notNull<Long>()
     private var timeOfGame by Delegates.notNull<Long>()
 
+    private var isGameRun = false
+
     private var colorPrimaryDay by Delegates.notNull<Int>()
     private var colorPrimaryVariantDay by Delegates.notNull<Int>()
 
@@ -147,9 +149,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             false
         }
 
+        isGameRun = true
         timeStart = System.currentTimeMillis()
 
         launchIoNotReturn { gameTime() }
+
     }
 
     private fun getColorsResource() {
@@ -302,8 +306,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt))
 //            or
 //            (gameArea.isMayByMineIsHire(yTouchOnAreaInt, xTouchOnAreaInt))
-        )
-        {
+        ) {
             Log.i(TAG, "open cell")
             drawOpenGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
         }
@@ -377,6 +380,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun endLevel() {
+
+        isGameRun = false
+
+        job.cancel()
 
         buttonOpen.setOnClickListener(null)
         buttonMayBe.setOnClickListener(null)
