@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -80,6 +81,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var job: Job
 
     private var gameLevel by Delegates.notNull<Int>()
+
+    private var mAnimationDrawable:AnimationDrawable?=null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CutPasteId")
@@ -369,11 +372,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 imageSource.setImageResource(R.drawable.eight)
             }
             if (value == 9) {
-                imageSource.setImageResource(R.drawable.mine)
+                imageSource.setImageResource(R.drawable.mine_exploded)
 
+                mAnimationDrawable = imageSource.background as AnimationDrawable
+                mAnimationDrawable!!.start()
+
+//                mAnimationDrawable =
                 isLoose = true
 
-                endLevel()
+//                endLevel()
             }
             gameElementsHolder.addView(imageSource, param)
         }
