@@ -26,6 +26,7 @@ import kotlinx.coroutines.*
 import kotlin.math.ceil
 import kotlin.properties.Delegates
 
+
 const val TAG = "TAG"
 
 class GameActivity : AppCompatActivity(), View.OnClickListener {
@@ -35,6 +36,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val metrics = Metrics()
     private val parseTime = ParseTime()
     private lateinit var gameArea: GameArea
+
+    private var sizeCell by Delegates.notNull<Int>()
 
     private var cellsDB = com.chico.sapper.dto.cellsDB
     private val touch = Touch()
@@ -82,7 +85,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var gameLevel by Delegates.notNull<Int>()
 
-    private var mAnimationDrawable:AnimationDrawable?=null
+    private var mAnimationDrawable: AnimationDrawable? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CutPasteId")
@@ -101,6 +104,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         sizeDisplay(metrics)
         countCellSize(metrics)
+
+        sizeCell = metrics.gameCellSize.toInt()
 
         observersCounterViewModel(viewModelProvider)
 
@@ -235,8 +240,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         val yMargin = yTouchOnAreaInt * metrics.gameCellSize
         val xMargin = xTouchOnAreaInt * metrics.gameCellSize
-
-        val sizeCell = metrics.gameCellSize.toInt()
 
         val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
 
@@ -403,6 +406,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             winGameMessageLayout.visibility = View.VISIBLE
         }
         if (isLoose) {
+
             looseGameMessageLayout.visibility = View.VISIBLE
         }
     }
@@ -416,7 +420,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun createGameElementById(id: Int) {
-        val sizeCell = metrics.gameCellSize.toInt()
         val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
 
         param.topMargin = cellsDB.cellsDataBase[id].yMargin
@@ -440,7 +443,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         var widthArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
         var heightArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
 
-        val sizeCell = metrics.gameCellSize.toInt()
 
         var idX: String = ""
         var idY: String = ""

@@ -64,7 +64,8 @@
     <RelativeLayout
         android:id="@+id/game_elements_holder"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="200dp">
+
     </RelativeLayout>
 
     <include
