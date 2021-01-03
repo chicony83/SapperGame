@@ -2,7 +2,9 @@ package com.chico.sapper
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.chico.sapper.fragments.MainMenuFragment
@@ -11,10 +13,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
     private var isMenuStarting = false
+    private var isDoubleBackOnPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,18 @@ class MainActivity : AppCompatActivity() {
                 changeFragment(mainMenuFragment, splashScreenFragment)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if (isDoubleBackOnPressedOnce){
+            super.onBackPressed()
+            moveTaskToBack(true);
+            exitProcess(-1)
+            return
+        }
+        this.isDoubleBackOnPressedOnce = true
+        Toast.makeText(this,"press back again to exit",Toast.LENGTH_SHORT).show()
+        Handler().postDelayed({isDoubleBackOnPressedOnce = false}, 2000)
     }
 
     private fun startActivity(splashScreenFragment: SplashScreenFragment) {
