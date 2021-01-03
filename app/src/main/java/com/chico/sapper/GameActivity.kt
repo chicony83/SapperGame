@@ -1,6 +1,7 @@
 package com.chico.sapper
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
@@ -165,6 +166,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, MainActivity::class.java))
+    }
+
+
     private fun getColorsResource() {
         colorPrimaryDay = ContextCompat.getColor(this, R.color.purple_200)
         colorPrimaryVariantDay = ContextCompat.getColor(this, R.color.purple_500)
@@ -228,8 +235,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-        if (isShowEndGameMessage){
-            if (isLoose){
+        if (isShowEndGameMessage) {
+            if (isLoose) {
                 looseGameMessageLayout.visibility = View.VISIBLE
             }
         }

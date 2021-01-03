@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity(){
             delay(1000)
             changeFragment(mainMenuFragment, splashScreenFragment)
         }
-
     }
 
     private fun startActivity(splashScreenFragment: SplashScreenFragment) {
