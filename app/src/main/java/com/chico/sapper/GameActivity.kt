@@ -68,6 +68,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isLoose: Boolean = false
     private var isWin: Boolean = false
+    private var isShowEndGameMessage = false
 
     private var timeStart by Delegates.notNull<Long>()
     private var timeCurrent by Delegates.notNull<Long>()
@@ -225,6 +226,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     touch.xTouch = m.x.toInt()
                     nextMove()
                 }
+            }
+        }
+        if (isShowEndGameMessage){
+            if (isLoose){
+                looseGameMessageLayout.visibility = View.VISIBLE
             }
         }
     }
@@ -407,7 +413,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
         if (isLoose) {
 
-            looseGameMessageLayout.visibility = View.VISIBLE
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(500)
+                isShowEndGameMessage = true
+            }
+
         }
     }
 
