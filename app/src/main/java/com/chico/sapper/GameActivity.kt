@@ -163,14 +163,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         timeStart = System.currentTimeMillis()
 
         launchIoNotReturn { gameTime() }
-
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this, MainActivity::class.java))
+        startMainMenu()
     }
-
 
     private fun getColorsResource() {
         colorPrimaryDay = ContextCompat.getColor(this, R.color.purple_200)
@@ -557,7 +555,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             setColorPrimaryVariant(buttonOpen, buttonMayBe)
         }
         if (v == buttonSelectLevel) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startMainMenu()
+
         }
         if (v == buttonPlayAgain) {
             val intent = Intent(this, GameActivity::class.java)
@@ -567,6 +566,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (text.isNotEmpty()) {
             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun startMainMenu() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("IS_MENU_STARTING",true)
+        startActivity(intent)
     }
 
     private fun setColorPrimaryVariant(button1: Button, button2: Button) {

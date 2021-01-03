@@ -12,8 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
+    private var isMenuStarting = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +30,18 @@ class MainActivity : AppCompatActivity(){
         val splashScreenFragment = SplashScreenFragment()
         val mainMenuFragment = MainMenuFragment()
 
-        startActivity(splashScreenFragment)
+        isMenuStarting = intent.getBooleanExtra("IS_MENU_STARTING", false)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(1000)
-            changeFragment(mainMenuFragment, splashScreenFragment)
+        if (isMenuStarting) {
+            startMenuFragment(mainMenuFragment)
+        }
+        if (!isMenuStarting) {
+            startActivity(splashScreenFragment)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(1000)
+                changeFragment(mainMenuFragment, splashScreenFragment)
+            }
         }
     }
 
@@ -41,6 +49,13 @@ class MainActivity : AppCompatActivity(){
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_holder, splashScreenFragment)
+            .commit()
+    }
+
+    private fun startMenuFragment(mainMenuFragment: MainMenuFragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_holder, mainMenuFragment)
             .commit()
     }
 
