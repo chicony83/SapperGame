@@ -1,9 +1,9 @@
 package com.chico.sapper
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.AnimationDrawable
@@ -77,8 +77,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isGameRun = false
 
-    private var colorPrimaryDay by Delegates.notNull<Int>()
-    private var colorPrimaryVariantDay by Delegates.notNull<Int>()
+    private var colorPrimary by Delegates.notNull<Int>()
+    private var colorPrimaryVariant by Delegates.notNull<Int>()
 
     private lateinit var colorPrimaryNight: Color
     private lateinit var colorPrimaryVariantNight: Color
@@ -138,7 +138,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         leftToFindMines = currentGameSetting.mines
 
-        getColorsResource()
+        changeResourcesOfDayNightMode()
 
         getStringResources()
     }
@@ -149,6 +149,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameElementsHolder = findViewById(R.id.game_elements_holder)
         looseGameMessageLayout = findViewById(R.id.looseGameMessage_layout)
         winGameMessageLayout = findViewById(R.id.winGameMessage_layout)
+
+        looseGameMessageLayout.setBackgroundColor(colorPrimary)
+        winGameMessageLayout.setBackgroundColor(colorPrimary)
 
         gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
 
@@ -165,14 +168,34 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         launchIoNotReturn { gameTime() }
     }
 
+    private fun changeResourcesOfDayNightMode() {
+        val mode = this?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
+
+        when (mode) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                getNightColorsResource()
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                getDayColorsResource()
+            }
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                getDayColorsResource()
+            }
+        }
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         startMainMenu()
     }
 
-    private fun getColorsResource() {
-        colorPrimaryDay = ContextCompat.getColor(this, R.color.purple_200)
-        colorPrimaryVariantDay = ContextCompat.getColor(this, R.color.purple_500)
+    private fun getDayColorsResource() {
+        colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
+        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_100)
+    }
+    private fun getNightColorsResource() {
+        colorPrimary = ContextCompat.getColor(this, R.color.gray_80)
+        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_60)
     }
 
     private fun getStringResources() {
@@ -570,16 +593,16 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun startMainMenu() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("IS_MENU_STARTING",true)
+        intent.putExtra("IS_MENU_STARTING", true)
         startActivity(intent)
     }
 
     private fun setColorPrimaryVariant(button1: Button, button2: Button) {
-        button1.setBackgroundColor(colorPrimaryVariantDay)
-        button2.setBackgroundColor(colorPrimaryVariantDay)
+        button1.setBackgroundColor(colorPrimaryVariant)
+        button2.setBackgroundColor(colorPrimaryVariant)
     }
 
     private fun setColorPrimary(v: View) {
-        v.setBackgroundColor(colorPrimaryDay)
+        v.setBackgroundColor(colorPrimary)
     }
 }
