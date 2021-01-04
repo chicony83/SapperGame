@@ -1,24 +1,32 @@
 <resources>
-    <string name="app_name">Sapper</string>
-    <string name="title_activity_game">GameActivity</string>
+    <string name="app_name">Minesweeper</string>
+    <string name="title_activity_game">Game</string>
+
+    <string name="VERSION" translatable="false">0.2.2</string>
 
     <string name="first_fragment_label" translatable="false">First Fragment</string>
     <string name="second_fragment_label" translatable="false">Second Fragment</string>
+
     <string name="next" translatable="false">Next</string>
     <string name="previous" translatable="false">Previous</string>
+
     <string name="buttonOpen_text">open</string>
     <string name="buttonMayBe_text">may be?</string>
     <string name="buttonMineIsHere_text">mine is hire!</string>
+
     <string name="buttonEasy_text">Easy</string>
     <string name="buttonNormal_text">Normal</string>
     <string name="buttonHard_text">Hard</string>
+
     <string name="buttonPlayAgain_text">Play again</string>
+
     <string name="winGameMessage">Congratulations, you have found all the mines.</string>
     <string name="LooseGAmeMessage">You lost</string>
-    <string name="VERSION" translatable="false">0.2.1</string>
+
     <string name="toastText_openCell">Open</string>
     <string name="toastText_mayBeMineIsHere">May be</string>
     <string name="toastText_mineHire">Are you sure?</string>
+
     <string name="minesLeft">mines left</string>
     <string name="time">time</string>
 

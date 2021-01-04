@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sapper</string>
+    <string name="app_name">Сапёр</string>
     <string name="title_activity_game">Игра</string>
+
     <string name="buttonOpen_text">открыть</string>
     <string name="buttonMayBe_text">может быть?</string>
     <string name="buttonMineIsHere_text">здесь мина!</string>
+
     <string name="buttonEasy_text">Легко</string>
     <string name="buttonNormal_text">Нормально</string>
     <string name="buttonHard_text">Сложно</string>
+
     <string name="buttonPlayAgain_text">Еще раз</string>
+
     <string name="winGameMessage">Поздравляем вы нали все мины</string>
     <string name="LooseGAmeMessage">Вы проиграли</string>
+
     <string name="toastText_openCell">Будем открывать</string>
     <string name="toastText_mayBeMineIsHere">Возможно</string>
     <string name="toastText_mineHire">Где мина?</string>
+
     <string name="minesLeft">мин осталось</string>
     <string name="time">время</string>
 </resources>
