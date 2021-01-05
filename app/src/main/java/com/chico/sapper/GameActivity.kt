@@ -79,6 +79,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var colorPrimary by Delegates.notNull<Int>()
     private var colorPrimaryVariant by Delegates.notNull<Int>()
+    private var colorOnPrimary by Delegates.notNull<Int>()
 
     private lateinit var colorPrimaryNight: Color
     private lateinit var colorPrimaryVariantNight: Color
@@ -138,6 +139,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         leftToFindMines = currentGameSetting.mines
 
+        initLayouts()
+
         changeResourcesOfDayNightMode()
 
         getStringResources()
@@ -146,12 +149,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
-        gameElementsHolder = findViewById(R.id.game_elements_holder)
-        looseGameMessageLayout = findViewById(R.id.looseGameMessage_layout)
-        winGameMessageLayout = findViewById(R.id.winGameMessage_layout)
 
-        looseGameMessageLayout.setBackgroundColor(colorPrimary)
-        winGameMessageLayout.setBackgroundColor(colorPrimary)
 
         gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
 
@@ -168,20 +166,39 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         launchIoNotReturn { gameTime() }
     }
 
+    private fun initLayouts() {
+        gameElementsHolder = findViewById(R.id.game_elements_holder)
+        looseGameMessageLayout = findViewById(R.id.looseGameMessage_layout)
+        winGameMessageLayout = findViewById(R.id.winGameMessage_layout)
+    }
+
     private fun changeResourcesOfDayNightMode() {
         val mode = this?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
 
         when (mode) {
             Configuration.UI_MODE_NIGHT_YES -> {
                 getNightColorsResource()
+                setNightBackgroundsOnMessageLayouts()
             }
             Configuration.UI_MODE_NIGHT_NO -> {
                 getDayColorsResource()
+                setDayBackgroundsOnMessageLayouts()
             }
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {
                 getDayColorsResource()
+                setDayBackgroundsOnMessageLayouts()
             }
         }
+    }
+
+    private fun setDayBackgroundsOnMessageLayouts() {
+        looseGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
+        winGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
+    }
+
+    private fun setNightBackgroundsOnMessageLayouts() {
+        looseGameMessageLayout.setBackgroundColor(colorOnPrimary)
+        winGameMessageLayout.setBackgroundColor(colorOnPrimary)
     }
 
     override fun onBackPressed() {
@@ -190,12 +207,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getDayColorsResource() {
-        colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
-        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_100)
+        colorPrimary = ContextCompat.getColor(this, R.color.gray_200)
+        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_140)
+        colorOnPrimary = ContextCompat.getColor(this,R.color.gray_80)
     }
     private fun getNightColorsResource() {
-        colorPrimary = ContextCompat.getColor(this, R.color.gray_80)
-        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_60)
+        colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
+        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_80)
+        colorOnPrimary = ContextCompat.getColor(this,R.color.black)
     }
 
     private fun getStringResources() {
