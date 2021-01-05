@@ -209,12 +209,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun getDayColorsResource() {
         colorPrimary = ContextCompat.getColor(this, R.color.gray_200)
         colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_140)
-        colorOnPrimary = ContextCompat.getColor(this,R.color.gray_80)
+        colorOnPrimary = ContextCompat.getColor(this, R.color.gray_80)
     }
+
     private fun getNightColorsResource() {
         colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
         colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_80)
-        colorOnPrimary = ContextCompat.getColor(this,R.color.black)
+        colorOnPrimary = ContextCompat.getColor(this, R.color.black)
     }
 
     private fun getStringResources() {
@@ -301,6 +302,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         param.topMargin = yMargin.toInt()
         param.leftMargin = xMargin.toInt()
 
+//        Log.i(TAG,"select what Do = $selectStateWhatDo")
         when (selectStateWhatDo) {
 
             0 -> {
@@ -360,12 +362,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
-
-        if (
-            (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt))
-//            or
-//            (gameArea.isMayByMineIsHire(yTouchOnAreaInt, xTouchOnAreaInt))
-        ) {
+        if (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
             Log.i(TAG, "open cell")
             drawOpenGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
         }
@@ -392,7 +389,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
-        if (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt)) {
+        if ((!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
+            or((gameArea.isCellOpenCheck(yTouchOnAreaInt,xTouchOnAreaInt))
+                    and (!gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt))))
+        {
 
             gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
 
@@ -430,10 +430,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             if (value == 9) {
                 imageSource.setImageResource(R.drawable.mineexploded)
 
-//                mAnimationDrawable = imageSource.background as AnimationDrawable
-//                mAnimationDrawable!!.start()
-
-//                mAnimationDrawable =
                 isLoose = true
 
                 endLevel()
@@ -598,7 +594,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
         if (v == buttonSelectLevel) {
             startMainMenu()
-
         }
         if (v == buttonPlayAgain) {
             val intent = Intent(this, GameActivity::class.java)
