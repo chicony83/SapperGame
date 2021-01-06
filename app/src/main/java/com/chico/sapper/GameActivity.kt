@@ -73,6 +73,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var timeStart by Delegates.notNull<Long>()
     private var timeCurrent by Delegates.notNull<Long>()
+    private var timePreviousUpdate :Long = 0
     private var timeOfGame:Long = 0
 
     private var isGameRun = false
@@ -160,7 +161,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         isGameRun = true
-        timeStart = System.currentTimeMillis()
+        timeStart = getCurrentTimeInMillis()
+        timePreviousUpdate = getCurrentTimeInMillis()
 
         launchIoNotReturn { gameTime() }
     }
@@ -236,14 +238,26 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 timeCurrent = System.currentTimeMillis()
                 delay(10)
 
-                if ((timeCurrent - timeStart) > 1000) {
+                if ((timeCurrent-timePreviousUpdate)>1000){
+
+                    timePreviousUpdate = getCurrentTimeInMillis()
 
                     timeOfGame = timeCurrent - timeStart
 
                     viewModelProvider.gameTime.postValue(parseTime.parseLongToString(timeOfGame))
                 }
+//                if ((timeCurrent - timeStart) > 1000) {
+//
+//                    timeOfGame = timeCurrent - timeStart
+//
+//
+//                }
             }
         }
+    }
+
+    private fun getCurrentTimeInMillis(): Long {
+        return System.currentTimeMillis()
     }
 
     private fun setValuesOnGameArea(currentGameSetting: CurrentGameSetting) {
@@ -447,6 +461,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMayBe.setOnClickListener(null)
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
+
+        Log.i(TAG," время игры  = {${parseTime.parseLongToString(timeOfGame)}}")
 
         timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
 
