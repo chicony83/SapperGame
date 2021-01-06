@@ -47,6 +47,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var looseGameMessageLayout: LinearLayout
     private lateinit var winGameMessageLayout: LinearLayout
 
+    private lateinit var param: RelativeLayout.LayoutParams
+
     private lateinit var buttonOpen: Button
     private lateinit var buttonMayBe: Button
     private lateinit var buttonMineIsHire: Button
@@ -73,8 +75,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var timeStart by Delegates.notNull<Long>()
     private var timeCurrent by Delegates.notNull<Long>()
-    private var timePreviousUpdate :Long = 0
-    private var timeOfGame:Long = 0
+    private var timePreviousUpdate: Long = 0
+    private var timeOfGame: Long = 0
 
     private var isGameRun = false
 
@@ -238,7 +240,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 timeCurrent = System.currentTimeMillis()
                 delay(10)
 
-                if ((timeCurrent-timePreviousUpdate)>1000){
+                if ((timeCurrent - timePreviousUpdate) > 1000) {
 
                     timePreviousUpdate = getCurrentTimeInMillis()
 
@@ -299,6 +301,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun nextMove() {
         var xTouchOnAreaDouble = touch.xTouch / metrics.gameCellSize
         var yTouchOnAreaDouble = touch.yTouch / metrics.gameCellSize
+
         xTouchOnAreaDouble = ceil(xTouchOnAreaDouble)
         yTouchOnAreaDouble = ceil(yTouchOnAreaDouble)
 
@@ -308,7 +311,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val yMargin = yTouchOnAreaInt * metrics.gameCellSize
         val xMargin = xTouchOnAreaInt * metrics.gameCellSize
 
-        val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
+        param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
 
         var mineMarkerForMarkerArea = 0
 
@@ -375,8 +378,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
-        if (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
-            Log.i(TAG, "open cell")
+        if ((!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
+            or ((gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
+                    and (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)))
+        ) {
+            Log.i(TAG, "open one cell")
             drawOpenGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
         }
     }
@@ -402,53 +408,48 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
-        if ((!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
-            or((gameArea.isCellOpenCheck(yTouchOnAreaInt,xTouchOnAreaInt))
-                    and (!gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt))))
-        {
+        gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
 
-            gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
+        val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
 
-            val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
+        val imageSource = ImageView(this)
 
-            val imageSource = ImageView(this)
-
-            if (value == 0) {
-                imageSource.setImageResource(R.drawable.open)
-            }
-            if (value == 1) {
-                imageSource.setImageResource(R.drawable.one)
-            }
-            if (value == 2) {
-                imageSource.setImageResource(R.drawable.two)
-            }
-            if (value == 3) {
-                imageSource.setImageResource(R.drawable.three)
-            }
-            if (value == 4) {
-                imageSource.setImageResource(R.drawable.four)
-            }
-            if (value == 5) {
-                imageSource.setImageResource(R.drawable.five)
-            }
-            if (value == 6) {
-                imageSource.setImageResource(R.drawable.six)
-            }
-            if (value == 7) {
-                imageSource.setImageResource(R.drawable.seven)
-            }
-            if (value == 8) {
-                imageSource.setImageResource(R.drawable.eight)
-            }
-            if (value == 9) {
-                imageSource.setImageResource(R.drawable.mineexploded)
-
-                isLoose = true
-
-                endLevel()
-            }
-            gameElementsHolder.addView(imageSource, param)
+        if (value == 0) {
+            imageSource.setImageResource(R.drawable.open)
         }
+        if (value == 1) {
+            imageSource.setImageResource(R.drawable.one)
+        }
+        if (value == 2) {
+            imageSource.setImageResource(R.drawable.two)
+        }
+        if (value == 3) {
+            imageSource.setImageResource(R.drawable.three)
+        }
+        if (value == 4) {
+            imageSource.setImageResource(R.drawable.four)
+        }
+        if (value == 5) {
+            imageSource.setImageResource(R.drawable.five)
+        }
+        if (value == 6) {
+            imageSource.setImageResource(R.drawable.six)
+        }
+        if (value == 7) {
+            imageSource.setImageResource(R.drawable.seven)
+        }
+        if (value == 8) {
+            imageSource.setImageResource(R.drawable.eight)
+        }
+        if (value == 9) {
+            imageSource.setImageResource(R.drawable.mineexploded)
+
+            isLoose = true
+
+            endLevel()
+        }
+        gameElementsHolder.addView(imageSource, param)
+
     }
 
     private fun endLevel() {
@@ -462,7 +463,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
 
-        Log.i(TAG," время игры  = {${parseTime.parseLongToString(timeOfGame)}}")
+        Log.i(TAG, " время игры  = {${parseTime.parseLongToString(timeOfGame)}}")
 
         timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
 
