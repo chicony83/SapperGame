@@ -382,9 +382,30 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             or ((gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
                     and (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)))
         ) {
-            Log.i(TAG, "open one cell")
-            drawOpenGameCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+            val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
+
+            when (value) {
+                0 -> openEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
+                else -> {
+                    Log.i(TAG, "open one cell")
+                    openNotEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
+                }
+            }
         }
+    }
+
+    private fun openEmptyArea(
+        yTouchOnAreaInt: Int,
+        xTouchOnAreaInt: Int,
+        param: RelativeLayout.LayoutParams,
+        value: Int
+    ) {
+        gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
+        val imageSource = ImageView(this)
+
+        imageSource.setImageResource(R.drawable.open)
+
+        drawGameElement(imageSource, param)
     }
 
     private fun drawMineIsHere(
@@ -392,7 +413,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     ) {
         val imageSource = ImageView(this)
         imageSource.setImageResource(R.drawable.mineishire)
-        gameElementsHolder.addView(imageSource, param)
+        drawGameElement(imageSource, param)
     }
 
     private fun drawMayBeMineIsHere(
@@ -400,23 +421,20 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     ) {
         val imageSource = ImageView(this)
         imageSource.setImageResource(R.drawable.maybe)
-        gameElementsHolder.addView(imageSource, param)
+        drawGameElement(imageSource, param)
     }
 
-    private fun drawOpenGameCell(
+    private fun openNotEmptyArea(
         yTouchOnAreaInt: Int,
         xTouchOnAreaInt: Int,
-        param: RelativeLayout.LayoutParams
+        param: RelativeLayout.LayoutParams,
+        value: Int
     ) {
         gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
 
-        val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
-
         val imageSource = ImageView(this)
 
-        if (value == 0) {
-            imageSource.setImageResource(R.drawable.open)
-        }
+//        when(value){}
         if (value == 1) {
             imageSource.setImageResource(R.drawable.one)
         }
@@ -448,7 +466,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
             endLevel()
         }
-        gameElementsHolder.addView(imageSource, param)
+        drawGameElement(imageSource, param)
 
     }
 
@@ -497,6 +515,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val imageSource = ImageView(this)
         imageSource.setImageResource(R.drawable.shirt4)
 
+        drawGameElement(imageSource, param)
+    }
+
+    private fun drawGameElement(
+        imageSource: ImageView,
+        param: RelativeLayout.LayoutParams
+    ) {
         gameElementsHolder.addView(imageSource, param)
     }
 
