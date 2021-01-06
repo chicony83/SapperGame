@@ -73,7 +73,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var timeStart by Delegates.notNull<Long>()
     private var timeCurrent by Delegates.notNull<Long>()
-    private var timeOfGame by Delegates.notNull<Long>()
+    private var timeOfGame:Long = 0
 
     private var isGameRun = false
 
@@ -149,7 +149,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
-
 
         gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
 
@@ -479,7 +478,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         param.leftMargin = cellsDB.cellsDataBase[id].xMargin
 
         val imageSource = ImageView(this)
-        imageSource.setImageResource(R.drawable.shirt2)
+        imageSource.setImageResource(R.drawable.shirt4)
 
         gameElementsHolder.addView(imageSource, param)
     }
