@@ -408,6 +408,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         drawGameElement(imageSource, param)
     }
 
+
     private fun drawMineIsHere(
         param: RelativeLayout.LayoutParams
     ) {
