@@ -11,7 +11,5 @@
         android:text="@string/LooseGAmeMessage"
         android:textSize="@dimen/H1" />
 
-<!--    <include layout="@layout/layout_game_time" />-->
-
     <include layout="@layout/layout_end_game_buttons" />
 </LinearLayout>
