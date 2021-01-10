@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //        drawView.setOnTouchListener(listenersGameArea.handleTouch);
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val splashScreenFragment = SplashScreenFragment()
         val mainMenuFragment = MainMenuFragment()
 
-        isMenuStarting = intent.getBooleanExtra("IS_MENU_STARTING", false)
+        isMenuStarting = intent.getBooleanExtra("IS_MENU_STARTING", true)
 
         if (isMenuStarting) {
             startMenuFragment(mainMenuFragment)
