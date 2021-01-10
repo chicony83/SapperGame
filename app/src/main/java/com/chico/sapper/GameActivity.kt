@@ -9,7 +9,6 @@ import android.graphics.Point
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -26,9 +25,6 @@ import com.chico.sapper.viewModel.CounterViewModel
 import kotlinx.coroutines.*
 import kotlin.math.ceil
 import kotlin.properties.Delegates
-
-
-const val TAG = "TAG"
 
 class GameActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -119,7 +115,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea(currentGameSetting)
 
-        Log.wtf("TAG", "onCreateView: ")
         addCellsInDB(metrics, currentGameSetting)
 
         buttonOpen = findViewById(R.id.button_open)
@@ -248,12 +243,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
                     viewModelProvider.gameTime.postValue(parseTime.parseLongToString(timeOfGame))
                 }
-//                if ((timeCurrent - timeStart) > 1000) {
-//
-//                    timeOfGame = timeCurrent - timeStart
-//
-//
-//                }
             }
         }
     }
@@ -382,12 +371,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             or ((gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
                     and (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)))
         ) {
-            val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)
 
-            when (value) {
+            when (val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)) {
                 0 -> openEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
                 else -> {
-                    Log.i(TAG, "open one cell")
                     openNotEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
                 }
             }
@@ -435,40 +422,27 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         val imageSource = ImageView(this)
 
-//        when(value){}
-        if (value == 1) {
-            imageSource.setImageResource(R.drawable.one)
-        }
-        if (value == 2) {
-            imageSource.setImageResource(R.drawable.two)
-        }
-        if (value == 3) {
-            imageSource.setImageResource(R.drawable.three)
-        }
-        if (value == 4) {
-            imageSource.setImageResource(R.drawable.four)
-        }
-        if (value == 5) {
-            imageSource.setImageResource(R.drawable.five)
-        }
-        if (value == 6) {
-            imageSource.setImageResource(R.drawable.six)
-        }
-        if (value == 7) {
-            imageSource.setImageResource(R.drawable.seven)
-        }
-        if (value == 8) {
-            imageSource.setImageResource(R.drawable.eight)
-        }
-        if (value == 9) {
-            imageSource.setImageResource(R.drawable.mineexploded)
+        when (value) {
+            1 -> setImageSource(imageSource, R.drawable.one)
+            2 -> setImageSource(imageSource, R.drawable.two)
+            3 -> setImageSource(imageSource, R.drawable.three)
+            4 -> setImageSource(imageSource, R.drawable.four)
+            5 -> setImageSource(imageSource, R.drawable.five)
+            6 -> setImageSource(imageSource, R.drawable.six)
+            7 -> setImageSource(imageSource, R.drawable.seven)
+            8 -> setImageSource(imageSource, R.drawable.eight)
 
-            isLoose = true
-
-            endLevel()
+            9 -> {
+                setImageSource(imageSource, R.drawable.mineexploded)
+                isLoose = true
+                endLevel()
+            }
         }
         drawGameElement(imageSource, param)
+    }
 
+    private fun setImageSource(imageSource: ImageView, img: Int) {
+        imageSource.setImageResource(img)
     }
 
     private fun endLevel() {
@@ -481,8 +455,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMayBe.setOnClickListener(null)
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
-
-        Log.i(TAG, " время игры  = {${parseTime.parseLongToString(timeOfGame)}}")
 
         timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
 
@@ -539,8 +511,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         var heightArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
 
 
-        var idX: String = ""
-        var idY: String = ""
+        var idX = ""
+        var idY = ""
         var id: String
 
         for (y in 0..heightArraySizeOfGameArray) {

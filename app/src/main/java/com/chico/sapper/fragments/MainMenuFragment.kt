@@ -28,10 +28,9 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
         hardGameButton.setOnClickListener(this)
 
         return rootView
-
     }
 
-    fun translateToIndex(id: Int): Int {
+    private fun translateToIndex(id: Int): Int {
         var index = -1
         when (id) {
             R.id.easy_game_button -> index = 1

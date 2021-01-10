@@ -10,7 +10,6 @@
 
 package com.chico.sapper
 
-import android.util.Log
 import com.chico.sapper.settings.CurrentGameSetting
 import kotlin.random.Random
 import kotlin.random.nextInt
@@ -42,7 +41,6 @@ class GameArea(
 ) {
 
     fun newCleanArea() {
-        Log.i("TAG", "size gameArea height = $heightGameArea, width = $widthGameArea")
         for (y in 0..heightGameArea) {
             for (x in 0..widthGameArea) {
                 minesArea[y][x] = 0
@@ -50,7 +48,6 @@ class GameArea(
                 markers[y][x] = 0
             }
         }
-        Log.i("TAG", "clean game Area created")
     }
 
     fun setMinesOnMinesArea(currentGameSetting: CurrentGameSetting) {
@@ -69,75 +66,10 @@ class GameArea(
             minesInstalled++
 
             setNumbersNearMines(y, x)
-
-            Log.i("TAG", "mine $minesInstalled create on x = $x y = $y = ${minesArea[x][y]}")
         }
-//        testMines()
-        Log.i("TAG", "all mines created")
-    }
-
-//    private fun testMines() {
-//        testTopMines()
-//        testBottomMines()
-//        testLeftMines()
-//        testRightMines()
-//    }
-
-    private fun testRightMines() {
-        minesArea[1][widthGameArea] = mineValue
-        setNumbersNearMines(1, widthGameArea)
-
-        minesArea[4][widthGameArea] = mineValue
-        setNumbersNearMines(4, widthGameArea)
-
-        minesArea[8][widthGameArea] = mineValue
-        setNumbersNearMines(8, widthGameArea)
-    }
-
-    private fun testLeftMines() {
-        minesArea[1][0] = mineValue
-        setNumbersNearMines(1, 0)
-
-        minesArea[2][0] = mineValue
-        setNumbersNearMines(2, 0)
-
-        minesArea[5][0] = mineValue
-        setNumbersNearMines(5, 0)
-    }
-
-    private fun testBottomMines() {
-        minesArea[heightGameArea][0] = mineValue
-        setNumbersNearMines(heightGameArea, 0)
-
-        minesArea[heightGameArea][1] = mineValue
-        setNumbersNearMines(heightGameArea, 1)
-
-        minesArea[heightGameArea][5] = mineValue
-        setNumbersNearMines(heightGameArea, 5)
-
-        minesArea[heightGameArea][widthGameArea] = mineValue
-        setNumbersNearMines(heightGameArea, widthGameArea)
-    }
-
-    private fun testTopMines() {
-        //leftTop
-        minesArea[0][0] = mineValue
-        setNumbersNearMines(0, 0)
-
-        minesArea[0][1] = mineValue
-        setNumbersNearMines(0, 1)
-
-        //RightTop
-        minesArea[0][widthGameArea] = mineValue
-        setNumbersNearMines(0, widthGameArea)
-
-        minesArea[0][5] = mineValue
-        setNumbersNearMines(0, 5)
     }
 
     private fun setNumbersNearMines(y: Int, x: Int) {
-
-//        Log.i(TAG, "x = $x, y = $y")
         if (y == 0) {
             setNumbersNearLeftTopMine(x, y)
             setNumbersNearTopMines(x, y)
@@ -154,7 +86,6 @@ class GameArea(
         if (x == widthGameArea) {
             setNumbersNearRightMines(y, x)
         }
-
         setNumbersNearMinesWithoutBorders(y, x)
     }
 
@@ -294,9 +225,7 @@ class GameArea(
     }
 
     private fun incValue(y: Int, x: Int) {
-//        Log.i(TAG,"number at y = $y, x = $x = ${minesArea[y][x]}")
         minesArea[y][x]++
-//        Log.i(TAG, "up number at y = $y, x = $x ${minesArea[y][x]}")
     }
 
     private fun rndNum(): Int {
@@ -304,11 +233,7 @@ class GameArea(
     }
 
     fun getMinesCellValue(yTouchOnArea: Int, xTouchOnArea: Int): Int {
-        val size = minesArea.size
-        val result = minesArea[yTouchOnArea][xTouchOnArea]
-        Log.i("TAG", "result = $result")
-        return result
-        //return minesArea[yTouchOnArea][xTouchOnArea]
+        return minesArea[yTouchOnArea][xTouchOnArea]
     }
 
     fun isCellOpenCheck(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
@@ -317,8 +242,6 @@ class GameArea(
 
     fun isCellOpenSetTry(yTouchOnArea: Int, xTouchOnArea: Int) {
         isCellOpen[yTouchOnArea][xTouchOnArea] = true
-
-        Log.i("TAG", "cell y = $yTouchOnArea , x = $xTouchOnArea is open")
     }
 
     fun setMarkerOnMarkerArea(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int, marker: Int) {
@@ -356,10 +279,6 @@ class GameArea(
         return markers[yTouchOnAreaInt][xTouchOnAreaInt] == 2
     }
 
-    fun isMayByMineIsHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Boolean {
-        return markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1
-    }
-
     fun checkTheFlagsSet(): Boolean {
         var isFlagsSetWright: Boolean = true
 
@@ -371,8 +290,6 @@ class GameArea(
                 }
             }
         }
-
         return isFlagsSetWright
     }
-
 }
