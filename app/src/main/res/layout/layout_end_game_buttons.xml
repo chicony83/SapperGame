@@ -13,6 +13,6 @@
         android:id="@+id/button_selectLevel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="выбрать уровень" />
+        android:text="@string/select_level" />
 
 </LinearLayout>

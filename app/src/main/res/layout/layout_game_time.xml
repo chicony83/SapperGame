@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="время игры"
+        android:text="@string/game_time"
         android:textSize="@dimen/H2" />
 
     <TextView

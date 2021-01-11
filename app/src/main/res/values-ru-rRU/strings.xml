@@ -22,4 +22,6 @@
 
     <string name="minesLeft">мин осталось</string>
     <string name="time">время</string>
+    <string name="game_time">время игры</string>
+    <string name="select_level">вырать уровень</string>
 </resources>

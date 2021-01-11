@@ -29,5 +29,7 @@
 
     <string name="minesLeft">mines left</string>
     <string name="time">time</string>
+    <string name="game_time">game time</string>
+    <string name="select_level">select level</string>
 
 </resources>
