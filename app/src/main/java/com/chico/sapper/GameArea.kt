@@ -17,10 +17,10 @@ import kotlin.random.nextInt
 class GameArea(
     currentGameSetting: CurrentGameSetting,
     private val mineValue: Int = 9,
-    private val heightGameAreaForCreate: Int = currentGameSetting.sizeArrayOfGameArea,
-    private val widthGameAreaForCreate: Int = currentGameSetting.sizeArrayOfGameArea,
-    private val heightGameArea: Int = currentGameSetting.sizeArrayOfGameArea - 1,
-    private val widthGameArea: Int = currentGameSetting.sizeArrayOfGameArea - 1,
+    private val heightGameAreaForCreate: Int = currentGameSetting.sizeGameAreaArray,
+    private val widthGameAreaForCreate: Int = currentGameSetting.sizeGameAreaArray,
+    private val heightGameArea: Int = currentGameSetting.sizeGameAreaArray - 1,
+    private val widthGameArea: Int = currentGameSetting.sizeGameAreaArray - 1,
 
     private val minesArea: Array<IntArray> = Array(heightGameAreaForCreate) {
         IntArray(

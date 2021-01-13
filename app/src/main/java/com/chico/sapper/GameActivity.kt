@@ -100,7 +100,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         gameLevel = intent.getIntExtra("LEVEL_GAME", 1)
 
-        preparationOfLevelData(gameLevel, currentGameSetting, settingLevels)
+        currentGameSetting.preparationLevelSetting(gameLevel, settingLevels)
+        currentGameSetting.numberOfCellsOnGameArea =
+            countCellsOnGameArea(currentGameSetting.sizeGameAreaArray)
+
 
         viewModelProvider = ViewModelProvider(this).get(CounterViewModel::class.java)
 
@@ -272,8 +275,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     fun handleTouch(m: MotionEvent) {
         if (!isLoose) {
-            if ((m.y > 0) and (m.y < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
-                if ((m.x > 0) and (m.x < metrics.gameCellSize * currentGameSetting.sizeArrayOfGameArea)) {
+            if ((m.y > 0) and (m.y < metrics.gameCellSize * currentGameSetting.sizeGameAreaArray)) {
+                if ((m.x > 0) and (m.x < metrics.gameCellSize * currentGameSetting.sizeGameAreaArray)) {
                     touch.yTouch = m.y.toInt()
                     touch.xTouch = m.x.toInt()
                     nextMove()
@@ -500,15 +503,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun countCellSize(metrics: Metrics) {
         metrics.gameCellSize =
-            (metrics.sizeDisplayX / currentGameSetting.sizeArrayOfGameArea).toDouble()
+            (metrics.sizeDisplayX / currentGameSetting.sizeGameAreaArray).toDouble()
     }
 
     private fun addCellsInDB(
         metrics: Metrics,
         currentGameSetting: CurrentGameSetting
     ) {
-        var widthArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
-        var heightArraySizeOfGameArray = currentGameSetting.sizeArrayOfGameArea - 1
+        var widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
+        var heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
 
 
         var idX = ""
@@ -549,29 +552,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
-    private fun preparationOfLevelData(
-        LEVEL_GAME: Int,
-        currentGameSetting: CurrentGameSetting,
-        settingLevels: SettingLevels
-    ) {
-        when (LEVEL_GAME) {
-            1 -> {
-                currentGameSetting.sizeArrayOfGameArea = settingLevels.easyGameAreaSize
-                currentGameSetting.mines = settingLevels.easyGameMines
-            }
-            2 -> {
-                currentGameSetting.sizeArrayOfGameArea = settingLevels.normalGameAreaSize
-                currentGameSetting.mines = settingLevels.normalGameMines
-            }
-            3 -> {
-                currentGameSetting.sizeArrayOfGameArea = settingLevels.hardGameAreaSize
-                currentGameSetting.mines = settingLevels.hardGameMines
-            }
-        }
-        currentGameSetting.numberOfCellsOnGameArea = countCellsOnGameArea(
-            currentGameSetting.sizeArrayOfGameArea
-        )
-    }
 
     private fun countCellsOnGameArea(sizeGameArea: Int): Int {
         return sizeGameArea * sizeGameArea
