@@ -296,11 +296,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-//        if (isShowEndGameMessage) {
-//            if (isLoose) {
-//                looseGameMessageLayout.visibility = View.VISIBLE
-//            }
-//        }
     }
 
     private fun nextMove() {
@@ -323,9 +318,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
+                if (gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt)){
+                    openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+                    gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
+                }
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
-                openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
-                gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
             }
             WhatDo.MAYbE -> {
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
@@ -385,7 +382,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
-        if ((!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))) {
+        if (
+            (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
+        or
+            ((gameArea.isCellOpenCheck(yTouchOnAreaInt,xTouchOnAreaInt))
+                    and (gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt)))
+                ) {
 
             when (val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)) {
 

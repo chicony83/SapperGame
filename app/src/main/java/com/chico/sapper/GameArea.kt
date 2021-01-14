@@ -243,6 +243,11 @@ class GameArea(
     fun isCellOpenSetTry(yTouchOnArea: Int, xTouchOnArea: Int) {
         isCellOpen[yTouchOnArea][xTouchOnArea] = true
     }
+    fun isMineMarkerHire(yTouchOnArea: Int, xTouchOnArea: Int):Boolean{
+        val isMineMarker = false
+        return if (markers[yTouchOnArea][xTouchOnArea]!=2) !isMineMarker
+        else return isMineMarker
+    }
 
     fun countMineMarkers(): Int {
         var result = 0
