@@ -244,25 +244,6 @@ class GameArea(
         isCellOpen[yTouchOnArea][xTouchOnArea] = true
     }
 
-//    fun setMarkerOnMarkerArea(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int, marker: Int) {
-//        if (marker == 2) {
-//            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 0) {
-//                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-//            }
-//            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
-//                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-//            }
-//        }
-//        if (marker == 1) {
-//            markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-//        }
-//        if (marker == 0) {
-//            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
-//                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-//            }
-//        }
-//    }
-
     fun countMineMarkers(): Int {
         var result = 0
         for (y in 0..heightGameArea) {
@@ -273,10 +254,6 @@ class GameArea(
             }
         }
         return result
-    }
-
-    fun isMineMarkerHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Boolean {
-        return markers[yTouchOnAreaInt][xTouchOnAreaInt] == 2
     }
 
     fun checkTheFlagsSet(): Boolean {

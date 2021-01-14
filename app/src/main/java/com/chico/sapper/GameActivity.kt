@@ -309,12 +309,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
 
-        var mineMarkerForMarkerArea = 0
-
         param.topMargin = yMargin.toInt()
         param.leftMargin = xMargin.toInt()
 
-//        Log.i(TAG,"select what Do = $selectStateWhatDo")
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
