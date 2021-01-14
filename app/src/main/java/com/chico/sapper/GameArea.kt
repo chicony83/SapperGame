@@ -294,9 +294,7 @@ class GameArea(
     }
 
     fun setOpenMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
-        if ((markers[yTouchOnAreaInt][xTouchOnAreaInt] == 0)or(markers[yTouchOnAreaInt][xTouchOnAreaInt]==1)){
             markers[yTouchOnAreaInt][xTouchOnAreaInt] = 0
-        }
     }
 
     fun setMayBeMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
