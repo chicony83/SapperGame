@@ -244,26 +244,26 @@ class GameArea(
         isCellOpen[yTouchOnArea][xTouchOnArea] = true
     }
 
-    fun setMarkerOnMarkerArea(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int, marker: Int) {
-        if (marker == 2) {
-            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 0) {
-                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-            }
-            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
-                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-            }
-        }
-        if (marker == 1) {
-            markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-        }
-        if (marker == 0) {
-            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
-                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
-            }
-        }
-    }
+//    fun setMarkerOnMarkerArea(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int, marker: Int) {
+//        if (marker == 2) {
+//            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 0) {
+//                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+//            }
+//            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
+//                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+//            }
+//        }
+//        if (marker == 1) {
+//            markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+//        }
+//        if (marker == 0) {
+//            if (markers[yTouchOnAreaInt][xTouchOnAreaInt] == 1) {
+//                markers[yTouchOnAreaInt][xTouchOnAreaInt] = marker
+//            }
+//        }
+//    }
 
-    fun countMarkers(): Int {
+    fun countMineMarkers(): Int {
         var result = 0
         for (y in 0..heightGameArea) {
             for (x in 0..widthGameArea) {
@@ -291,5 +291,19 @@ class GameArea(
             }
         }
         return isFlagsSetWright
+    }
+
+    fun setOpenMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
+        if ((markers[yTouchOnAreaInt][xTouchOnAreaInt] == 0)or(markers[yTouchOnAreaInt][xTouchOnAreaInt]==1)){
+            markers[yTouchOnAreaInt][xTouchOnAreaInt] = 0
+        }
+    }
+
+    fun setMayBeMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
+        markers[yTouchOnAreaInt][xTouchOnAreaInt] = 1
+    }
+
+    fun setMineMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
+        markers[yTouchOnAreaInt][xTouchOnAreaInt] = 2
     }
 }

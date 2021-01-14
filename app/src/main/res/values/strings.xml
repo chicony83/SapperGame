@@ -26,6 +26,7 @@
     <string name="toastText_openCell">Open</string>
     <string name="toastText_mayBeMineIsHere">May be</string>
     <string name="toastText_mineHire">Are you sure?</string>
+    <string name="toastText_runOutOfMineMarkers">run out of mine markers</string>
 
     <string name="minesLeft">mines left</string>
     <string name="time">time</string>

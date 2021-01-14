@@ -9,6 +9,7 @@ import android.graphics.Point
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -58,12 +59,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var toastTextOpen: String
     private lateinit var toastTextMayBeMineIsHere: String
     private lateinit var toastTextMineHere: String
+    private lateinit var toastTextRunOutOfMineMarkers: String
 
     private lateinit var viewModelProvider: CounterViewModel
 
-    private var selectStateWhatDo = 0
+    private var selectStateWhatDo: WhatDo = WhatDo.OPEN
 
-    private var leftToFindMines = 0
+    private var leftToFindMines = -1
 
     private var isLoose: Boolean = false
     private var isWin: Boolean = false
@@ -165,6 +167,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         timePreviousUpdate = getCurrentTimeInMillis()
 
         launchIoNotReturn { gameTime() }
+        pressButtonOpen("",buttonOpen)
     }
 
     private fun initLayouts() {
@@ -223,6 +226,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         toastTextOpen = getString(R.string.toastText_openCell)
         toastTextMayBeMineIsHere = getString(R.string.toastText_mayBeMineIsHere)
         toastTextMineHere = getString(R.string.toastText_mineHire)
+        toastTextRunOutOfMineMarkers = getString(R.string.toastText_runOutOfMineMarkers)
     }
 
 
@@ -312,25 +316,30 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
 //        Log.i(TAG,"select what Do = $selectStateWhatDo")
         when (selectStateWhatDo) {
-
-            0 -> {
-//                Log.i(TAG, " select state what do = $selectStateWhatDo")
+            WhatDo.OPEN -> {
+                Log.i("TAG", " select state what do = $selectStateWhatDo")
                 openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
-                mineMarkerForMarkerArea = 0
+                gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
             }
-            1 -> {
+            WhatDo.MAYbE -> {
+                Log.i("TAG", " select state what do = $selectStateWhatDo")
                 mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
-                mineMarkerForMarkerArea = 1
+                gameArea.setMayBeMarker(yTouchOnAreaInt, xTouchOnAreaInt)
             }
-            2 -> {
-                mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
-                mineMarkerForMarkerArea = 2
+            WhatDo.MINEiShIRE -> {
+                if (leftToFindMines == 0) {
+                    pressButtonOpen("", buttonOpen)
+                    selectStateWhatDo = WhatDo.OPEN
+                    showMessage(toastTextRunOutOfMineMarkers)
+                } else {
+                    Log.i("TAG", " select state what do = $selectStateWhatDo")
+                    mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
+                    gameArea.setMineMarker(yTouchOnAreaInt, xTouchOnAreaInt)
+                }
             }
         }
 
-        gameArea.setMarkerOnMarkerArea(yTouchOnAreaInt, xTouchOnAreaInt, mineMarkerForMarkerArea)
-
-        val markers = gameArea.countMarkers()
+        val markers = gameArea.countMineMarkers()
 
         leftToFindMines = currentGameSetting.mines - markers
 
@@ -370,13 +379,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         xTouchOnAreaInt: Int,
         param: RelativeLayout.LayoutParams
     ) {
-        if ((!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
-            or ((gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
-                    and (!gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)))
-        ) {
+        if ((!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))) {
 
             when (val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)) {
+
                 0 -> openEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
+
                 else -> {
                     openNotEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
                 }
@@ -569,22 +577,22 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         var text: String = ""
         if (v == buttonOpen) {
-            selectStateWhatDo = 0
-            text = toastTextOpen
-            setColorPrimary(v)
-            setColorPrimaryVariant(buttonMayBe, buttonMineIsHire)
+            text = pressButtonOpen(text, v)
         }
         if (v == buttonMayBe) {
-            selectStateWhatDo = 1
+            selectStateWhatDo = WhatDo.MAYbE
             text = toastTextMayBeMineIsHere
             setColorPrimary(v)
             setColorPrimaryVariant(buttonOpen, buttonMineIsHire)
         }
+
         if (v == buttonMineIsHire) {
-            selectStateWhatDo = 2
-            text = toastTextMineHere
-            setColorPrimary(v)
-            setColorPrimaryVariant(buttonOpen, buttonMayBe)
+            if (leftToFindMines > -1) {
+                selectStateWhatDo = WhatDo.MINEiShIRE
+                text = toastTextMineHere
+                setColorPrimary(v)
+                setColorPrimaryVariant(buttonOpen, buttonMayBe)
+            }
         }
         if (v == buttonSelectLevel) {
             startMainMenu()
@@ -595,8 +603,21 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             startActivity(intent)
         }
         if (text.isNotEmpty()) {
-            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+            showMessage(text)
         }
+    }
+
+    private fun showMessage(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun pressButtonOpen(text: String, v: View?): String {
+        var text1 = text
+        selectStateWhatDo = WhatDo.OPEN
+        text1 = toastTextOpen
+        v?.let { setColorPrimary(it) }
+        setColorPrimaryVariant(buttonMayBe, buttonMineIsHire)
+        return text1
     }
 
     private fun startMainMenu() {
