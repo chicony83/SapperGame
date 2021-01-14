@@ -2,7 +2,7 @@
     <string name="app_name">Minesweeper</string>
     <string name="title_activity_game">Game</string>
 
-    <string name="VERSION" translatable="false">0.2.5.1</string>
+    <string name="VERSION" translatable="false">0.2.5.2</string>
 
     <string name="first_fragment_label" translatable="false">First Fragment</string>
     <string name="second_fragment_label" translatable="false">Second Fragment</string>
