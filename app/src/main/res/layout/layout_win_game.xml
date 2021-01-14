@@ -11,7 +11,29 @@
         android:text="@string/winGameMessage"
         android:textSize="@dimen/H1" />
 
-    <include layout="@layout/layout_game_time" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/game_time"
+        android:textSize="@dimen/H2" />
 
-    <include layout="@layout/layout_end_game_buttons" />
+    <TextView
+        android:id="@+id/gameTime_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/H1"
+        tools:text="00 : 10 : 25" />
+
+    <Button
+        android:id="@+id/button_playAgain_isWIN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonPlayAgain_text"/>
+    <Button
+        android:id="@+id/button_selectLevel_isWIN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_level" />
 </LinearLayout>

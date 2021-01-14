@@ -49,8 +49,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var buttonOpen: Button
     private lateinit var buttonMayBe: Button
     private lateinit var buttonMineIsHire: Button
-    private lateinit var buttonSelectLevel: Button
-    private lateinit var buttonPlayAgain: Button
+
+    private lateinit var buttonSelectLevelIsWIN: Button
+    private lateinit var buttonPlayAgainIsWIN: Button
+    private lateinit var buttonSelectLevelIsLOOSE: Button
+    private lateinit var buttonPlayAgainIsLOOSE: Button
 
     private lateinit var minesLeftValue: TextView
     private lateinit var timePassedValue: TextView
@@ -125,8 +128,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonOpen = findViewById(R.id.button_open)
         buttonMayBe = findViewById(R.id.button_mayBe)
         buttonMineIsHire = findViewById(R.id.button_mineIsHire)
-        buttonSelectLevel = findViewById(R.id.button_selectLevel)
-        buttonPlayAgain = findViewById(R.id.button_playAgain)
+
+        buttonSelectLevelIsWIN = findViewById(R.id.button_selectLevel_isWIN)
+        buttonPlayAgainIsWIN = findViewById(R.id.button_playAgain_isWIN)
+        buttonSelectLevelIsLOOSE = findViewById(R.id.button_selectLevel_isLOOSE)
+        buttonPlayAgainIsLOOSE = findViewById(R.id.button_playAgain_isLOOSE)
+
 
         minesLeftValue = findViewById(R.id.mines_left_value)
         timePassedValue = findViewById(R.id.time_passed_value)
@@ -135,8 +142,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonOpen.setOnClickListener(this)
         buttonMayBe.setOnClickListener(this)
         buttonMineIsHire.setOnClickListener(this)
-        buttonSelectLevel.setOnClickListener(this)
-        buttonPlayAgain.setOnClickListener(this)
+        buttonSelectLevelIsWIN.setOnClickListener(this)
+        buttonPlayAgainIsWIN.setOnClickListener(this)
+        buttonSelectLevelIsLOOSE.setOnClickListener(this)
+        buttonPlayAgainIsLOOSE.setOnClickListener(this)
 
         setValuesOnGameArea(currentGameSetting)
 
@@ -167,7 +176,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         timePreviousUpdate = getCurrentTimeInMillis()
 
         launchIoNotReturn { gameTime() }
-        pressButtonOpen("",buttonOpen)
+        pressButtonOpen("", buttonOpen)
     }
 
     private fun initLayouts() {
@@ -277,8 +286,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
-    fun handleTouch(m: MotionEvent) {
-        if (!isLoose) {
+    private fun handleTouch(m: MotionEvent) {
+        if ((!isLoose) and (!isWin)) {
             if ((m.y > 0) and (m.y < metrics.gameCellSize * currentGameSetting.sizeGameAreaArray)) {
                 if ((m.x > 0) and (m.x < metrics.gameCellSize * currentGameSetting.sizeGameAreaArray)) {
                     touch.yTouch = m.y.toInt()
@@ -287,11 +296,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-        if (isShowEndGameMessage) {
-            if (isLoose) {
-                looseGameMessageLayout.visibility = View.VISIBLE
-            }
-        }
+//        if (isShowEndGameMessage) {
+//            if (isLoose) {
+//                looseGameMessageLayout.visibility = View.VISIBLE
+//            }
+//        }
     }
 
     private fun nextMove() {
@@ -466,16 +475,21 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
 
-        if (isWin) {
-            winGameMessageLayout.visibility = View.VISIBLE
-        }
-        if (isLoose) {
+        Log.i("TAG", buttonPlayAgainIsWIN.toString())
 
+        if (isWin) {
+
+            winGameMessageLayout.visibility = View.VISIBLE
+        } else if (isLoose) {
+            looseGameMessageLayout.visibility = View.VISIBLE
+
+
+/*
             CoroutineScope(Dispatchers.IO).launch {
-                delay(500)
+                delay(5000)
                 isShowEndGameMessage = true
             }
-
+*/
         }
     }
 
@@ -582,7 +596,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             setColorPrimary(v)
             setColorPrimaryVariant(buttonOpen, buttonMineIsHire)
         }
-
         if (v == buttonMineIsHire) {
             if (leftToFindMines > -1) {
                 selectStateWhatDo = WhatDo.MINEiShIRE
@@ -591,10 +604,16 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 setColorPrimaryVariant(buttonOpen, buttonMayBe)
             }
         }
-        if (v == buttonSelectLevel) {
+        if ((v == buttonSelectLevelIsWIN)
+            or
+            (v == buttonSelectLevelIsLOOSE)
+        ) {
             startMainMenu()
         }
-        if (v == buttonPlayAgain) {
+        if ((v == buttonPlayAgainIsWIN)
+            or
+            (v == buttonPlayAgainIsLOOSE)
+        ) {
             val intent = Intent(this, GameActivity::class.java)
             intent.putExtra("LEVEL_GAME", gameLevel)
             startActivity(intent)

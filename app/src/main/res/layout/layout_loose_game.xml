@@ -11,5 +11,15 @@
         android:text="@string/LooseGAmeMessage"
         android:textSize="@dimen/H1" />
 
-    <include layout="@layout/layout_end_game_buttons" />
+    <Button
+        android:id="@+id/button_playAgain_isLOOSE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonPlayAgain_text"/>
+    <Button
+        android:id="@+id/button_selectLevel_isLOOSE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_level" />
+
 </LinearLayout>

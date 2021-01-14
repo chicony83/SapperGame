@@ -17,9 +17,7 @@
         android:id="@+id/game_elements_holder"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@+id/informationLayout">
-
-    </RelativeLayout>
+        app:layout_constraintTop_toBottomOf="@+id/informationLayout" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,9 +45,7 @@
 
     <include
         layout="@layout/layout_loose_game"
-        android:visibility="gone"
-        />
-
+        android:visibility="gone" />
     <include
         layout="@layout/layout_win_game"
         android:visibility="gone" />
