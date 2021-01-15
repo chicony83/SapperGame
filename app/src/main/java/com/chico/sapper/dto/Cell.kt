@@ -4,6 +4,8 @@ import android.util.Log
 
 data class Cell(
     val id: String,
+    val value:Int,
+    val isOpen:Boolean,
     val yMargin: Int,
     val xMargin: Int,
     val yPosition: Int,
@@ -13,7 +15,7 @@ data class Cell(
 object cellsDB {
     val cellsDataBase = mutableListOf<Cell>()
 
-    fun addCell(
+    fun fillingDB(
         id: String,
         yMargin: Int,
         xMargin: Int,
@@ -24,6 +26,8 @@ object cellsDB {
             .add(
                 Cell(
                     id = id,
+                    value = 0,
+                    isOpen = false,
                     yMargin = yMargin,
                     xMargin = xMargin,
                     yPosition = yPosition,

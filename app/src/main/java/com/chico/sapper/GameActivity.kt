@@ -319,14 +319,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
                 if (gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt)){
-                    openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+//                    openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
                     gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
                 }
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
             }
             WhatDo.MAYbE -> {
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
-                mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
+//                mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
                 gameArea.setMayBeMarker(yTouchOnAreaInt, xTouchOnAreaInt)
             }
             WhatDo.MINEiShIRE -> {
@@ -336,7 +336,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     showMessage(toastTextRunOutOfMineMarkers)
                 } else {
                     Log.i("TAG", " select state what do = $selectStateWhatDo")
-                    mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
+//                    mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
                     gameArea.setMineMarker(yTouchOnAreaInt, xTouchOnAreaInt)
                 }
             }
@@ -534,7 +534,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         var widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
         var heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
 
-
         var idX = ""
         var idY = ""
         var id: String
@@ -551,7 +550,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 var yPosition = y + 1
                 val xPosition = x + 1
 
-                cellsDB.addCell(
+                cellsDB.fillingDB(
                     id = name,
                     yMargin = yMargin,
                     xMargin = xMargin,
