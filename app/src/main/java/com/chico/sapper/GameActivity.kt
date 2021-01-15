@@ -124,7 +124,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea(currentGameSetting)
 
-        modificationDB.addCellsInDB(metrics, currentGameSetting,sizeCell,cellsDB)
+        modificationDB.addCellsInDB(currentGameSetting, sizeCell, gameArea, cellsDB)
 
         buttonOpen = findViewById(R.id.button_open)
         buttonMayBe = findViewById(R.id.button_mayBe)
@@ -319,9 +319,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
-                if (gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt)){
+                if (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
 //                    openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
                     gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
+                    gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
+                    Log.i("TAG", "y = $yTouchOnAreaInt , x = $xTouchOnAreaInt")
                 }
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
             }
@@ -342,7 +344,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-
+        modificationDB.modificationDB(cellsDB, gameArea, currentGameSetting)
         val markers = gameArea.countMineMarkers()
 
         leftToFindMines = currentGameSetting.mines - markers
@@ -385,10 +387,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     ) {
         if (
             (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
-        or
-            ((gameArea.isCellOpenCheck(yTouchOnAreaInt,xTouchOnAreaInt))
-                    and (gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt)))
-                ) {
+            or
+            ((gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
+                    and (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)))
+        ) {
 
             when (val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)) {
 
@@ -414,7 +416,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         drawGameElement(imageSource, param)
     }
-
 
     private fun drawMineIsHere(
         param: RelativeLayout.LayoutParams

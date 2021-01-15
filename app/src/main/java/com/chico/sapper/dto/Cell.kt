@@ -4,8 +4,8 @@ import android.util.Log
 
 data class Cell(
     val id: String,
-    val value:Int,
-    val isOpen:Boolean,
+    val value: Int,
+    val isOpen: Boolean,
     val yMargin: Int,
     val xMargin: Int,
     val yPosition: Int,
@@ -17,6 +17,7 @@ object cellsDB {
 
     fun fillingDB(
         id: String,
+        value: Int,
         yMargin: Int,
         xMargin: Int,
         yPosition: Int,
@@ -26,7 +27,7 @@ object cellsDB {
             .add(
                 Cell(
                     id = id,
-                    value = 0,
+                    value = value,
                     isOpen = false,
                     yMargin = yMargin,
                     xMargin = xMargin,
@@ -35,6 +36,33 @@ object cellsDB {
                 )
 
             )
+    }
+
+    fun modificationIsOpenDbCell(
+        index: Int,
+        isOpen: Boolean,
+
+        ) {
+        val cell = cellsDataBase[index]
+        val id = cell.id
+        val value = cell.value
+        val yMargin = cell.yMargin
+        val xMargin = cell.xMargin
+        val yPosition = cell.yPosition
+        val xPosition = cell.xPosition
+
+
+        cellsDataBase[index] = Cell(
+            id = id,
+            value = value,
+            isOpen = isOpen,
+            yMargin = yMargin,
+            xMargin = xMargin,
+            yPosition = yPosition,
+            xPosition = xPosition
+        )
+        val none = cellsDataBase[index].isOpen
+        Log.i("TAG", none.toString())
     }
 
 }
