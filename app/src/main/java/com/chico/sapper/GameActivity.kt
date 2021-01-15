@@ -33,6 +33,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val currentGameSetting = CurrentGameSetting()
     private val metrics = Metrics()
     private val parseTime = ParseTime()
+    private val modificationDB = ModificationDB()
     private lateinit var gameArea: GameArea
 
     private var sizeCell by Delegates.notNull<Int>()
@@ -123,7 +124,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea(currentGameSetting)
 
-        addCellsInDB(metrics, currentGameSetting)
+        modificationDB.addCellsInDB(metrics, currentGameSetting,sizeCell,cellsDB)
 
         buttonOpen = findViewById(R.id.button_open)
         buttonMayBe = findViewById(R.id.button_mayBe)
@@ -525,40 +526,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private fun countCellSize(metrics: Metrics) {
         metrics.gameCellSize =
             (metrics.sizeDisplayX / currentGameSetting.sizeGameAreaArray).toDouble()
-    }
-
-    private fun addCellsInDB(
-        metrics: Metrics,
-        currentGameSetting: CurrentGameSetting
-    ) {
-        var widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
-        var heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
-
-        var idX = ""
-        var idY = ""
-        var id: String
-
-        for (y in 0..heightArraySizeOfGameArray) {
-
-            for (x in 0..widthArraySizeOfGameArray) {
-                id = idY + idX
-
-                val name: String = id
-
-                val yMargin = y * sizeCell
-                val xMargin = x * sizeCell
-                var yPosition = y + 1
-                val xPosition = x + 1
-
-                cellsDB.fillingDB(
-                    id = name,
-                    yMargin = yMargin,
-                    xMargin = xMargin,
-                    yPosition = yPosition,
-                    xPosition = xPosition
-                )
-            }
-        }
     }
 
     private fun setActivityOrientation() {
