@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.graphics.Color
 import android.graphics.Point
-import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +16,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.chico.sapper.dto.enums.CellState
+import com.chico.sapper.dto.enums.WhatDo
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.utils.ParseTime
@@ -33,6 +33,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val currentGameSetting = CurrentGameSetting()
     private val metrics = Metrics()
     private val parseTime = ParseTime()
+    private val modificationDB = ModificationDB()
     private lateinit var gameArea: GameArea
 
     private var sizeCell by Delegates.notNull<Int>()
@@ -72,7 +73,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isLoose: Boolean = false
     private var isWin: Boolean = false
-    private var isShowEndGameMessage = false
 
     private var timeStart by Delegates.notNull<Long>()
     private var timeCurrent by Delegates.notNull<Long>()
@@ -85,14 +85,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var colorPrimaryVariant by Delegates.notNull<Int>()
     private var colorOnPrimary by Delegates.notNull<Int>()
 
-    private lateinit var colorPrimaryNight: Color
-    private lateinit var colorPrimaryVariantNight: Color
-
     private lateinit var job: Job
 
     private var gameLevel by Delegates.notNull<Int>()
-
-    private var mAnimationDrawable: AnimationDrawable? = null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CutPasteId")
@@ -123,7 +118,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea(currentGameSetting)
 
-        addCellsInDB(metrics, currentGameSetting)
+        modificationDB.addCellsInDB(currentGameSetting, sizeCell, gameArea, cellsDB)
 
         buttonOpen = findViewById(R.id.button_open)
         buttonMayBe = findViewById(R.id.button_mayBe)
@@ -238,7 +233,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         toastTextRunOutOfMineMarkers = getString(R.string.toastText_runOutOfMineMarkers)
     }
 
-
     override fun onPause() {
         super.onPause()
         job.cancel()
@@ -318,15 +312,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
-                if (gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt)){
-                    openCell(yTouchOnAreaInt, xTouchOnAreaInt, param)
+                if (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
                     gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
+                    gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
+                    Log.i("TAG", "y = $yTouchOnAreaInt , x = $xTouchOnAreaInt")
                 }
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
             }
             WhatDo.MAYbE -> {
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
-                mayBeMineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
                 gameArea.setMayBeMarker(yTouchOnAreaInt, xTouchOnAreaInt)
             }
             WhatDo.MINEiShIRE -> {
@@ -336,11 +330,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     showMessage(toastTextRunOutOfMineMarkers)
                 } else {
                     Log.i("TAG", " select state what do = $selectStateWhatDo")
-                    mineIsHere(yTouchOnAreaInt, xTouchOnAreaInt, param)
                     gameArea.setMineMarker(yTouchOnAreaInt, xTouchOnAreaInt)
                 }
             }
         }
+        modificationDB.modificationCellState(cellsDB, gameArea, currentGameSetting)
+
+        fillingThePlayingArea()
 
         val markers = gameArea.countMineMarkers()
 
@@ -359,113 +355,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun mineIsHere(
-        yTouchOnAreaInt: Int,
-        xTouchOnAreaInt: Int,
-        param: RelativeLayout.LayoutParams
-    ) {
-        if (leftToFindMines > 0) {
-            drawMineIsHere(param)
-        }
-    }
-
-    private fun mayBeMineIsHere(
-        yTouchOnAreaInt: Int,
-        xTouchOnAreaInt: Int,
-        param: RelativeLayout.LayoutParams
-    ) {
-        drawMayBeMineIsHere(param)
-    }
-
-    private fun openCell(
-        yTouchOnAreaInt: Int,
-        xTouchOnAreaInt: Int,
-        param: RelativeLayout.LayoutParams
-    ) {
-        if (
-            (!gameArea.isCellOpenCheck(yTouchOnAreaInt, xTouchOnAreaInt))
-        or
-            ((gameArea.isCellOpenCheck(yTouchOnAreaInt,xTouchOnAreaInt))
-                    and (gameArea.isMineMarkerHire(yTouchOnAreaInt,xTouchOnAreaInt)))
-                ) {
-
-            when (val value = gameArea.getMinesCellValue(yTouchOnAreaInt, xTouchOnAreaInt)) {
-
-                0 -> openEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
-
-                else -> {
-                    openNotEmptyArea(yTouchOnAreaInt, xTouchOnAreaInt, param, value)
-                }
-            }
-        }
-    }
-
-    private fun openEmptyArea(
-        yTouchOnAreaInt: Int,
-        xTouchOnAreaInt: Int,
-        param: RelativeLayout.LayoutParams,
-        value: Int
-    ) {
-        gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
-        val imageSource = ImageView(this)
-
-        imageSource.setImageResource(R.drawable.open)
-
-        drawGameElement(imageSource, param)
-    }
-
-
-    private fun drawMineIsHere(
-        param: RelativeLayout.LayoutParams
-    ) {
-        val imageSource = ImageView(this)
-        imageSource.setImageResource(R.drawable.mineishire)
-        drawGameElement(imageSource, param)
-    }
-
-    private fun drawMayBeMineIsHere(
-        param: RelativeLayout.LayoutParams
-    ) {
-        val imageSource = ImageView(this)
-        imageSource.setImageResource(R.drawable.maybe)
-        drawGameElement(imageSource, param)
-    }
-
-    private fun openNotEmptyArea(
-        yTouchOnAreaInt: Int,
-        xTouchOnAreaInt: Int,
-        param: RelativeLayout.LayoutParams,
-        value: Int
-    ) {
-        gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
-
-        val imageSource = ImageView(this)
-
-        when (value) {
-            1 -> setImageSource(imageSource, R.drawable.one)
-            2 -> setImageSource(imageSource, R.drawable.two)
-            3 -> setImageSource(imageSource, R.drawable.three)
-            4 -> setImageSource(imageSource, R.drawable.four)
-            5 -> setImageSource(imageSource, R.drawable.five)
-            6 -> setImageSource(imageSource, R.drawable.six)
-            7 -> setImageSource(imageSource, R.drawable.seven)
-            8 -> setImageSource(imageSource, R.drawable.eight)
-
-            9 -> {
-                setImageSource(imageSource, R.drawable.mineexploded)
-                isLoose = true
-                endLevel()
-            }
-        }
-        drawGameElement(imageSource, param)
-    }
-
     private fun setImageSource(imageSource: ImageView, img: Int) {
         imageSource.setImageResource(img)
     }
 
     private fun endLevel() {
-
         isGameRun = false
 
         job.cancel()
@@ -480,22 +374,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         Log.i("TAG", buttonPlayAgainIsWIN.toString())
 
         if (isWin) {
-
             winGameMessageLayout.visibility = View.VISIBLE
         } else if (isLoose) {
             looseGameMessageLayout.visibility = View.VISIBLE
-
-
-/*
-            CoroutineScope(Dispatchers.IO).launch {
-                delay(5000)
-                isShowEndGameMessage = true
-            }
-*/
         }
     }
 
     private fun fillingThePlayingArea() {
+        gameElementsHolder.removeAllViews()
         val sizeDB = cellsDB.cellsDataBase.size
 
         for (id in 0 until sizeDB) {
@@ -505,13 +391,39 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun createGameElementById(id: Int) {
         val param = RelativeLayout.LayoutParams(sizeCell, sizeCell)
-
-        param.topMargin = cellsDB.cellsDataBase[id].yMargin
-        param.leftMargin = cellsDB.cellsDataBase[id].xMargin
+        val cell = cellsDB.cellsDataBase[id]
+        param.topMargin = cell.yMargin
+        param.leftMargin = cell.xMargin
 
         val imageSource = ImageView(this)
-        imageSource.setImageResource(R.drawable.shirt4)
 
+        when (cell.state) {
+            CellState.CLOSE -> setImageSource(imageSource, R.drawable.shirt4)
+            CellState.OPEN -> {
+                if (cell.value == 0) {
+                    setImageSource(imageSource, R.drawable.open)
+                } else {
+                    when (cell.value) {
+                        1 -> setImageSource(imageSource, R.drawable.one)
+                        2 -> setImageSource(imageSource, R.drawable.two)
+                        3 -> setImageSource(imageSource, R.drawable.three)
+                        4 -> setImageSource(imageSource, R.drawable.four)
+                        5 -> setImageSource(imageSource, R.drawable.five)
+                        6 -> setImageSource(imageSource, R.drawable.six)
+                        7 -> setImageSource(imageSource, R.drawable.seven)
+                        8 -> setImageSource(imageSource, R.drawable.eight)
+
+                        9 -> {
+                            setImageSource(imageSource, R.drawable.mineexploded)
+                            isLoose = true
+                            endLevel()
+                        }
+                    }
+                }
+            }
+            CellState.MINE_MARKER -> setImageSource(imageSource, R.drawable.mineishire)
+            CellState.MAYBE_MARKER -> setImageSource(imageSource, R.drawable.maybe)
+        }
         drawGameElement(imageSource, param)
     }
 
@@ -527,41 +439,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             (metrics.sizeDisplayX / currentGameSetting.sizeGameAreaArray).toDouble()
     }
 
-    private fun addCellsInDB(
-        metrics: Metrics,
-        currentGameSetting: CurrentGameSetting
-    ) {
-        var widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
-        var heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray - 1
-
-
-        var idX = ""
-        var idY = ""
-        var id: String
-
-        for (y in 0..heightArraySizeOfGameArray) {
-
-            for (x in 0..widthArraySizeOfGameArray) {
-                id = idY + idX
-
-                val name: String = id
-
-                val yMargin = y * sizeCell
-                val xMargin = x * sizeCell
-                var yPosition = y + 1
-                val xPosition = x + 1
-
-                cellsDB.addCell(
-                    id = name,
-                    yMargin = yMargin,
-                    xMargin = xMargin,
-                    yPosition = yPosition,
-                    xPosition = xPosition
-                )
-            }
-        }
-    }
-
     private fun setActivityOrientation() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
@@ -572,7 +449,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
-
 
     private fun countCellsOnGameArea(sizeGameArea: Int): Int {
         return sizeGameArea * sizeGameArea
