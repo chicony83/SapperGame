@@ -1,6 +1,7 @@
 package com.chico.sapper
 
 import com.chico.sapper.dto.cellsDB
+import com.chico.sapper.dto.enums.CellState
 import com.chico.sapper.settings.CurrentGameSetting
 
 class ModificationDB {
@@ -29,7 +30,7 @@ class ModificationDB {
                 var yPosition = y + 1
                 val xPosition = x + 1
 
-                val value = gameArea.getMinesCellValue(y,x)
+                val value = gameArea.getMinesCellValue(y, x)
 
                 cellsDB.fillingDB(
                     id = name,
@@ -43,25 +44,33 @@ class ModificationDB {
         }
     }
 
-    fun modificationDB(
+    fun modificationCellState(
         cellsDB: cellsDB,
         gameArea: GameArea,
         currentGameSetting: CurrentGameSetting
-    ){
+    ) {
 //        val size = cellsDB.cellsDataBase.size
         var counter = 0
 //        var isOpen = false
 //        var value:Int
 
-        val heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray
-        val widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray 
-        
-        for (y in 0 until heightArraySizeOfGameArray){
-            for (x in 0 until widthArraySizeOfGameArray){
 
-                cellsDB.modificationIsOpenDbCell(
+        val heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray
+        val widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray
+
+        for (y in 0 until heightArraySizeOfGameArray) {
+            for (x in 0 until widthArraySizeOfGameArray) {
+                var cellState = CellState.CLOSE
+                when (gameArea.getMarker(y, x)) {
+                    0 -> cellState = CellState.OPEN
+
+                    1 -> cellState = CellState.MAYBE_MARKER
+                    2 -> cellState = CellState.MINE_MARKER
+                }
+
+                cellsDB.changeCellState(
                     index = counter,
-                    isOpen = gameArea.isCellOpenCheck(y,x)
+                    state = cellState
                 )
                 counter++
             }

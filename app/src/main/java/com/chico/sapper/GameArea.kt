@@ -45,7 +45,7 @@ class GameArea(
             for (x in 0..widthGameArea) {
                 minesArea[y][x] = 0
                 isCellOpen[y][x] = false
-                markers[y][x] = 0
+                markers[y][x] = -1
             }
         }
     }
@@ -243,9 +243,10 @@ class GameArea(
     fun isCellOpenSetTry(yTouchOnArea: Int, xTouchOnArea: Int) {
         isCellOpen[yTouchOnArea][xTouchOnArea] = true
     }
-    fun isMineMarkerHire(yTouchOnArea: Int, xTouchOnArea: Int):Boolean{
+
+    fun isMineMarkerHire(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
         val isMineMarker = false
-        return if (markers[yTouchOnArea][xTouchOnArea]!=2) !isMineMarker
+        return if (markers[yTouchOnArea][xTouchOnArea] != 2) !isMineMarker
         else return isMineMarker
     }
 
@@ -276,7 +277,7 @@ class GameArea(
     }
 
     fun setOpenMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
-            markers[yTouchOnAreaInt][xTouchOnAreaInt] = 0
+        markers[yTouchOnAreaInt][xTouchOnAreaInt] = 0
     }
 
     fun setMayBeMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
@@ -285,5 +286,9 @@ class GameArea(
 
     fun setMineMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
         markers[yTouchOnAreaInt][xTouchOnAreaInt] = 2
+    }
+
+    fun getMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Int {
+        return markers[yTouchOnAreaInt][xTouchOnAreaInt]
     }
 }

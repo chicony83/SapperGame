@@ -1,11 +1,12 @@
 package com.chico.sapper.dto
 
 import android.util.Log
+import com.chico.sapper.dto.enums.CellState
 
 data class Cell(
     val id: String,
     val value: Int,
-    val isOpen: Boolean,
+    val state: CellState,
     val yMargin: Int,
     val xMargin: Int,
     val yPosition: Int,
@@ -28,7 +29,7 @@ object cellsDB {
                 Cell(
                     id = id,
                     value = value,
-                    isOpen = false,
+                    state = CellState.CLOSE,
                     yMargin = yMargin,
                     xMargin = xMargin,
                     yPosition = yPosition,
@@ -38,10 +39,9 @@ object cellsDB {
             )
     }
 
-    fun modificationIsOpenDbCell(
+    fun changeCellState(
         index: Int,
-        isOpen: Boolean,
-
+        state: CellState
         ) {
         val cell = cellsDataBase[index]
         val id = cell.id
@@ -55,14 +55,14 @@ object cellsDB {
         cellsDataBase[index] = Cell(
             id = id,
             value = value,
-            isOpen = isOpen,
+            state = state,
             yMargin = yMargin,
             xMargin = xMargin,
             yPosition = yPosition,
             xPosition = xPosition
         )
-        val none = cellsDataBase[index].isOpen
-        Log.i("TAG", none.toString())
+        val description = cellsDataBase[index].state
+        Log.i("TAG", description.toString())
     }
 
 }
