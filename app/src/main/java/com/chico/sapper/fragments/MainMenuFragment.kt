@@ -19,10 +19,12 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_main_menu, container, false)
 
+        val veryEasyGameButton = rootView.findViewById<Button>(R.id.very_easy_game_button)
         val easyGameButton = rootView.findViewById<Button>(R.id.easy_game_button)
         val normalGameButton = rootView.findViewById<Button>(R.id.normal_game_button)
         val hardGameButton = rootView.findViewById<Button>(R.id.hard_game_button)
 
+        veryEasyGameButton.setOnClickListener(this)
         easyGameButton.setOnClickListener(this)
         normalGameButton.setOnClickListener(this)
         hardGameButton.setOnClickListener(this)
@@ -33,6 +35,7 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     private fun translateToIndex(id: Int): Int {
         var index = -1
         when (id) {
+            R.id.very_easy_game_button -> index = 0
             R.id.easy_game_button -> index = 1
             R.id.normal_game_button -> index = 2
             R.id.hard_game_button -> index = 3

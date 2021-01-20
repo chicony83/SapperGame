@@ -100,7 +100,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         setActivityFlags()
         setActivityOrientation()
 
-        gameLevel = intent.getIntExtra("LEVEL_GAME", 1)
+        gameLevel = intent.getIntExtra("LEVEL_GAME", 0)
 
         currentGameSetting.preparationLevelSetting(gameLevel, settingLevels)
         currentGameSetting.numberOfCellsOnGameArea =

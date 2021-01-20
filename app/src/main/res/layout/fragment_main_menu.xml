@@ -15,6 +15,10 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/very_easy_game_button"
+            style="@style/MainMenuButtons"
+            android:text="@string/buttonVeryEasy_text" />
+        <Button
             android:id="@+id/easy_game_button"
             style="@style/MainMenuButtons"
             android:text="@string/buttonEasy_text" />

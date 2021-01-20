@@ -14,6 +14,8 @@
     <string name="buttonMayBe_text">may be?</string>
     <string name="buttonMineIsHere_text">mine is hire!</string>
 
+
+    <string name="buttonVeryEasy_text">Very easy</string>
     <string name="buttonEasy_text">Easy</string>
     <string name="buttonNormal_text">Normal</string>
     <string name="buttonHard_text">Hard</string>

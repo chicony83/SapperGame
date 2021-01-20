@@ -7,6 +7,7 @@
     <string name="buttonMayBe_text">может быть?</string>
     <string name="buttonMineIsHere_text">здесь мина!</string>
 
+    <string name="buttonVeryEasy_text">Очень легко</string>
     <string name="buttonEasy_text">Легко</string>
     <string name="buttonNormal_text">Нормально</string>
     <string name="buttonHard_text">Сложно</string>
