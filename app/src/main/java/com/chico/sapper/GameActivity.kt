@@ -316,7 +316,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             WhatDo.OPEN -> {
                 if (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
                     gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
-                    gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
+//                    gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
                     Log.i("TAG", "y = $yTouchOnAreaInt , x = $xTouchOnAreaInt")
                 }
                 Log.i("TAG", " select state what do = $selectStateWhatDo")

@@ -61,7 +61,6 @@ class ModificationDB {
                 var cellState = CellState.CLOSE
                 when (gameArea.getMarker(y, x)) {
                     0 -> cellState = CellState.OPEN
-
                     1 -> cellState = CellState.MAYBE_MARKER
                     2 -> cellState = CellState.MINE_MARKER
                 }

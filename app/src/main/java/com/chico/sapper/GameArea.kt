@@ -27,12 +27,6 @@ class GameArea(
             widthGameAreaForCreate
         )
     },
-
-    private val isCellOpen: Array<BooleanArray> = Array(heightGameAreaForCreate) {
-        BooleanArray(
-            widthGameAreaForCreate
-        )
-    },
     private val markers: Array<IntArray> = Array(heightGameAreaForCreate) {
         IntArray(
             widthGameAreaForCreate
@@ -44,7 +38,6 @@ class GameArea(
         for (y in 0..heightGameArea) {
             for (x in 0..widthGameArea) {
                 minesArea[y][x] = 0
-                isCellOpen[y][x] = false
                 markers[y][x] = -1
             }
         }
@@ -234,14 +227,6 @@ class GameArea(
 
     fun getMinesCellValue(yTouchOnArea: Int, xTouchOnArea: Int): Int {
         return minesArea[yTouchOnArea][xTouchOnArea]
-    }
-
-    fun isCellOpenCheck(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
-        return isCellOpen[yTouchOnArea][xTouchOnArea]
-    }
-
-    fun isCellOpenSetTry(yTouchOnArea: Int, xTouchOnArea: Int) {
-        isCellOpen[yTouchOnArea][xTouchOnArea] = true
     }
 
     fun isMineMarkerHire(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
