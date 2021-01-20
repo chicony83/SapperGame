@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.chico.sapper.dto.CellsDB
 import com.chico.sapper.dto.enums.CellState
 import com.chico.sapper.dto.enums.WhatDo
 import com.chico.sapper.settings.CurrentGameSetting
@@ -38,7 +39,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var sizeCell by Delegates.notNull<Int>()
 
-    private var cellsDB = com.chico.sapper.dto.cellsDB
+//    private var cellsDB = com.chico.sapper.dto.cellsDB
+    private var cellsDB = CellsDB()
     private val touch = Touch()
 
     private lateinit var gameElementsHolder: RelativeLayout
@@ -398,6 +400,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val imageSource = ImageView(this)
 
         when (cell.state) {
+
             CellState.CLOSE -> setImageSource(imageSource, R.drawable.shirt4)
             CellState.OPEN -> {
                 if (cell.value == 0) {

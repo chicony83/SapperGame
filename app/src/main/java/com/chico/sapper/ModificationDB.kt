@@ -1,6 +1,7 @@
 package com.chico.sapper
 
-import com.chico.sapper.dto.cellsDB
+
+import com.chico.sapper.dto.CellsDB
 import com.chico.sapper.dto.enums.CellState
 import com.chico.sapper.settings.CurrentGameSetting
 
@@ -9,8 +10,9 @@ class ModificationDB {
         currentGameSetting: CurrentGameSetting,
         sizeCell: Int,
         gameArea: GameArea,
-        cellsDB: cellsDB
-    ) {
+        cellsDB: CellsDB,
+
+        ) {
         val widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray
         val heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray
 
@@ -45,15 +47,11 @@ class ModificationDB {
     }
 
     fun modificationCellState(
-        cellsDB: cellsDB,
+        cellsDB: CellsDB,
         gameArea: GameArea,
         currentGameSetting: CurrentGameSetting
     ) {
-//        val size = cellsDB.cellsDataBase.size
         var counter = 0
-//        var isOpen = false
-//        var value:Int
-
 
         val heightArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray
         val widthArraySizeOfGameArray = currentGameSetting.sizeGameAreaArray
@@ -75,7 +73,5 @@ class ModificationDB {
                 counter++
             }
         }
-
     }
-
 }
