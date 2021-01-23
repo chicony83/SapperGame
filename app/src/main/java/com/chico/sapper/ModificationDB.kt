@@ -1,6 +1,5 @@
 package com.chico.sapper
 
-
 import com.chico.sapper.dto.CellsDB
 import com.chico.sapper.dto.enums.CellState
 import com.chico.sapper.settings.CurrentGameSetting

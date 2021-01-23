@@ -1,6 +1,5 @@
 package com.chico.sapper.dto
 
-import android.util.Log
 import com.chico.sapper.dto.enums.CellState
 
 class CellsDB() {
