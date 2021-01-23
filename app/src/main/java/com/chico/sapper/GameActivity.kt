@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.chico.sapper.dto.CellsDB
 import com.chico.sapper.dto.enums.CellState
 import com.chico.sapper.dto.enums.WhatDo
+import com.chico.sapper.logics.FindEmptyCells
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.utils.ParseTime
@@ -36,10 +37,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val parseTime = ParseTime()
     private val modificationDB = ModificationDB()
     private lateinit var gameArea: GameArea
+    private lateinit var findEmptyCells:FindEmptyCells
 
     private var sizeCell by Delegates.notNull<Int>()
 
-//    private var cellsDB = com.chico.sapper.dto.cellsDB
+    //    private var cellsDB = com.chico.sapper.dto.cellsDB
     private var cellsDB = CellsDB()
     private val touch = Touch()
 
@@ -117,8 +119,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         observersCounterViewModel(viewModelProvider)
 
         gameArea = GameArea(currentGameSetting)
-        gameArea.newCleanArea()
+        gameArea.newCleanAreas()
         gameArea.setMinesOnMinesArea(currentGameSetting)
+
+        findEmptyCells = FindEmptyCells(currentGameSetting)
 
         modificationDB.addCellsInDB(currentGameSetting, sizeCell, gameArea, cellsDB)
 
@@ -315,9 +319,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
                 if (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
-                    gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
-//                    gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
-                    Log.i("TAG", "y = $yTouchOnAreaInt , x = $xTouchOnAreaInt")
+                    if (!gameArea.isCellOpen(yTouchOnAreaInt, xTouchOnAreaInt)) {
+                        //gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
+                        findEmptyCells.clickOnEmptyCell(gameArea,yTouchOnAreaInt, xTouchOnAreaInt)
+                        Log.i("TAG", "y = $yTouchOnAreaInt , x = $xTouchOnAreaInt")
+                    }
                 }
                 Log.i("TAG", " select state what do = $selectStateWhatDo")
             }
@@ -336,6 +342,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+
         modificationDB.modificationCellState(cellsDB, gameArea, currentGameSetting)
 
         fillingThePlayingArea()
