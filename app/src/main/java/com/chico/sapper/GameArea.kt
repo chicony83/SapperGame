@@ -279,6 +279,10 @@ class GameArea(
         areaMarkers[yTouchOnAreaInt][xTouchOnAreaInt] = 2
     }
 
+    fun isCloseMarkerHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int):Boolean {
+        return areaMines[yTouchOnAreaInt][xTouchOnAreaInt] == 0
+    }
+
     fun getMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Int {
         return areaMarkers[yTouchOnAreaInt][xTouchOnAreaInt]
     }

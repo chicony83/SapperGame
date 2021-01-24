@@ -8,6 +8,6 @@ data class SettingLevels(
 
     val veryEasyGameMines: Int = 3,
     val easyGameMines:Int = 10,
-    val normalGameMines:Int = 20,
-    val hardGameMines:Int = 40
+    val normalGameMines:Int = 16,
+    val hardGameMines:Int = 30
 )

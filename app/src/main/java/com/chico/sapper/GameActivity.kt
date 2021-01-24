@@ -122,7 +122,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameArea.newCleanAreas()
         gameArea.setMinesOnMinesArea(currentGameSetting)
 
-        findEmptyCells = FindEmptyCells(currentGameSetting)
+        findEmptyCells = FindEmptyCells(
+            currentGameSetting = currentGameSetting,
+            gameArea = gameArea
+        )
 
         modificationDB.addCellsInDB(currentGameSetting, sizeCell, gameArea, cellsDB)
 
