@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -119,7 +118,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         observersCounterViewModel(viewModelProvider)
 
         gameArea = GameArea(currentGameSetting)
-        gameArea.newCleanArea()
+        gameArea.newCleanAreas()
         gameArea.setMinesOnMinesArea(currentGameSetting)
 
         findEmptyCells = FindEmptyCells(
@@ -325,13 +324,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     if (!gameArea.isCellOpen(yTouchOnAreaInt, xTouchOnAreaInt)) {
                         //gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
                         findEmptyCells.clickOnEmptyCell(gameArea,yTouchOnAreaInt, xTouchOnAreaInt)
-                        Log.i("TAG", "y = $yTouchOnAreaInt , x = $xTouchOnAreaInt")
                     }
                 }
-                Log.i("TAG", " select state what do = $selectStateWhatDo")
             }
             WhatDo.MAYbE -> {
-                Log.i("TAG", " select state what do = $selectStateWhatDo")
                 gameArea.setMayBeMarker(yTouchOnAreaInt, xTouchOnAreaInt)
             }
             WhatDo.MINEiShIRE -> {
@@ -340,7 +336,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     selectStateWhatDo = WhatDo.OPEN
                     showMessage(toastTextRunOutOfMineMarkers)
                 } else {
-                    Log.i("TAG", " select state what do = $selectStateWhatDo")
                     gameArea.setMineMarker(yTouchOnAreaInt, xTouchOnAreaInt)
                 }
             }
@@ -381,8 +376,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameElementsHolder.setOnClickListener(null)
 
         timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
-
-        Log.i("TAG", buttonPlayAgainIsWIN.toString())
 
         if (isWin) {
             winGameMessageLayout.visibility = View.VISIBLE
