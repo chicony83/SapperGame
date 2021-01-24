@@ -223,8 +223,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getDayColorsResource() {
-        colorPrimary = ContextCompat.getColor(this, R.color.gray_200)
-        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_140)
+        colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
+        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_200)
         colorOnPrimary = ContextCompat.getColor(this, R.color.gray_80)
     }
 
