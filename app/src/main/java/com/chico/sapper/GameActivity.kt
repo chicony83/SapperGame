@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.chico.sapper.dto.CellsDB
 import com.chico.sapper.dto.enums.CellState
 import com.chico.sapper.dto.enums.WhatDo
+import com.chico.sapper.logics.FindEmptyCells
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.utils.ParseTime
@@ -36,6 +37,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val parseTime = ParseTime()
     private val modificationDB = ModificationDB()
     private lateinit var gameArea: GameArea
+    private lateinit var findEmptyCells:FindEmptyCells
 
     private var sizeCell by Delegates.notNull<Int>()
 
@@ -119,6 +121,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameArea = GameArea(currentGameSetting)
         gameArea.newCleanArea()
         gameArea.setMinesOnMinesArea(currentGameSetting)
+
+        findEmptyCells = FindEmptyCells(
+            currentGameSetting = currentGameSetting,
+            gameArea = gameArea
+        )
 
         modificationDB.addCellsInDB(currentGameSetting, sizeCell, gameArea, cellsDB)
 
@@ -315,11 +322,16 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
                 if (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
-                    gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
-//                    gameArea.isCellOpenSetTry(yTouchOnAreaInt, xTouchOnAreaInt)
+                    if (!gameArea.isCellOpen(yTouchOnAreaInt, xTouchOnAreaInt)) {
+                        //gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
+                        findEmptyCells.clickOnEmptyCell(gameArea,yTouchOnAreaInt, xTouchOnAreaInt)
+                        Log.i("TAG", "y = $yTouchOnAreaInt , x = $xTouchOnAreaInt")
+                    }
                 }
+                Log.i("TAG", " select state what do = $selectStateWhatDo")
             }
             WhatDo.MAYbE -> {
+                Log.i("TAG", " select state what do = $selectStateWhatDo")
                 gameArea.setMayBeMarker(yTouchOnAreaInt, xTouchOnAreaInt)
             }
             WhatDo.MINEiShIRE -> {
@@ -328,6 +340,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     selectStateWhatDo = WhatDo.OPEN
                     showMessage(toastTextRunOutOfMineMarkers)
                 } else {
+                    Log.i("TAG", " select state what do = $selectStateWhatDo")
                     gameArea.setMineMarker(yTouchOnAreaInt, xTouchOnAreaInt)
                 }
             }
@@ -368,6 +381,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         gameElementsHolder.setOnClickListener(null)
 
         timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
+
+        Log.i("TAG", buttonPlayAgainIsWIN.toString())
 
         if (isWin) {
             winGameMessageLayout.visibility = View.VISIBLE

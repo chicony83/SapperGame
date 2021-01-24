@@ -22,23 +22,29 @@ class GameArea(
     private val heightGameArea: Int = currentGameSetting.sizeGameAreaArray - 1,
     private val widthGameArea: Int = currentGameSetting.sizeGameAreaArray - 1,
 
-    private val minesArea: Array<IntArray> = Array(heightGameAreaForCreate) {
+    private val areaMines: Array<IntArray> = Array(heightGameAreaForCreate) {
         IntArray(
             widthGameAreaForCreate
         )
     },
-    private val markers: Array<IntArray> = Array(heightGameAreaForCreate) {
+    private val areaMarkers: Array<IntArray> = Array(heightGameAreaForCreate) {
+        IntArray(
+            widthGameAreaForCreate
+        )
+    },
+    private val areaForOpen: Array<IntArray> = Array(heightGameAreaForCreate) {
         IntArray(
             widthGameAreaForCreate
         )
     }
 ) {
 
-    fun newCleanArea() {
+    fun newCleanAreas() {
         for (y in 0..heightGameArea) {
             for (x in 0..widthGameArea) {
-                minesArea[y][x] = 0
-                markers[y][x] = -1
+                areaMines[y][x] = 0
+                areaMarkers[y][x] = -1
+                areaForOpen[y][x] = 0
             }
         }
     }
@@ -50,12 +56,12 @@ class GameArea(
         while (minesInstalled < currentGameSetting.mines) {
             x = rndNum()
             y = rndNum()
-            while (minesArea[y][x] == mineValue) {
+            while (areaMines[y][x] == mineValue) {
                 x = rndNum()
                 y = rndNum()
             }
 
-            minesArea[y][x] = mineValue
+            areaMines[y][x] = mineValue
             minesInstalled++
 
             setNumbersNearMines(y, x)
@@ -170,55 +176,55 @@ class GameArea(
     }
 
     private fun rightBottom(y: Int, x: Int) {
-        if (minesArea[y + 1][x + 1] != mineValue) {
+        if (areaMines[y + 1][x + 1] != mineValue) {
             incValue(y + 1, x + 1)
         }
     }
 
     private fun centerBottom(y: Int, x: Int) {
-        if (minesArea[y + 1][x] != mineValue) {
+        if (areaMines[y + 1][x] != mineValue) {
             incValue(y + 1, x)
         }
     }
 
     private fun leftBottom(y: Int, x: Int) {
-        if (minesArea[y + 1][x - 1] != mineValue) {
+        if (areaMines[y + 1][x - 1] != mineValue) {
             incValue(y + 1, x - 1)
         }
     }
 
     private fun rightMiddle(y: Int, x: Int) {
-        if (minesArea[y][x + 1] != mineValue) {
+        if (areaMines[y][x + 1] != mineValue) {
             incValue(y, x + 1)
         }
     }
 
     private fun leftMiddle(y: Int, x: Int) {
-        if (minesArea[y][x - 1] != mineValue) {
+        if (areaMines[y][x - 1] != mineValue) {
             incValue(y, x - 1)
         }
     }
 
     private fun rightTop(y: Int, x: Int) {
-        if (minesArea[y - 1][x + 1] != mineValue) {
+        if (areaMines[y - 1][x + 1] != mineValue) {
             incValue(y - 1, x + 1)
         }
     }
 
     private fun centerTop(y: Int, x: Int) {
-        if (minesArea[y - 1][x] != mineValue) {
+        if (areaMines[y - 1][x] != mineValue) {
             incValue(y - 1, x)
         }
     }
 
     private fun leftTop(y: Int, x: Int) {
-        if (minesArea[y - 1][x - 1] != mineValue) {
+        if (areaMines[y - 1][x - 1] != mineValue) {
             incValue(y - 1, x - 1)
         }
     }
 
     private fun incValue(y: Int, x: Int) {
-        minesArea[y][x]++
+        areaMines[y][x]++
     }
 
     private fun rndNum(): Int {
@@ -226,12 +232,12 @@ class GameArea(
     }
 
     fun getMinesCellValue(yTouchOnArea: Int, xTouchOnArea: Int): Int {
-        return minesArea[yTouchOnArea][xTouchOnArea]
+        return areaMines[yTouchOnArea][xTouchOnArea]
     }
 
     fun isMineMarkerHire(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
         val isMineMarker = false
-        return if (markers[yTouchOnArea][xTouchOnArea] != 2) !isMineMarker
+        return if (areaMarkers[yTouchOnArea][xTouchOnArea] != 2) !isMineMarker
         else return isMineMarker
     }
 
@@ -239,7 +245,7 @@ class GameArea(
         var result = 0
         for (y in 0..heightGameArea) {
             for (x in 0..widthGameArea) {
-                if (markers[y][x] == 2) {
+                if (areaMarkers[y][x] == 2) {
                     result++
                 }
             }
@@ -252,8 +258,8 @@ class GameArea(
 
         for (y in 0..heightGameArea) {
             for (x in 0..widthGameArea) {
-                if (markers[y][x] == 2) {
-                    if (minesArea[y][x] != mineValue)
+                if (areaMarkers[y][x] == 2) {
+                    if (areaMines[y][x] != mineValue)
                         return false
                 }
             }
@@ -262,18 +268,39 @@ class GameArea(
     }
 
     fun setOpenMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
-        markers[yTouchOnAreaInt][xTouchOnAreaInt] = 0
+        areaMarkers[yTouchOnAreaInt][xTouchOnAreaInt] = 0
     }
 
     fun setMayBeMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
-        markers[yTouchOnAreaInt][xTouchOnAreaInt] = 1
+        areaMarkers[yTouchOnAreaInt][xTouchOnAreaInt] = 1
     }
 
     fun setMineMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
-        markers[yTouchOnAreaInt][xTouchOnAreaInt] = 2
+        areaMarkers[yTouchOnAreaInt][xTouchOnAreaInt] = 2
+    }
+
+    fun isCloseMarkerHire(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int):Boolean {
+        return areaMines[yTouchOnAreaInt][xTouchOnAreaInt] == 0
     }
 
     fun getMarker(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int): Int {
-        return markers[yTouchOnAreaInt][xTouchOnAreaInt]
+        return areaMarkers[yTouchOnAreaInt][xTouchOnAreaInt]
     }
+    fun isCellOpen(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int):Boolean{
+        return areaMarkers[yTouchOnAreaInt][xTouchOnAreaInt]==0
+    }
+
+    fun setMarkerInAreaForOpen(yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
+        areaForOpen[yTouchOnAreaInt][xTouchOnAreaInt] = 1
+    }
+
+    fun isMarkerForOpenCellHire(y: Int, x: Int): Boolean {
+        return areaForOpen[y][x]==1
+    }
+
+    fun isCellEmpty(y: Int, x: Int): Boolean {
+        return areaMines[y][x]==0
+    }
+
+
 }
