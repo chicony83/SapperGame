@@ -156,7 +156,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         initLayouts()
 
-        changeResourcesOfDayNightMode()
+//        changeResourcesOfDayNightMode()
+        getNightColorsResource()
+        setNightBackgroundsOnMessageLayouts()
 
         getStringResources()
     }
@@ -188,24 +190,24 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         winGameMessageLayout = findViewById(R.id.winGameMessage_layout)
     }
 
-    private fun changeResourcesOfDayNightMode() {
-        val mode = this?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
-
-        when (mode) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                getNightColorsResource()
-                setNightBackgroundsOnMessageLayouts()
-            }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                getDayColorsResource()
-                setDayBackgroundsOnMessageLayouts()
-            }
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                getDayColorsResource()
-                setDayBackgroundsOnMessageLayouts()
-            }
-        }
-    }
+//    private fun changeResourcesOfDayNightMode() {
+//        val mode = this?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
+//
+//        when (mode) {
+//            Configuration.UI_MODE_NIGHT_YES -> {
+//                getNightColorsResource()
+//                setNightBackgroundsOnMessageLayouts()
+//            }
+//            Configuration.UI_MODE_NIGHT_NO -> {
+//                getDayColorsResource()
+//                setDayBackgroundsOnMessageLayouts()
+//            }
+//            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+//                getDayColorsResource()
+//                setDayBackgroundsOnMessageLayouts()
+//            }
+//        }
+//    }
 
     private fun setDayBackgroundsOnMessageLayouts() {
         looseGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
