@@ -8,17 +8,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.chico.sapper.fragments.MainMenuFragment
+import com.chico.sapper.fragments.SettingFragment
 import com.chico.sapper.fragments.SplashScreenFragment
+import com.chico.sapper.interfaces.CallBackInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),CallBackInterface {
 
     private var isMenuStarting = false
     private var isDoubleBackOnPressedOnce = false
+    private lateinit var settingFragment: SettingFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +35,13 @@ class MainActivity : AppCompatActivity() {
 
         val splashScreenFragment = SplashScreenFragment()
         val mainMenuFragment = MainMenuFragment()
+        settingFragment = SettingFragment()
 
+        mainMenuFragment.setCallBackInterface(this)
         isMenuStarting = intent.getBooleanExtra("IS_MENU_STARTING", true)
 
         if (isMenuStarting) {
-            startMenuFragment(mainMenuFragment)
+            startFragment(mainMenuFragment)
         }
         if (!isMenuStarting) {
             startActivity(splashScreenFragment)
@@ -67,10 +72,10 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun startMenuFragment(mainMenuFragment: MainMenuFragment) {
+    private fun startFragment(startFragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_holder, mainMenuFragment)
+            .replace(R.id.fragment_holder, startFragment)
             .commit()
     }
 
@@ -81,4 +86,12 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_holder, addFragment)
             .commit()
     }
+
+    override fun callBackFunction(i: Int) {
+        when(i){
+            1->startFragment(settingFragment)
+        }
+    }
+
+
 }
