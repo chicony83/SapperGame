@@ -37,16 +37,19 @@
                     android:layout_height="wrap_content"/>
 
                 <RadioButton
+                    android:id="@+id/classicTheme_radioButton"
                     android:text="Classic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <RadioButton
+                    android:id="@+id/forestTheme_radioButton"
                     android:text="Forest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <RadioButton
+                    android:id="@+id/vanillaTheme_radioButton"
                     android:text="Vanilla"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
