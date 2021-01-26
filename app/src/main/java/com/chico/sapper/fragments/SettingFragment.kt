@@ -47,6 +47,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 val text = "save don't work"
                 callBackInterface?.callBackFunction(FragmentsButtonNames.EXITSETTING)
                 showMessage(text)
+
             }
         }
 
