@@ -3,7 +3,6 @@ package com.chico.sapper
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
@@ -405,31 +404,31 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         when (cell.state) {
 
-            CellState.CLOSE -> setImageSource(imageSource, R.drawable.shirt4)
+            CellState.CLOSE -> setImageSource(imageSource, R.drawable.forest_shirt)
             CellState.OPEN -> {
                 if (cell.value == 0) {
-                    setImageSource(imageSource, R.drawable.open)
+                    setImageSource(imageSource, R.drawable.forest_open)
                 } else {
                     when (cell.value) {
-                        1 -> setImageSource(imageSource, R.drawable.one)
-                        2 -> setImageSource(imageSource, R.drawable.two)
-                        3 -> setImageSource(imageSource, R.drawable.three)
-                        4 -> setImageSource(imageSource, R.drawable.four)
-                        5 -> setImageSource(imageSource, R.drawable.five)
-                        6 -> setImageSource(imageSource, R.drawable.six)
-                        7 -> setImageSource(imageSource, R.drawable.seven)
-                        8 -> setImageSource(imageSource, R.drawable.eight)
+                        1 -> setImageSource(imageSource, R.drawable.forest_one)
+                        2 -> setImageSource(imageSource, R.drawable.forest_two)
+                        3 -> setImageSource(imageSource, R.drawable.forest_three)
+                        4 -> setImageSource(imageSource, R.drawable.forest_four)
+                        5 -> setImageSource(imageSource, R.drawable.forest_five)
+                        6 -> setImageSource(imageSource, R.drawable.forest_six)
+                        7 -> setImageSource(imageSource, R.drawable.forest_seven)
+                        8 -> setImageSource(imageSource, R.drawable.forest_eight)
 
                         9 -> {
-                            setImageSource(imageSource, R.drawable.mineexploded)
+                            setImageSource(imageSource, R.drawable.forest_mineexploded)
                             isLoose = true
                             endLevel()
                         }
                     }
                 }
             }
-            CellState.MINE_MARKER -> setImageSource(imageSource, R.drawable.mineishire)
-            CellState.MAYBE_MARKER -> setImageSource(imageSource, R.drawable.maybe)
+            CellState.MINE_MARKER -> setImageSource(imageSource, R.drawable.forest_mineishire)
+            CellState.MAYBE_MARKER -> setImageSource(imageSource, R.drawable.forest_maybe)
         }
         drawGameElement(imageSource, param)
     }

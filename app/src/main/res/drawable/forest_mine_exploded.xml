@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@drawable/forest_mineexploded"/>
+    <item android:drawable="@drawable/forest_mineexploded1"/>
+    <item android:drawable="@drawable/forest_mineexploded2"/>
+    <item android:drawable="@drawable/forest_mineexploded3"/>
+    <item android:drawable="@drawable/forest_mineexploded4"/>
+    <item android:drawable="@drawable/forest_mineexploded5"/>
+    <item android:drawable="@drawable/forest_mineexploded6"/>
+    <item android:drawable="@drawable/forest_mineexploded7"/>
+    <item android:drawable="@drawable/forest_mineexploded8"/>
+    <item android:drawable="@drawable/forest_mineexploded9"/>
+</animation-list>
