@@ -1,5 +1,7 @@
 package com.chico.sapper.interfaces
 
+import com.chico.sapper.dto.enums.FragmentsButtonNames
+
 interface CallBackInterface {
-    fun callBackFunction(v: Int)
+    fun callBackFunction(v: FragmentsButtonNames)
 }

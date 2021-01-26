@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/very_easy_game_button"
+            android:id="@+id/veryEasy_game_button"
             style="@style/MainMenuButtons"
             android:text="@string/buttonVeryEasy_text" />
 

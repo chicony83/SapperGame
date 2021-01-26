@@ -26,4 +26,5 @@
     <string name="game_time">время игры</string>
     <string name="select_level">вырать уровень</string>
     <string name="toastText_runOutOfMineMarkers">закончились маркеры мин</string>
+    <string name="settingsFragmentName">Настройки</string>
 </resources>

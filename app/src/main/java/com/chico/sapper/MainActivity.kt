@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.chico.sapper.dto.enums.FragmentsButtonNames
 import com.chico.sapper.fragments.MainMenuFragment
 import com.chico.sapper.fragments.SettingFragment
 import com.chico.sapper.fragments.SplashScreenFragment
@@ -21,7 +22,10 @@ class MainActivity : AppCompatActivity(),CallBackInterface {
 
     private var isMenuStarting = false
     private var isDoubleBackOnPressedOnce = false
+
     private lateinit var settingFragment: SettingFragment
+    private lateinit var mainMenuFragment:MainMenuFragment
+    private lateinit var splashScreenFragment: SplashScreenFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +37,12 @@ class MainActivity : AppCompatActivity(),CallBackInterface {
         )
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        val splashScreenFragment = SplashScreenFragment()
-        val mainMenuFragment = MainMenuFragment()
+        splashScreenFragment = SplashScreenFragment()
+        mainMenuFragment = MainMenuFragment()
         settingFragment = SettingFragment()
 
         mainMenuFragment.setCallBackInterface(this)
+        settingFragment.setCallBackInterface(this)
         isMenuStarting = intent.getBooleanExtra("IS_MENU_STARTING", true)
 
         if (isMenuStarting) {
@@ -87,9 +92,10 @@ class MainActivity : AppCompatActivity(),CallBackInterface {
             .commit()
     }
 
-    override fun callBackFunction(i: Int) {
+    override fun callBackFunction(i: FragmentsButtonNames) {
         when(i){
-            1->startFragment(settingFragment)
+            FragmentsButtonNames.SETTING->startFragment(settingFragment)
+            FragmentsButtonNames.EXITSETTING->startFragment(mainMenuFragment)
         }
     }
 
