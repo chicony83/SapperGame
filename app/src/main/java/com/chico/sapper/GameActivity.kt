@@ -15,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.chico.sapper.dto.CellsDB
+import com.chico.sapper.dto.ImagesDB
+import com.chico.sapper.dto.SharedPreferencesConst
 import com.chico.sapper.dto.enums.CellState
+import com.chico.sapper.dto.enums.Themes
 import com.chico.sapper.dto.enums.WhatDo
 import com.chico.sapper.logics.FindEmptyCells
 import com.chico.sapper.settings.CurrentGameSetting
@@ -42,6 +45,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 //    private var cellsDB = com.chico.sapper.dto.cellsDB
     private var cellsDB = CellsDB()
     private val touch = Touch()
+
+    private val images = ImagesDB()
 
     private lateinit var gameElementsHolder: RelativeLayout
     private lateinit var looseGameMessageLayout: LinearLayout
@@ -86,6 +91,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var colorPrimary by Delegates.notNull<Int>()
     private var colorPrimaryVariant by Delegates.notNull<Int>()
     private var colorOnPrimary by Delegates.notNull<Int>()
+
+    private var shirtImg: Int? = null
 
     private lateinit var job: Job
 
@@ -159,7 +166,22 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         getNightColorsResource()
         setNightBackgroundsOnMessageLayouts()
 
-        getStringResources()
+        getStringRes()
+        getImagesRes()
+    }
+
+    private fun getImagesRes() {
+        val spName = SharedPreferencesConst().SP_NAME
+        val spTheme = SharedPreferencesConst().THEME
+
+        val sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE)
+        var themeCurrent = sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())
+
+
+        Toast.makeText(this,"установлена тема $themeCurrent",Toast.LENGTH_SHORT).show()
+//        when(themeCurrent){
+//            Themes.CLASSIC->
+//        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -189,25 +211,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         winGameMessageLayout = findViewById(R.id.winGameMessage_layout)
     }
 
-//    private fun changeResourcesOfDayNightMode() {
-//        val mode = this?.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)
-//
-//        when (mode) {
-//            Configuration.UI_MODE_NIGHT_YES -> {
-//                getNightColorsResource()
-//                setNightBackgroundsOnMessageLayouts()
-//            }
-//            Configuration.UI_MODE_NIGHT_NO -> {
-//                getDayColorsResource()
-//                setDayBackgroundsOnMessageLayouts()
-//            }
-//            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-//                getDayColorsResource()
-//                setDayBackgroundsOnMessageLayouts()
-//            }
-//        }
-//    }
-
     private fun setDayBackgroundsOnMessageLayouts() {
         looseGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
         winGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
@@ -223,19 +226,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         startMainMenu()
     }
 
-    private fun getDayColorsResource() {
-        colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
-        colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_200)
-        colorOnPrimary = ContextCompat.getColor(this, R.color.gray_80)
-    }
-
     private fun getNightColorsResource() {
         colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
         colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_80)
         colorOnPrimary = ContextCompat.getColor(this, R.color.black)
     }
 
-    private fun getStringResources() {
+    private fun getStringRes() {
         toastTextOpen = getString(R.string.toastText_openCell)
         toastTextMayBeMineIsHere = getString(R.string.toastText_mayBeMineIsHere)
         toastTextMineHere = getString(R.string.toastText_mineHire)
@@ -407,7 +404,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             CellState.CLOSE -> setImageSource(imageSource, R.drawable.forest_shirt)
             CellState.OPEN -> {
                 if (cell.value == 0) {
-                    setImageSource(imageSource, R.drawable.forest_open)
+                    setImageSource(imageSource, R.drawable.forest_empty)
                 } else {
                     when (cell.value) {
                         1 -> setImageSource(imageSource, R.drawable.forest_one)
