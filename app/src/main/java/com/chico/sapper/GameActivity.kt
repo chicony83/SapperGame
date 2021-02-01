@@ -47,6 +47,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val touch = Touch()
 
     private val images = ImagesDB()
+    private lateinit var currentImages: MutableMap<String, Int>
 
     private lateinit var gameElementsHolder: RelativeLayout
     private lateinit var looseGameMessageLayout: LinearLayout
@@ -91,8 +92,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var colorPrimary by Delegates.notNull<Int>()
     private var colorPrimaryVariant by Delegates.notNull<Int>()
     private var colorOnPrimary by Delegates.notNull<Int>()
-
-    private var shirtImg: Int? = null
 
     private lateinit var job: Job
 
@@ -168,6 +167,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         getStringRes()
         getImagesRes()
+
     }
 
     private fun getImagesRes() {
@@ -177,11 +177,16 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE)
         var themeCurrent = sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())
 
-
+        when(themeCurrent){
+            Themes.CLASSIC.toString() -> {setImages(images.classic)}
+            Themes.FOREST.toString() -> {setImages(images.forest)}
+            Themes.VANILLA.toString() -> {setImages(images.vanilla)}
+        }
         Toast.makeText(this,"установлена тема $themeCurrent",Toast.LENGTH_SHORT).show()
-//        when(themeCurrent){
-//            Themes.CLASSIC->
-//        }
+    }
+
+    private fun setImages(images: Map<String, Int>) {
+        currentImages = images as MutableMap<String, Int>
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -320,7 +325,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             WhatDo.OPEN -> {
                 if (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
                     if (!gameArea.isCellOpen(yTouchOnAreaInt, xTouchOnAreaInt)) {
-                        //gameArea.setOpenMarker(yTouchOnAreaInt, xTouchOnAreaInt)
                         findEmptyCells.clickOnEmptyCell(gameArea,yTouchOnAreaInt, xTouchOnAreaInt)
                     }
                 }
@@ -401,31 +405,32 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         when (cell.state) {
 
-            CellState.CLOSE -> setImageSource(imageSource, R.drawable.forest_shirt)
+            CellState.CLOSE -> setImageSource(imageSource, currentImages.getValue("shirt"))
             CellState.OPEN -> {
                 if (cell.value == 0) {
-                    setImageSource(imageSource, R.drawable.forest_empty)
+                    setImageSource(imageSource, currentImages.getValue("empty"))
                 } else {
                     when (cell.value) {
-                        1 -> setImageSource(imageSource, R.drawable.forest_one)
-                        2 -> setImageSource(imageSource, R.drawable.forest_two)
-                        3 -> setImageSource(imageSource, R.drawable.forest_three)
-                        4 -> setImageSource(imageSource, R.drawable.forest_four)
-                        5 -> setImageSource(imageSource, R.drawable.forest_five)
-                        6 -> setImageSource(imageSource, R.drawable.forest_six)
-                        7 -> setImageSource(imageSource, R.drawable.forest_seven)
-                        8 -> setImageSource(imageSource, R.drawable.forest_eight)
+                        1 -> setImageSource(imageSource, currentImages.getValue("one"))
+                        2 -> setImageSource(imageSource, currentImages.getValue("two"))
+                        3 -> setImageSource(imageSource, currentImages.getValue("three"))
+                        4 -> setImageSource(imageSource, currentImages.getValue("four"))
+                        5 -> setImageSource(imageSource, currentImages.getValue("five"))
+                        6 -> setImageSource(imageSource, currentImages.getValue("six"))
+                        7 -> setImageSource(imageSource, currentImages.getValue("seven"))
+                        8 -> setImageSource(imageSource, currentImages.getValue("eight"))
 
                         9 -> {
-                            setImageSource(imageSource, R.drawable.forest_mineexploded)
+                            setImageSource(imageSource, currentImages.getValue("mineExploded"))
+//                            setImageSource(imageSource, currentImages.getValue())
                             isLoose = true
                             endLevel()
                         }
                     }
                 }
             }
-            CellState.MINE_MARKER -> setImageSource(imageSource, R.drawable.forest_mineishire)
-            CellState.MAYBE_MARKER -> setImageSource(imageSource, R.drawable.forest_maybe)
+            CellState.MINE_MARKER -> setImageSource(imageSource, currentImages.getValue("mineIsHire"))
+            CellState.MAYBE_MARKER -> setImageSource(imageSource, currentImages.getValue("mayBe"))
         }
         drawGameElement(imageSource, param)
     }
