@@ -16,12 +16,11 @@ class FindEmptyCells(
 
 ) {
     val TAG = "TAG"
-    fun clickOnEmptyCell(gameArea: GameArea, yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
+    fun clickOnClosedCell(gameArea: GameArea, yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
         this.gameArea = gameArea
 
         setFirstCell(yTouchOnAreaInt, xTouchOnAreaInt)
 //        countFixedCells()
-
 
 //            Log.i(TAG," fixed = $fixedEmptyCells")
 //            Log.i(TAG," new = $newEmptyCells")
@@ -32,12 +31,12 @@ class FindEmptyCells(
             checkCellsNearTargetCell(yTouchOnAreaInt, xTouchOnAreaInt)
 
             if (newEmptyCells > 0) {
-                Log.i(TAG, "1 new = $newEmptyCells")
+//                Log.i(TAG, "1 new = $newEmptyCells")
 
                 while (newEmptyCells != fixedEmptyCells) {
 
-                  Log.i(TAG, "2 fixed = $fixedEmptyCells")
-                  Log.i(TAG, "2 new = $newEmptyCells")
+//                  Log.i(TAG, "2 fixed = $fixedEmptyCells")
+//                  Log.i(TAG, "2 new = $newEmptyCells")
 
                      fixedEmptyCells = newEmptyCells
 

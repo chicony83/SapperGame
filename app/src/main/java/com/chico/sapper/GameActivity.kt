@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -38,11 +39,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val parseTime = ParseTime()
     private val modificationDB = ModificationDB()
     private lateinit var gameArea: GameArea
-    private lateinit var findEmptyCells:FindEmptyCells
+    private lateinit var findEmptyCells: FindEmptyCells
 
     private var sizeCell by Delegates.notNull<Int>()
 
-//    private var cellsDB = com.chico.sapper.dto.cellsDB
+    //    private var cellsDB = com.chico.sapper.dto.cellsDB
     private var cellsDB = CellsDB()
     private val touch = Touch()
 
@@ -96,6 +97,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var job: Job
 
     private var gameLevel by Delegates.notNull<Int>()
+    private var explodedCell = -1
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CutPasteId")
@@ -177,12 +179,18 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE)
         var themeCurrent = sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())
 
-        when(themeCurrent){
-            Themes.CLASSIC.toString() -> {setImages(images.classic)}
-            Themes.FOREST.toString() -> {setImages(images.forest)}
-            Themes.VANILLA.toString() -> {setImages(images.vanilla)}
+        when (themeCurrent) {
+            Themes.CLASSIC.toString() -> {
+                setImages(images.classic)
+            }
+            Themes.FOREST.toString() -> {
+                setImages(images.forest)
+            }
+            Themes.VANILLA.toString() -> {
+                setImages(images.vanilla)
+            }
         }
-        Toast.makeText(this,"установлена тема $themeCurrent",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "установлена тема $themeCurrent", Toast.LENGTH_SHORT).show()
     }
 
     private fun setImages(images: Map<String, Int>) {
@@ -323,9 +331,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         when (selectStateWhatDo) {
             WhatDo.OPEN -> {
-                if (gameArea.isMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
+                if (gameArea.isNotMineMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
                     if (!gameArea.isCellOpen(yTouchOnAreaInt, xTouchOnAreaInt)) {
-                        findEmptyCells.clickOnEmptyCell(gameArea,yTouchOnAreaInt, xTouchOnAreaInt)
+                        findEmptyCells.clickOnClosedCell(gameArea, yTouchOnAreaInt, xTouchOnAreaInt)
                     }
                 }
             }
@@ -344,13 +352,20 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
         modificationDB.modificationCellState(cellsDB, gameArea, currentGameSetting)
 
-        fillingThePlayingArea()
+        if ((!isLoose) and (!isWin)) {
+            fillingThePlayingArea()
+        }
 
         val markers = gameArea.countMineMarkers()
 
         leftToFindMines = currentGameSetting.mines - markers
 
         viewModelProvider.counterMines.postValue(leftToFindMines)
+
+
+        if (isLoose) {
+            gameLoose()
+        }
 
         if (leftToFindMines == 0) {
             isWin = gameArea.checkTheFlagsSet()
@@ -388,9 +403,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun fillingThePlayingArea() {
         gameElementsHolder.removeAllViews()
-        val sizeDB = cellsDB.cellsDataBase.size
 
-        for (id in 0 until sizeDB) {
+        for (id in 0 until cellsDB.cellsDataBase.size) {
             createGameElementById(id)
         }
     }
@@ -422,17 +436,45 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
                         9 -> {
                             setImageSource(imageSource, currentImages.getValue("mineExploded"))
-//                            setImageSource(imageSource, currentImages.getValue())
+
                             isLoose = true
-                            endLevel()
+
+//                            if (id != explodedCell) {
+//                                setImageSource(imageSource, currentImages.getValue("mine"))
+//                                explodedCell = id
+//                                cell.value
+//                                Log.i("TAG","explodedCell = $explodedCell")
+//                            }
                         }
                     }
                 }
             }
-            CellState.MINE_MARKER -> setImageSource(imageSource, currentImages.getValue("mineIsHire"))
+
+            CellState.MINE_MARKER -> setImageSource(
+                imageSource,
+                currentImages.getValue("mineIsHire")
+            )
             CellState.MAYBE_MARKER -> setImageSource(imageSource, currentImages.getValue("mayBe"))
+//            CellState.EXPLODED -> setImageSource(imageSource, currentImages.getValue("mineExploded"))
         }
         drawGameElement(imageSource, param)
+    }
+
+    private fun gameLoose() {
+
+        openMines()
+        fillingThePlayingArea()
+        endLevel()
+    }
+
+    private fun openMines() {
+        for (i in 0 until cellsDB.cellsDataBase.size) {
+            Log.i("TAG", "size = {${cellsDB.cellsDataBase.size}}")
+            if (cellsDB.cellsDataBase[i].value == 9) {
+                Log.i("TAG", "i = $i")
+                cellsDB.changeCellState(index = i, CellState.OPEN)
+            }
+        }
     }
 
     private fun drawGameElement(

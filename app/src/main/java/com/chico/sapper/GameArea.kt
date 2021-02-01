@@ -235,7 +235,7 @@ class GameArea(
         return areaMines[yTouchOnArea][xTouchOnArea]
     }
 
-    fun isMineMarkerHire(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
+    fun isNotMineMarkerHire(yTouchOnArea: Int, xTouchOnArea: Int): Boolean {
         val isMineMarker = false
         return if (areaMarkers[yTouchOnArea][xTouchOnArea] != 2) !isMineMarker
         else return isMineMarker

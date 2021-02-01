@@ -4,5 +4,6 @@ enum class CellState {
     CLOSE,
     OPEN,
     MAYBE_MARKER,
-    MINE_MARKER
+    MINE_MARKER,
+    EXPLODED
 }
