@@ -1,4 +1,4 @@
-package com.chico.sapper
+package com.chico.sapper.dto
 
 class Touch(
 ) {

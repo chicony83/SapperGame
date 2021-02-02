@@ -78,14 +78,10 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         var spCounter = sharedPreferences.getInt(spCounterLaunch, 0)
         var themeCurrent = sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())
 
-        //        Log.i("TAG", " счетчик запусков $spCounter")
-
         spCounter++
 
         editor.putInt(spCounterLaunch, spCounter)
         editor.apply()
-
-        Toast.makeText(this, "игра запущена $spCounter раза", Toast.LENGTH_SHORT).show()
     }
 
     override fun onBackPressed() {
@@ -128,6 +124,4 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
             FragmentsButtonNames.EXITSETTING -> startFragment(mainMenuFragment)
         }
     }
-
-
 }

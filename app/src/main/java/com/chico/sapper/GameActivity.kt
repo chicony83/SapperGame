@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -18,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.chico.sapper.dto.CellsDB
 import com.chico.sapper.dto.ImagesDB
 import com.chico.sapper.dto.SharedPreferencesConst
+import com.chico.sapper.dto.Touch
 import com.chico.sapper.dto.enums.CellState
 import com.chico.sapper.dto.enums.Themes
 import com.chico.sapper.dto.enums.WhatDo
@@ -43,7 +43,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var sizeCell by Delegates.notNull<Int>()
 
-    //    private var cellsDB = com.chico.sapper.dto.cellsDB
     private var cellsDB = CellsDB()
     private val touch = Touch()
 
@@ -162,14 +161,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         leftToFindMines = currentGameSetting.mines
 
         initLayouts()
-
-//        changeResourcesOfDayNightMode()
-        getNightColorsResource()
-//        setNightBackgroundsOnMessageLayouts()
-
+        getColorsResource()
         getStringRes()
         getImagesRes()
-
     }
 
     private fun getImagesRes() {
@@ -190,7 +184,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 setImages(images.vanilla)
             }
         }
-        Toast.makeText(this, "установлена тема $themeCurrent", Toast.LENGTH_SHORT).show()
     }
 
     private fun setImages(images: Map<String, Int>) {
@@ -229,17 +222,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         winGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
     }
 
-    private fun setNightBackgroundsOnMessageLayouts() {
-//        looseGameMessageLayout.setBackgroundColor(colorOnPrimary)
-//        winGameMessageLayout.setBackgroundColor(colorOnPrimary)
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         startMainMenu()
     }
 
-    private fun getNightColorsResource() {
+    private fun getColorsResource() {
         colorPrimary = ContextCompat.getColor(this, R.color.gray_140)
         colorPrimaryVariant = ContextCompat.getColor(this, R.color.gray_80)
         colorOnPrimary = ContextCompat.getColor(this, R.color.black)
@@ -259,8 +247,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun gameTime() {
         job = CoroutineScope(Dispatchers.IO).launch {
-            while (!isWin or !isLoose) {
 
+            while (!isWin or !isLoose) {
                 timeCurrent = System.currentTimeMillis()
                 delay(10)
 
@@ -403,7 +391,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun fillingThePlayingArea() {
         gameElementsHolder.removeAllViews()
-
         for (id in 0 until cellsDB.cellsDataBase.size) {
             createGameElementById(id)
         }
@@ -420,6 +407,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         when (cell.state) {
 
             CellState.CLOSE -> setImageSource(imageSource, currentImages.getValue("shirt"))
+
             CellState.OPEN -> {
                 if (cell.value == 0) {
                     setImageSource(imageSource, currentImages.getValue("empty"))
@@ -436,15 +424,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
                         9 -> {
                             setImageSource(imageSource, currentImages.getValue("mineExploded"))
-
                             isLoose = true
-
-//                            if (id != explodedCell) {
-//                                setImageSource(imageSource, currentImages.getValue("mine"))
-//                                explodedCell = id
-//                                cell.value
-//                                Log.i("TAG","explodedCell = $explodedCell")
-//                            }
                         }
                     }
                 }
@@ -454,8 +434,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 imageSource,
                 currentImages.getValue("mineIsHire")
             )
+
             CellState.MAYBE_MARKER -> setImageSource(imageSource, currentImages.getValue("mayBe"))
-//            CellState.EXPLODED -> setImageSource(imageSource, currentImages.getValue("mineExploded"))
         }
         drawGameElement(imageSource, param)
     }
@@ -469,9 +449,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun openMines() {
         for (i in 0 until cellsDB.cellsDataBase.size) {
-            Log.i("TAG", "size = {${cellsDB.cellsDataBase.size}}")
             if (cellsDB.cellsDataBase[i].value == 9) {
-                Log.i("TAG", "i = $i")
                 cellsDB.changeCellState(index = i, CellState.OPEN)
             }
         }

@@ -1,9 +1,7 @@
 package com.chico.sapper.logics
 
-import android.util.Log
 import com.chico.sapper.GameArea
 import com.chico.sapper.settings.CurrentGameSetting
-
 
 class FindEmptyCells(
     currentGameSetting: CurrentGameSetting,
@@ -15,28 +13,18 @@ class FindEmptyCells(
     private val widthGameArea: Int = currentGameSetting.sizeGameAreaArray - 1
 
 ) {
-    val TAG = "TAG"
     fun clickOnClosedCell(gameArea: GameArea, yTouchOnAreaInt: Int, xTouchOnAreaInt: Int) {
         this.gameArea = gameArea
 
         setFirstCell(yTouchOnAreaInt, xTouchOnAreaInt)
-//        countFixedCells()
-
-//            Log.i(TAG," fixed = $fixedEmptyCells")
-//            Log.i(TAG," new = $newEmptyCells")
-//            newEmptyCells = fixedEmptyCells
 
         if (gameArea.isCloseMarkerHire(yTouchOnAreaInt, xTouchOnAreaInt)) {
 
             checkCellsNearTargetCell(yTouchOnAreaInt, xTouchOnAreaInt)
 
             if (newEmptyCells > 0) {
-//                Log.i(TAG, "1 new = $newEmptyCells")
 
                 while (newEmptyCells != fixedEmptyCells) {
-
-//                  Log.i(TAG, "2 fixed = $fixedEmptyCells")
-//                  Log.i(TAG, "2 new = $newEmptyCells")
 
                      fixedEmptyCells = newEmptyCells
 
@@ -50,9 +38,7 @@ class FindEmptyCells(
                 }
             }
         }
-
         findOpenCells()
-
     }
 
     private fun checkCellsNearTargetCell(y: Int, x: Int) {
@@ -74,7 +60,6 @@ class FindEmptyCells(
     }
 
     private fun checkCell(y: Int, x: Int) {
-//        Log.i(TAG, "check y $y, x $x")
         if (
             ((y >= 0) and (y <= heightGameArea))
             and
@@ -86,9 +71,7 @@ class FindEmptyCells(
                 (checkMarkerInAreaForOpen(y, x))
             ) {
                 setMarkerInAreaForOpen(y, x)
-//                Log.i(TAG, " set marker on y $y, x $x")
             }
-
         }
     }
 
@@ -108,7 +91,6 @@ class FindEmptyCells(
     private fun setMarkerInAreaForOpen(y: Int, x: Int) {
         gameArea.setMarkerInAreaForOpen(y, x)
         newEmptyCells++
-        Log.i(TAG, " new Empty Cells = $newEmptyCells")
     }
 
     private fun findOpenCells() {
@@ -120,13 +102,4 @@ class FindEmptyCells(
             }
         }
     }
-
-//    private fun countFixedCells() {
-//        for (y in 0..heightGameArea) {
-//            for (x in 0..widthGameArea) {
-//                if (gameArea.isMarkerForOpenCellHire(y, x)) fixedEmptyCells++
-//            }
-//        }
-//    }
-
 }

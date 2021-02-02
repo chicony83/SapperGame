@@ -301,6 +301,4 @@ class GameArea(
     fun isCellEmpty(y: Int, x: Int): Boolean {
         return areaMines[y][x]==0
     }
-
-
 }
