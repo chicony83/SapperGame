@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/looseGameMessage_layout"
-    style="@style/EndGameLayout">
+    style="@style/EndGameLayout"
+    android:background="@drawable/dim_background_is_loose"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/LooseGAmeMessage"
+
+        android:textColor="@color/black"
         android:textSize="@dimen/H1" />
 
     <Button
         android:id="@+id/button_playAgain_isLOOSE"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/buttonPlayAgain_text"/>
+        android:text="@string/buttonPlayAgain_text" />
+
     <Button
         android:id="@+id/button_selectLevel_isLOOSE"
         android:layout_width="match_parent"

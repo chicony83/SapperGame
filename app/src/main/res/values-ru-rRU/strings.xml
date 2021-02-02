@@ -12,7 +12,7 @@
     <string name="buttonNormal_text">Нормально</string>
     <string name="buttonHard_text">Сложно</string>
 
-    <string name="buttonPlayAgain_text">Еще раз</string>
+    <string name="buttonPlayAgain_text">Играть ещё</string>
 
     <string name="winGameMessage">Поздравляем вы нашли все мины</string>
     <string name="LooseGAmeMessage">Вы проиграли</string>

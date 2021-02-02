@@ -17,9 +17,32 @@
         android:id="@+id/game_elements_holder"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@+id/informationLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/informationLayout" >
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/layout_loose_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="@+id/game_elements_holder"
+        app:layout_constraintStart_toStartOf="@+id/game_elements_holder"
+        app:layout_constraintTop_toTopOf="@+id/informationLayout"
+        tools:ignore="IncludeLayoutParam" />
+
+    <include
+        layout="@layout/layout_win_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="@+id/informationLayout"
+        tools:ignore="IncludeLayoutParam" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -43,11 +66,5 @@
 
     </LinearLayout>
 
-    <include
-        layout="@layout/layout_loose_game"
-        android:visibility="gone" />
-    <include
-        layout="@layout/layout_win_game"
-        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

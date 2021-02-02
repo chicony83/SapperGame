@@ -165,7 +165,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
 //        changeResourcesOfDayNightMode()
         getNightColorsResource()
-        setNightBackgroundsOnMessageLayouts()
+//        setNightBackgroundsOnMessageLayouts()
 
         getStringRes()
         getImagesRes()
@@ -230,8 +230,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setNightBackgroundsOnMessageLayouts() {
-        looseGameMessageLayout.setBackgroundColor(colorOnPrimary)
-        winGameMessageLayout.setBackgroundColor(colorOnPrimary)
+//        looseGameMessageLayout.setBackgroundColor(colorOnPrimary)
+//        winGameMessageLayout.setBackgroundColor(colorOnPrimary)
     }
 
     override fun onBackPressed() {
