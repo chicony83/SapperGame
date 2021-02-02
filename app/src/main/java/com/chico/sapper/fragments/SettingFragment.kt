@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.Toast
 import com.chico.sapper.R
@@ -22,6 +23,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
     private lateinit var classicThemeButton: RadioButton
     private lateinit var forestThemeButton: RadioButton
     private lateinit var vanillaThemeButton: RadioButton
+
+    private lateinit var classicImageButton: ImageButton
+    private lateinit var forestImageButton: ImageButton
+    private lateinit var vanillaImageButton: ImageButton
 
     private lateinit var exitSettingsButton: Button
     private lateinit var saveSettingsButton: Button
@@ -56,16 +61,24 @@ class SettingFragment : Fragment(), View.OnClickListener {
         forestThemeButton = view.findViewById(R.id.forestTheme_radioButton)
         vanillaThemeButton = view.findViewById(R.id.vanillaTheme_radioButton)
 
+        classicImageButton = view.findViewById(R.id.classicTheme_imageButton)
+        forestImageButton = view.findViewById(R.id.forestTheme_imageButton)
+        vanillaImageButton = view.findViewById(R.id.vanillaTheme_imageButton)
+
         classicThemeButton.setOnClickListener(this)
         forestThemeButton.setOnClickListener(this)
         vanillaThemeButton.setOnClickListener(this)
 
+        classicImageButton.setOnClickListener(this)
+        forestImageButton.setOnClickListener(this)
+        vanillaImageButton.setOnClickListener(this)
+
         sharedPreferences = this.activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
 
-        when (sharedPreferences?.getString(spTheme, Themes.CLASSIC.toString())) {
+        when (sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())) {
             Themes.CLASSIC.toString() -> classicThemeButton.isChecked = true
             Themes.FOREST.toString() -> forestThemeButton.isChecked = true
-            Themes.VANILLA.toString() ->vanillaThemeButton.isChecked = true
+            Themes.VANILLA.toString() -> vanillaThemeButton.isChecked = true
         }
     }
 
@@ -79,21 +92,30 @@ class SettingFragment : Fragment(), View.OnClickListener {
             }
 
             saveSettingsButton -> {
-                if (classicThemeButton.isChecked){
+                if (classicThemeButton.isChecked) {
                     editorPutString(Themes.CLASSIC.toString())
                 }
-                if (forestThemeButton.isChecked){
+                if (forestThemeButton.isChecked) {
                     editorPutString(Themes.FOREST.toString())
                 }
-                if (vanillaThemeButton.isChecked){
+                if (vanillaThemeButton.isChecked) {
                     editorPutString(Themes.VANILLA.toString())
                 }
                 callBackInterface?.callBackFunction(FragmentsButtonNames.EXITSETTING)
             }
+            classicImageButton -> {
+                classicThemeButton.isChecked = true
+            }
+            forestImageButton -> {
+                forestThemeButton.isChecked = true
+            }
+            vanillaImageButton->{
+                vanillaThemeButton.isChecked = true
+            }
         }
     }
 
-    private fun editorPutString( theme: String) {
+    private fun editorPutString(theme: String) {
         val editor = sharedPreferences.edit()
         editor.putString(spTheme, theme)
         editor.apply()
