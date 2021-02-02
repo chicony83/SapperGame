@@ -51,17 +51,17 @@
 
         <Button
             android:id="@+id/button_open"
-            style="@style/GameFlags"
+            style="@style/ButtonsNormal"
             android:text="@string/buttonOpen_text" />
 
         <Button
             android:id="@+id/button_mayBe"
-            style="@style/GameFlags"
+            style="@style/ButtonsNormal"
             android:text="@string/buttonMayBe_text" />
 
         <Button
             android:id="@+id/button_mineIsHire"
-            style="@style/GameFlags"
+            style="@style/ButtonsNormal"
             android:text="@string/buttonMineIsHere_text" />
 
     </LinearLayout>

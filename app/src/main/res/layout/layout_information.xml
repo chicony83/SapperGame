@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/marginNormal"
-    android:paddingBottom="@dimen/marginNormal"
+    android:orientation="vertical"
     android:paddingTop="@dimen/marginNormal"
-    android:orientation="vertical">
+    android:paddingBottom="@dimen/marginNormal">
 
     <TextView
         android:id="@+id/timePassed"
@@ -16,19 +15,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/marginDouble"
         android:text="@string/time"
-        android:textSize="@dimen/H2"
+        android:textSize="@dimen/H3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/time_passed_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/marginDouble"
+        android:textSize="@dimen/H3"
         app:layout_constraintBottom_toBottomOf="@+id/timePassed"
         app:layout_constraintStart_toEndOf="@+id/timePassed"
         app:layout_constraintTop_toTopOf="@+id/timePassed"
-        tools:text="0:0:25"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginDouble" />
+        tools:text="0:0:25" />
 
     <TextView
         android:id="@+id/textView2"
@@ -36,21 +36,21 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/marginDouble"
         android:text="@string/minesLeft"
-        android:textSize="@dimen/H2"
+        android:textSize="@dimen/H3"
         app:layout_constraintBottom_toBottomOf="@+id/mines_left_value"
         app:layout_constraintEnd_toStartOf="@+id/mines_left_value"
         app:layout_constraintTop_toTopOf="@+id/mines_left_value" />
 
     <TextView
-        tools:text="100"
         android:id="@+id/mines_left_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        android:textSize="@dimen/H2"
         android:layout_marginEnd="@dimen/marginDouble"
+        android:text="0"
+        android:textSize="@dimen/H3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="100" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

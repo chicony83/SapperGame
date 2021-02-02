@@ -36,5 +36,8 @@
     <string name="select_level">select level</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="settingsFragmentName">Settings</string>
+    <string name="buttonBack_text">back</string>
+    <string name="buttonSave_text">save</string>
+    <string name="selectTheme_bottom_text">Select theme</string>
 
 </resources>
