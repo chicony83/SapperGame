@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SettingFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -15,18 +14,26 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/SettingText"
             android:layout_marginTop="@dimen/marginNormal"
-            android:gravity="center"
             android:text="@string/settingsFragmentName"
             android:textSize="@dimen/H1" />
 
         <TextView
+            style="@style/SettingText"
+            android:text="player name" />
+
+        <EditText
+            android:id="@+id/playerName_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginDouble"
+            android:layout_marginEnd="@dimen/marginDouble"
+            tools:text="noname" />
+
+        <TextView
+            style="@style/SettingText"
             android:layout_marginTop="@dimen/marginNormal"
-            android:gravity="center"
             android:text="@string/selectTheme_bottom_text"
             android:textSize="@dimen/H2" />
 
@@ -34,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
 
             <RadioGroup
                 android:layout_width="wrap_content"

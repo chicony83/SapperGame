@@ -1,6 +1,8 @@
 package com.chico.sapper.fragments
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +12,10 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.chico.sapper.GameActivity
 import com.chico.sapper.R
+import com.chico.sapper.dto.SharedPreferencesConst
 import com.chico.sapper.dto.enums.FragmentsButtonNames
 import com.chico.sapper.interfaces.CallBackInterface
+import kotlin.properties.Delegates
 
 class MainMenuFragment : Fragment(), View.OnClickListener {
 
@@ -23,6 +27,14 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     private lateinit var settingButton: ImageButton
 
     private var callBackInterface: CallBackInterface? = null
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private val spName = SharedPreferencesConst().SP_NAME
+    private val spIsFirstLaunch = SharedPreferencesConst().IS_FIRST_LAUNCH
+    private val spPlayerName = SharedPreferencesConst().PLAYER_NAME
+//    private var playerName = ""
+
+    private var isFirstLaunch by Delegates.notNull<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +62,28 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
 
         settingButton.setOnClickListener(this)
 
+        getSharedPreferences()
+        getSharedPreferencesData()
+        showDialogFirstLaunch()
+
+//        if ()
+    }
+
+    private fun showDialogFirstLaunch() {
+        if(isFirstLaunch){
+            val firstLaunchDialogFragment = FirstLaunchDialogFragment(sharedPreferences)
+            val manager = childFragmentManager
+            firstLaunchDialogFragment.show(manager,"first launch")
+        }
+    }
+
+    private fun getSharedPreferences() {
+        sharedPreferences = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
+    }
+
+    private fun getSharedPreferencesData() {
+        isFirstLaunch = sharedPreferences.getBoolean(spIsFirstLaunch.toString(), true)
+//        playerName = sharedPreferences.getString(spPlayerName.toString()," ")
     }
 
     override fun onClick(v: View?) {

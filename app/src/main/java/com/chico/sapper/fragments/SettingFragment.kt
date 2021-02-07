@@ -4,14 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.RadioButton
-import android.widget.Toast
+import android.widget.*
 import com.chico.sapper.R
 import com.chico.sapper.dto.SharedPreferencesConst
 import com.chico.sapper.dto.enums.FragmentsButtonNames
@@ -30,12 +28,18 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
     private lateinit var exitSettingsButton: Button
     private lateinit var saveSettingsButton: Button
+
+    private var playerName_editText: EditText? = null
+
     private lateinit var sharedPreferences: SharedPreferences
 
     private var callBackInterface: CallBackInterface? = null
 
     private val spName = SharedPreferencesConst().SP_NAME
     private val spTheme = SharedPreferencesConst().THEME
+    private val spPlayerName = SharedPreferencesConst().PLAYER_NAME
+
+    private lateinit var playerName: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +69,8 @@ class SettingFragment : Fragment(), View.OnClickListener {
         forestImageButton = view.findViewById(R.id.forestTheme_imageButton)
         vanillaImageButton = view.findViewById(R.id.vanillaTheme_imageButton)
 
+        playerName_editText = view.findViewById(R.id.playerName_editText)
+
         classicThemeButton.setOnClickListener(this)
         forestThemeButton.setOnClickListener(this)
         vanillaThemeButton.setOnClickListener(this)
@@ -75,6 +81,25 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
         sharedPreferences = this.activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
 
+        setSPThemeTry()
+        getSPPlayerName()
+    }
+
+    private fun getSPPlayerName() {
+
+        playerName_editText?.setText(sharedPreferences.getString(spPlayerName, ""))
+//        Log.i("TAG", "text = $text")
+//        playerName = sharedPreferences.getString(spPlayerName,"").toString()
+//        val newText= playerName
+//        Log.i("TAG", "player name = $playerName")
+//        if (this.playerName.isNotEmpty()){
+//            val text = playerName
+//            playerName_editText?.hint = text
+//            Log.i("TAG","text = $text")
+//        }
+    }
+
+    private fun setSPThemeTry() {
         when (sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())) {
             Themes.CLASSIC.toString() -> classicThemeButton.isChecked = true
             Themes.FOREST.toString() -> forestThemeButton.isChecked = true
@@ -109,7 +134,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
             forestImageButton -> {
                 forestThemeButton.isChecked = true
             }
-            vanillaImageButton->{
+            vanillaImageButton -> {
                 vanillaThemeButton.isChecked = true
             }
         }
