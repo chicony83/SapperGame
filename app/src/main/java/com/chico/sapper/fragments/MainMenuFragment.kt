@@ -1,5 +1,6 @@
 package com.chico.sapper.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -29,9 +30,13 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     private var callBackInterface: CallBackInterface? = null
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var spEditor:SharedPreferences.Editor
+
     private val spName = SharedPreferencesConst().SP_NAME
     private val spIsFirstLaunch = SharedPreferencesConst().IS_FIRST_LAUNCH
-    private val spPlayerName = SharedPreferencesConst().PLAYER_NAME
+
+
+//    private val spPlayerName = SharedPreferencesConst().PLAYER_NAME
 //    private var playerName = ""
 
     private var isFirstLaunch by Delegates.notNull<Boolean>()
@@ -66,7 +71,13 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
         getSharedPreferencesData()
         showDialogFirstLaunch()
 
+        setSharedPreferenceData()
 //        if ()
+    }
+
+    private fun setSharedPreferenceData() {
+        spEditor.putBoolean(spIsFirstLaunch.toString(),isFirstLaunch)
+        spEditor.commit()
     }
 
     private fun showDialogFirstLaunch() {
@@ -74,11 +85,14 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
             val firstLaunchDialogFragment = FirstLaunchDialogFragment(sharedPreferences)
             val manager = childFragmentManager
             firstLaunchDialogFragment.show(manager,"first launch")
+            isFirstLaunch = false
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     private fun getSharedPreferences() {
         sharedPreferences = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
+        spEditor = sharedPreferences.edit()
     }
 
     private fun getSharedPreferencesData() {
