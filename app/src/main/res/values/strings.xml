@@ -38,10 +38,9 @@
     <string name="settingsFragmentName">Settings</string>
     <string name="buttonBack_text">back</string>
     <string name="buttonSave_text">save</string>
+
     <string name="selectTheme_bottom_text">Select theme</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="high_score_fragment">High score</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

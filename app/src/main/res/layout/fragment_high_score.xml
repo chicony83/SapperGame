@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HighScoreFragment">
 
+    <TextView
+        android:id="@+id/bottomText"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/highScore_to_highScoreMenu_button"
         android:layout_width="match_parent"
