@@ -9,6 +9,8 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.chico.sapper.database.dao.WinnerGameDao
+import com.chico.sapper.database.db
 import com.chico.sapper.dto.SharedPreferencesConst
 import com.chico.sapper.dto.enums.BundleStringsNames
 import com.chico.sapper.dto.enums.FragmentsButtonNames
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         setContentView(R.layout.activity_main)
 
         sharedPreferences()
+
+        val db: WinnerGameDao = db.getDB(this).winnerGameDao()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

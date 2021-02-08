@@ -10,6 +10,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.chico.sapper.R
+import com.chico.sapper.database.dao.WinnerGameDao
+import com.chico.sapper.database.db
 import com.chico.sapper.dto.enums.BundleStringsNames
 import com.chico.sapper.dto.enums.FragmentsButtonNames
 import com.chico.sapper.dto.enums.HighScoreState
@@ -38,10 +40,10 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
 
         val bundle = arguments
         result = bundle?.getString(BundleStringsNames.HIGH_SCORE_STATE.toString()).toString()
-        Log.i("TAG", "result = $result")
+//        Log.i("TAG", "result = $result")
+        bundle?.clear()
 
-
-//        bundle?.clear()
+        val db:WinnerGameDao = db.getDB(requireActivity()).winnerGameDao()
 
         return rootView
     }
