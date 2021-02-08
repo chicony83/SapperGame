@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -111,8 +110,8 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
         when (v) {
             exitSettingsButton -> {
+                callBackInterface?.callBackFunction(FragmentsButtonNames.TO_MAIN_MENU)
                 val text = "settings don't saved"
-                callBackInterface?.callBackFunction(FragmentsButtonNames.EXITSETTING)
                 showMessage(text)
             }
 
@@ -126,7 +125,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 if (vanillaThemeButton.isChecked) {
                     editorPutString(Themes.VANILLA.toString())
                 }
-                callBackInterface?.callBackFunction(FragmentsButtonNames.EXITSETTING)
+                callBackInterface?.callBackFunction(FragmentsButtonNames.TO_MAIN_MENU)
             }
             classicImageButton -> {
                 classicThemeButton.isChecked = true
@@ -153,5 +152,4 @@ class SettingFragment : Fragment(), View.OnClickListener {
     fun setCallBackInterface(callBackInterface: CallBackInterface) {
         this.callBackInterface = callBackInterface
     }
-
 }

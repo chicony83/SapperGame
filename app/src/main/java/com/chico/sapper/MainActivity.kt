@@ -1,20 +1,20 @@
 package com.chico.sapper
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.chico.sapper.dto.SharedPreferencesConst
+import com.chico.sapper.dto.enums.BundleStringsNames
 import com.chico.sapper.dto.enums.FragmentsButtonNames
+import com.chico.sapper.dto.enums.HighScoreState
 import com.chico.sapper.dto.enums.Themes
-import com.chico.sapper.fragments.MainMenuFragment
-import com.chico.sapper.fragments.SettingFragment
-import com.chico.sapper.fragments.SplashScreenFragment
+import com.chico.sapper.fragments.*
 import com.chico.sapper.interfaces.CallBackInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,11 +30,13 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
     private lateinit var settingFragment: SettingFragment
     private lateinit var mainMenuFragment: MainMenuFragment
     private lateinit var splashScreenFragment: SplashScreenFragment
+    private lateinit var highScoreMenuFragment: HighScoreMenuFragment
+
+    private lateinit var highScoreFragment: HighScoreFragment
 
     private val spName = SharedPreferencesConst().SP_NAME
     private val spCounterLaunch = SharedPreferencesConst().LAUNCH_COUNTER
     private val spTheme = SharedPreferencesConst().THEME
-
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +54,14 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         splashScreenFragment = SplashScreenFragment()
         mainMenuFragment = MainMenuFragment()
         settingFragment = SettingFragment()
+        highScoreMenuFragment = HighScoreMenuFragment()
+        highScoreFragment = HighScoreFragment()
 
         mainMenuFragment.setCallBackInterface(this)
         settingFragment.setCallBackInterface(this)
+        highScoreMenuFragment.setCallBackInterface(this)
+        highScoreFragment.setCallBackInterface(this)
+
         isMenuStarting = intent.getBooleanExtra("IS_MENU_STARTING", true)
 
         if (isMenuStarting) {
@@ -70,7 +77,7 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         }
     }
 
-    private fun sharedPreferences(){
+    private fun sharedPreferences() {
         val sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE)
 
         val editor = sharedPreferences.edit()
@@ -103,13 +110,6 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
             .commit()
     }
 
-    private fun startFragment(startFragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_holder, startFragment)
-            .commit()
-    }
-
     private fun changeFragment(addFragment: Fragment, remFragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
@@ -119,9 +119,46 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
     }
 
     override fun callBackFunction(i: FragmentsButtonNames) {
+        var args = Bundle()
         when (i) {
+            FragmentsButtonNames.TO_MAIN_MENU -> startFragment(mainMenuFragment)
             FragmentsButtonNames.SETTING -> startFragment(settingFragment)
-            FragmentsButtonNames.EXITSETTING -> startFragment(mainMenuFragment)
+            FragmentsButtonNames.HIGH_SCORE_MENU -> startFragment(highScoreMenuFragment)
+
+            FragmentsButtonNames.HIGH_SCORE_VERY_EASY -> {
+                setHighScoreState(HighScoreState.VERY_EASY, args)
+                startHighShoreFragment(highScoreFragment, args)
+            }
+            FragmentsButtonNames.HIGH_SCORE_EASY -> {
+                setHighScoreState(HighScoreState.EASY, args)
+                startHighShoreFragment(highScoreFragment, args)
+            }
+            FragmentsButtonNames.HIGH_SCORE_NORMAL -> {
+                setHighScoreState(HighScoreState.NORMAL,args)
+                startHighShoreFragment(highScoreFragment,args)
+            }
+            FragmentsButtonNames.HIGH_SCORE_HARD -> {
+                setHighScoreState(HighScoreState.HARD,args)
+                startHighShoreFragment(highScoreFragment,args)
+            }
         }
+    }
+
+    private fun setHighScoreState(state: HighScoreState, args: Bundle): Bundle {
+        args.putString(BundleStringsNames.HIGH_SCORE_STATE.toString(), state.toString())
+//        Log.i("TAG", "set State = $state")
+        return args
+    }
+
+    private fun startHighShoreFragment(highScoreFragment: HighScoreFragment, args: Bundle) {
+        highScoreFragment.arguments = args
+        startFragment(highScoreFragment)
+    }
+
+    private fun startFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_holder, fragment)
+            .commit()
     }
 }

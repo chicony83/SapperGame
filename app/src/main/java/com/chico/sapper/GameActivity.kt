@@ -26,7 +26,7 @@ import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.utils.ParseTime
 import com.chico.sapper.utils.launchIoNotReturn
-import com.chico.sapper.viewModel.CounterViewModel
+import com.chico.sapper.viewModel.MyViewModel
 import kotlinx.coroutines.*
 import kotlin.math.ceil
 import kotlin.properties.Delegates
@@ -73,7 +73,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var toastTextMineHere: String
     private lateinit var toastTextRunOutOfMineMarkers: String
 
-    private lateinit var viewModelProvider: CounterViewModel
+    private lateinit var viewModelProvider: MyViewModel
 
     private var selectStateWhatDo: WhatDo = WhatDo.OPEN
 
@@ -114,7 +114,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             countCellsOnGameArea(currentGameSetting.sizeGameAreaArray)
 
 
-        viewModelProvider = ViewModelProvider(this).get(CounterViewModel::class.java)
+        viewModelProvider = ViewModelProvider(this).get(MyViewModel::class.java)
 
         sizeDisplay(metrics)
         countCellSize(metrics)
@@ -273,7 +273,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         viewModelProvider.gameTime.postValue("0")
     }
 
-    private fun observersCounterViewModel(viewModelProvider: CounterViewModel) {
+    private fun observersCounterViewModel(viewModelProvider: MyViewModel) {
         viewModelProvider.counterMines.observe(
             this, {
                 minesLeftValue.text = it.toString()

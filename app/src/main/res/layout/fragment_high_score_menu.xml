@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.HighScoreMenuFragment">
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/H1"
+        android:text="@string/high_score_fragment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/highScore_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/highScore_to_mainMenu_button"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <Button
+            android:id="@+id/veryEasy_highScore_button"
+            style="@style/MenuButtons"
+            android:text="@string/buttonVeryEasy_text" />
+
+        <Button
+            android:id="@+id/easy_highScore_button"
+            style="@style/MenuButtons"
+            android:text="@string/buttonEasy_text" />
+
+        <Button
+            android:id="@+id/normal_highScore_button"
+            style="@style/MenuButtons"
+            android:text="@string/buttonNormal_text" />
+
+        <Button
+            android:id="@+id/hard_highScore_button"
+            style="@style/MenuButtons"
+            android:text="@string/buttonHard_text" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/highScore_to_mainMenu_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/marginNormal"
+        android:text="back"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

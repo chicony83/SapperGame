@@ -26,6 +26,7 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     private lateinit var hardGameButton: Button
 
     private lateinit var settingButton: ImageButton
+    private lateinit var highScoreButton:ImageButton
 
     private var callBackInterface: CallBackInterface? = null
 
@@ -63,9 +64,11 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        settingButton = activity?.findViewById(R.id.settingButton)!!
+        settingButton = view.findViewById(R.id.setting_button)
+        highScoreButton = view.findViewById(R.id.highScore_button)
 
         settingButton.setOnClickListener(this)
+        highScoreButton.setOnClickListener(this)
 
         getSharedPreferences()
         getSharedPreferencesData()
@@ -108,6 +111,7 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
             hardGameButton -> startGameActivity(v)
 
             settingButton -> callBackInterface?.callBackFunction(FragmentsButtonNames.SETTING)
+            highScoreButton ->callBackInterface?.callBackFunction(FragmentsButtonNames.HIGH_SCORE_MENU)
         }
     }
 

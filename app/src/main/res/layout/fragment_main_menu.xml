@@ -11,33 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/settingButton"
+        app:layout_constraintBottom_toTopOf="@+id/setting_button"
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/veryEasy_game_button"
-            style="@style/MainMenuButtons"
+            style="@style/MenuButtons"
             android:text="@string/buttonVeryEasy_text" />
 
         <Button
             android:id="@+id/easy_game_button"
-            style="@style/MainMenuButtons"
+            style="@style/MenuButtons"
             android:text="@string/buttonEasy_text" />
 
         <Button
             android:id="@+id/normal_game_button"
-            style="@style/MainMenuButtons"
+            style="@style/MenuButtons"
             android:text="@string/buttonNormal_text" />
 
         <Button
             android:id="@+id/hard_game_button"
-            style="@style/MainMenuButtons"
+            style="@style/MenuButtons"
             android:text="@string/buttonHard_text" />
 
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/settingButton"
+        android:id="@+id/setting_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="@dimen/marginNormal"
@@ -45,16 +45,26 @@
         android:src="@drawable/settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/highScore_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="@dimen/marginNormal"
+        android:layout_marginBottom="@dimen/marginNormal"
+        android:src="@drawable/score"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
 
     <TextView
-        android:textSize="@dimen/H3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/VERSION"
+        android:textSize="@dimen/H3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,13 +14,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            style="@style/SettingText"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:text="@string/settingsFragmentName"
-            android:textSize="@dimen/H1" />
+            style="@style/H1"
+            android:text="@string/settingsFragmentName" />
 
         <TextView
-            style="@style/SettingText"
+            style="@style/CenterText"
             android:text="player name" />
 
         <EditText
@@ -32,7 +30,7 @@
             tools:text="noname" />
 
         <TextView
-            style="@style/SettingText"
+            style="@style/CenterText"
             android:layout_marginTop="@dimen/marginNormal"
             android:text="@string/selectTheme_bottom_text"
             android:textSize="@dimen/H2" />

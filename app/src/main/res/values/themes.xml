@@ -15,7 +15,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="MainMenuButtons" parent="Theme.SapperGame">
+    <style name="MenuButtons" parent="Theme.SapperGame">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">100dp</item>
         <item name="android:textSize">@dimen/H1</item>
@@ -49,10 +49,17 @@
         <item name="android:orientation">vertical</item>
         <item name="android:padding">@dimen/marginDouble</item>
     </style>
-    <style name="SettingText">
+    <style name="CenterText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
+    </style>
+    <style name="H1" parent="CenterText">
+        <item name="android:layout_marginTop">@dimen/marginNormal</item>
+        <item name="android:layout_marginBottom">@dimen/marginNormal</item>
+        <item name="android:textSize">@dimen/H1</item>
+    </style>
+    <style name="HighScoreLayout">
 
     </style>
 </resources>
