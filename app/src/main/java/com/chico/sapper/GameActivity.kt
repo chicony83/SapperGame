@@ -252,13 +252,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 timeCurrent = System.currentTimeMillis()
                 delay(10)
 
-                if ((timeCurrent - timePreviousUpdate) > 1000) {
+                if ((timeCurrent - timePreviousUpdate) > 100) {
 
                     timePreviousUpdate = getCurrentTimeInMillis()
 
                     timeOfGame = timeCurrent - timeStart
 
-                    viewModelProvider.gameTime.postValue(parseTime.parseLongToString(timeOfGame))
+                    viewModelProvider.gameTime.postValue(parseTime.parseLongToTime(timeOfGame))
                 }
             }
         }
@@ -380,7 +380,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
 
-        timeOfEndGameValue.text = parseTime.parseLongToString(timeOfGame)
+        timeOfEndGameValue.text = parseTime.parseLongToTime(timeOfGame)
 
         if (isWin) {
             winGameMessageLayout.visibility = View.VISIBLE

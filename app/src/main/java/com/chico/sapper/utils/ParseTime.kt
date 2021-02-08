@@ -3,11 +3,12 @@ package com.chico.sapper.utils
 
 class ParseTime {
 
-    fun parseLongToString(timeInMills: Long): String {
-        val hour = ((timeInMills / 100) / 60) / 60
-        val minute = (timeInMills / 1000) / 60
+    fun parseLongToTime(timeInMills: Long): String {
+        val millis = timeInMills % 10
         val seconds = (timeInMills / 1000) % 60
+        val minute = seconds / 60
+        val hour = minute / 60
 
-        return "$hour : $minute : $seconds"
+        return "$hour : $minute : $seconds: $millis"
     }
 }
