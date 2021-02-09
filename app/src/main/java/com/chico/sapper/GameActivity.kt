@@ -2,6 +2,7 @@ package com.chico.sapper
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
@@ -25,7 +26,6 @@ import com.chico.sapper.logics.FindEmptyCells
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.utils.ParseTime
-import com.chico.sapper.utils.launchIoNotReturn
 import com.chico.sapper.viewModel.GameTime
 import com.chico.sapper.viewModel.MyViewModel
 import kotlinx.coroutines.*
@@ -70,6 +70,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var minesLeftValue: TextView
     private lateinit var timePassedValue: TextView
     private lateinit var timeOfEndGameValue: TextView
+    private lateinit var playerNameValue: TextView
 
     private lateinit var toastTextOpen: String
     private lateinit var toastTextMayBeMineIsHere: String
@@ -100,6 +101,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var gameLevel by Delegates.notNull<Int>()
     private var explodedCell = -1
+
+    private val SP_NAME = SharedPreferencesConst().SP_NAME
+    private val SP_THEME = SharedPreferencesConst().THEME
+    private var SP_PLAYER_NAME = SharedPreferencesConst().PLAYER_NAME
+
+    private lateinit var playerName: String
+
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("CutPasteId")
@@ -150,6 +160,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         minesLeftValue = findViewById(R.id.mines_left_value)
         timePassedValue = findViewById(R.id.time_passed_value)
         timeOfEndGameValue = findViewById(R.id.gameTime_textView)
+        playerNameValue = findViewById(R.id.playerName_value)
 
         buttonOpen.setOnClickListener(this)
         buttonMayBe.setOnClickListener(this)
@@ -163,10 +174,17 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         leftToFindMines = currentGameSetting.mines
 
+        sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE)
+
         initLayouts()
         getColorsResource()
         getStringRes()
-        getImagesRes()
+        getThemesImagesRes()
+        getPlayerName()
+    }
+
+    private fun getPlayerName() {
+        playerName = sharedPreferences.getString(SP_PLAYER_NAME, "").orEmpty()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -203,12 +221,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         job.cancel()
     }
 
-    private fun getImagesRes() {
-        val spName = SharedPreferencesConst().SP_NAME
-        val spTheme = SharedPreferencesConst().THEME
+    private fun getThemesImagesRes() {
 
-        val sharedPreferences = getSharedPreferences(spName, MODE_PRIVATE)
-        var themeCurrent = sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())
+        var themeCurrent = sharedPreferences.getString(SP_THEME, Themes.CLASSIC.toString())
 
         when (themeCurrent) {
             Themes.CLASSIC.toString() -> {
@@ -340,6 +355,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (leftToFindMines == 0) {
             isWin = gameArea.checkTheFlagsSet()
             if (isWin) {
+
                 endLevel()
             }
             if (!isWin) {
@@ -365,6 +381,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         timeOfEndGameValue.text = timePassedValue.text
 
         if (isWin) {
+            if (playerName.isNotEmpty()) {
+                playerNameValue.visibility = View.VISIBLE
+                playerNameValue.text = playerName
+            }
             winGameMessageLayout.visibility = View.VISIBLE
         } else if (isLoose) {
             looseGameMessageLayout.visibility = View.VISIBLE
