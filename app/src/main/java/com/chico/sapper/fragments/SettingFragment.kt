@@ -31,13 +31,13 @@ class SettingFragment : Fragment(), View.OnClickListener {
     private var playerName_editText: EditText? = null
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     private var callBackInterface: CallBackInterface? = null
+    private val SP_NAME = SharedPreferencesConst().SP_NAME
+    private val SP_THEME = SharedPreferencesConst().THEME
 
-    private val spName = SharedPreferencesConst().SP_NAME
-    private val spTheme = SharedPreferencesConst().THEME
-    private val spPlayerName = SharedPreferencesConst().PLAYER_NAME
-
+    private val SP_PLAYER_NAME = SharedPreferencesConst().PLAYER_NAME
     private lateinit var playerName: String
 
     override fun onCreateView(
@@ -56,7 +56,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         return rootView
     }
 
-    @SuppressLint("UseRequireInsteadOfGet")
+    @SuppressLint("UseRequireInsteadOfGet", "CommitPrefEdits")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -78,28 +78,20 @@ class SettingFragment : Fragment(), View.OnClickListener {
         forestImageButton.setOnClickListener(this)
         vanillaImageButton.setOnClickListener(this)
 
-        sharedPreferences = this.activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
+        sharedPreferences = this.activity?.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)!!
+        editor = sharedPreferences.edit()
 
         setSPThemeTry()
         getSPPlayerName()
     }
 
     private fun getSPPlayerName() {
-
-        playerName_editText?.setText(sharedPreferences.getString(spPlayerName, ""))
-//        Log.i("TAG", "text = $text")
-//        playerName = sharedPreferences.getString(spPlayerName,"").toString()
-//        val newText= playerName
-//        Log.i("TAG", "player name = $playerName")
-//        if (this.playerName.isNotEmpty()){
-//            val text = playerName
-//            playerName_editText?.hint = text
-//            Log.i("TAG","text = $text")
-//        }
+        playerName = sharedPreferences.getString(SP_PLAYER_NAME, "").orEmpty().toString()
+        playerName_editText?.setText(playerName)
     }
 
     private fun setSPThemeTry() {
-        when (sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())) {
+        when (sharedPreferences.getString(SP_THEME, Themes.CLASSIC.toString())) {
             Themes.CLASSIC.toString() -> classicThemeButton.isChecked = true
             Themes.FOREST.toString() -> forestThemeButton.isChecked = true
             Themes.VANILLA.toString() -> vanillaThemeButton.isChecked = true
@@ -117,16 +109,19 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
             saveSettingsButton -> {
                 if (classicThemeButton.isChecked) {
-                    editorPutString(Themes.CLASSIC.toString())
+                    editorPutString(SP_THEME, Themes.CLASSIC.toString())
                 }
                 if (forestThemeButton.isChecked) {
-                    editorPutString(Themes.FOREST.toString())
+                    editorPutString(SP_THEME, Themes.FOREST.toString())
                 }
                 if (vanillaThemeButton.isChecked) {
-                    editorPutString(Themes.VANILLA.toString())
+                    editorPutString(SP_THEME, Themes.VANILLA.toString())
                 }
+                editorPutString(SP_PLAYER_NAME,playerName_editText?.text.toString())
+
                 callBackInterface?.callBackFunction(FragmentsButtonNames.TO_MAIN_MENU)
             }
+
             classicImageButton -> {
                 classicThemeButton.isChecked = true
             }
@@ -139,9 +134,8 @@ class SettingFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun editorPutString(theme: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString(spTheme, theme)
+    private fun editorPutString(SP_CONST: String, value: String) {
+        editor.putString(SP_CONST, value)
         editor.apply()
     }
 
