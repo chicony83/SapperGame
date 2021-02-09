@@ -333,7 +333,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModelProvider.counterMines.postValue(leftToFindMines)
 
-
         if (isLoose) {
             gameLoose()
         }
@@ -424,7 +423,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun gameLoose() {
-
         openMines()
         fillingThePlayingArea()
         endLevel()
