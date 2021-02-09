@@ -26,6 +26,7 @@ import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.utils.ParseTime
 import com.chico.sapper.utils.launchIoNotReturn
+import com.chico.sapper.viewModel.GameTime
 import com.chico.sapper.viewModel.MyViewModel
 import kotlinx.coroutines.*
 import kotlin.math.ceil
@@ -38,6 +39,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private val metrics = Metrics()
     private val parseTime = ParseTime()
     private val modificationDB = ModificationDB()
+
+    private lateinit var gameTime: GameTime
     private lateinit var gameArea: GameArea
     private lateinit var findEmptyCells: FindEmptyCells
 
@@ -83,9 +86,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var isWin: Boolean = false
 
     private var timeStart by Delegates.notNull<Long>()
-    private var timeCurrent by Delegates.notNull<Long>()
-    private var timePreviousUpdate: Long = 0
-    private var timeOfGame: Long = 0
+//    private var timeCurrent by Delegates.notNull<Long>()
+//    private var timePreviousUpdate: Long = 0
+//    private var timeOfGame: Long = 0
 
     private var isGameRun = false
 
@@ -166,6 +169,40 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         getImagesRes()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onStart() {
+        super.onStart()
+
+        gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
+
+        fillingThePlayingArea()
+
+        gameElementsHolder.setOnTouchListener { v: View, m: MotionEvent ->
+            handleTouch(m)
+            false
+        }
+
+        isGameRun = true
+        timeStart = getCurrentTimeInMillis()
+
+        gameTime = GameTime(timeStart, viewModelProvider, isGameRun)
+//        timePreviousUpdate = getCurrentTimeInMillis()
+        job = CoroutineScope(Dispatchers.IO).launch {
+            gameTime.timeGo()
+        }
+        pressButtonOpen("", buttonOpen)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startMainMenu()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        job.cancel()
+    }
+
     private fun getImagesRes() {
         val spName = SharedPreferencesConst().SP_NAME
         val spTheme = SharedPreferencesConst().THEME
@@ -190,41 +227,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         currentImages = images as MutableMap<String, Int>
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onStart() {
-        super.onStart()
-
-        gameElementsHolder.layoutParams.height = metrics.sizeDisplayX
-
-        fillingThePlayingArea()
-
-        gameElementsHolder.setOnTouchListener { v: View, m: MotionEvent ->
-            handleTouch(m)
-            false
-        }
-
-        isGameRun = true
-        timeStart = getCurrentTimeInMillis()
-        timePreviousUpdate = getCurrentTimeInMillis()
-
-        launchIoNotReturn { gameTime() }
-        pressButtonOpen("", buttonOpen)
-    }
-
     private fun initLayouts() {
         gameElementsHolder = findViewById(R.id.game_elements_holder)
         looseGameMessageLayout = findViewById(R.id.looseGameMessage_layout)
         winGameMessageLayout = findViewById(R.id.winGameMessage_layout)
-    }
-
-    private fun setDayBackgroundsOnMessageLayouts() {
-        looseGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
-        winGameMessageLayout.setBackgroundColor(colorPrimaryVariant)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        startMainMenu()
     }
 
     private fun getColorsResource() {
@@ -240,29 +246,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         toastTextRunOutOfMineMarkers = getString(R.string.toastText_runOutOfMineMarkers)
     }
 
-    override fun onPause() {
-        super.onPause()
-        job.cancel()
-    }
-
-    private fun gameTime() {
-        job = CoroutineScope(Dispatchers.IO).launch {
-
-            while (!isWin or !isLoose) {
-                timeCurrent = System.currentTimeMillis()
-                delay(10)
-
-                if ((timeCurrent - timePreviousUpdate) > 100) {
-
-                    timePreviousUpdate = getCurrentTimeInMillis()
-
-                    timeOfGame = timeCurrent - timeStart
-
-                    viewModelProvider.gameTime.postValue(parseTime.parseLongToTime(timeOfGame))
-                }
-            }
-        }
-    }
 
     private fun getCurrentTimeInMillis(): Long {
         return System.currentTimeMillis()
@@ -380,7 +363,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
 
-        timeOfEndGameValue.text = parseTime.parseLongToTime(timeOfGame)
+        timeOfEndGameValue.text = timePassedValue.text
 
         if (isWin) {
             winGameMessageLayout.visibility = View.VISIBLE
