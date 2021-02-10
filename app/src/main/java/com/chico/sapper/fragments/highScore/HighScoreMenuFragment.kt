@@ -1,4 +1,4 @@
-package com.chico.sapper.fragments
+package com.chico.sapper.fragments.highScore
 
 import android.os.Bundle
 import android.util.Log

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +15,11 @@ import com.chico.sapper.dto.enums.BundleStringsNames
 import com.chico.sapper.dto.enums.FragmentsButtonNames
 import com.chico.sapper.dto.enums.HighScoreState
 import com.chico.sapper.dto.enums.Themes
-import com.chico.sapper.fragments.*
+import com.chico.sapper.fragments.highScore.HighScoreFragment
+import com.chico.sapper.fragments.highScore.HighScoreMenuFragment
+import com.chico.sapper.fragments.menu.MainMenuFragment
+import com.chico.sapper.fragments.menu.SettingFragment
+import com.chico.sapper.fragments.menu.SplashScreenFragment
 import com.chico.sapper.interfaces.CallBackInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

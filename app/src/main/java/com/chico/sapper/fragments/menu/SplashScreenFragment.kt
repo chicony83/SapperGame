@@ -1,4 +1,4 @@
-package com.chico.sapper.fragments
+package com.chico.sapper.fragments.menu
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.chico.sapper.fragments
+package com.chico.sapper.fragments.menu
 
 import android.annotation.SuppressLint
 import android.content.Context
