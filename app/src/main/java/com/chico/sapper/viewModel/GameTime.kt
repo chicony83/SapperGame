@@ -29,12 +29,12 @@ class GameTime(
 
                 timeOfGame = timeCurrent - timeStart
 
+//                val time = parseTime.parseLongToTime(this.timeOfGame)
 
-                val time = parseTime.parseLongToTime(timeOfGame)
+//                Log.i("TAG","game time = ${time}")
 
-                Log.i("TAG","game time = ${time}")
-
-                viewModelProvider.gameTime.postValue(time)
+                viewModelProvider.gameTime.postValue(parseTime.parseLongToTime(timeOfGame))
+                viewModelProvider.winnerGameTime.postValue(timeOfGame)
             }
         }
     }

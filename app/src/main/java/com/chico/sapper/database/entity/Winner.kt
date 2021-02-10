@@ -3,9 +3,13 @@ package com.chico.sapper.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.chico.sapper.dto.enums.LevelGame
 
-@Entity(tableName = "hard_table")
-data class HardWinner(
+@Entity(tableName = "winner_table")
+data class Winner(
+    @ColumnInfo(name = "level_game")
+    val level:Int,
+
     @ColumnInfo(name = "player_name")
     val name: String,
 

@@ -15,17 +15,22 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.chico.sapper.database.dao.WinnerGameDao
+import com.chico.sapper.database.db
+import com.chico.sapper.database.entity.Winner
 import com.chico.sapper.dto.CellsDB
 import com.chico.sapper.dto.ImagesDB
 import com.chico.sapper.dto.SharedPreferencesConst
 import com.chico.sapper.dto.Touch
 import com.chico.sapper.dto.enums.CellState
+import com.chico.sapper.dto.enums.LevelGame
 import com.chico.sapper.dto.enums.Themes
 import com.chico.sapper.dto.enums.WhatDo
 import com.chico.sapper.logics.FindEmptyCells
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
 import com.chico.sapper.utils.ParseTime
+import com.chico.sapper.utils.launchIo
 import com.chico.sapper.viewModel.GameTime
 import com.chico.sapper.viewModel.MyViewModel
 import kotlinx.coroutines.*
@@ -87,9 +92,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var isWin: Boolean = false
 
     private var timeStart by Delegates.notNull<Long>()
-//    private var timeCurrent by Delegates.notNull<Long>()
+
+    //    private var timeCurrent by Delegates.notNull<Long>()
 //    private var timePreviousUpdate: Long = 0
-//    private var timeOfGame: Long = 0
+    private var winnerGameTime: Long = 0
 
     private var isGameRun = false
 
@@ -121,6 +127,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         setActivityOrientation()
 
         gameLevel = intent.getIntExtra("LEVEL_GAME", 0)
+//        gameLevel = intent.getIntExtra("LEVEL_GAME", 0)
 
         currentGameSetting.preparationLevelSetting(gameLevel, settingLevels)
         currentGameSetting.numberOfCellsOnGameArea =
@@ -283,6 +290,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 timePassedValue.text = it.toString()
             }
         )
+        viewModelProvider.winnerGameTime.observe(
+            this, {
+                winnerGameTime = it
+            }
+        )
     }
 
     private fun handleTouch(m: MotionEvent) {
@@ -378,12 +390,25 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
 
-        timeOfEndGameValue.text = timePassedValue.text
 
         if (isWin) {
+            val gameTime = timePassedValue.text.toString()
+            timeOfEndGameValue.text = gameTime
+
+            val db: WinnerGameDao = db.getDB(this).winnerGameDao()
+
             if (playerName.isNotEmpty()) {
+                when (gameLevel) {
+
+                }
                 playerNameValue.visibility = View.VISIBLE
                 playerNameValue.text = playerName
+                val winner = Winner(
+                    level = gameLevel,
+                    name = playerName,
+                    time = winnerGameTime
+                )
+                launchIo { db.addWinner(winner = winner) }
             }
             winGameMessageLayout.visibility = View.VISIBLE
         } else if (isLoose) {

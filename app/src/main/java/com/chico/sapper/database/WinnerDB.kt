@@ -5,17 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.chico.sapper.database.dao.WinnerGameDao
-import com.chico.sapper.database.entity.EasyWinner
-import com.chico.sapper.database.entity.HardWinner
-import com.chico.sapper.database.entity.NormalWinner
-import com.chico.sapper.database.entity.VeryEasyWinner
+import com.chico.sapper.database.entity.Winner
 
 @Database(
     entities = [
-        VeryEasyWinner::class,
-        EasyWinner::class,
-        NormalWinner::class,
-        HardWinner::class
+        Winner::class,
     ], version = 1)
 
 abstract class WinnerDB : RoomDatabase(){

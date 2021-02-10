@@ -4,13 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "very_easy_table")
-data class VeryEasyWinner(
-    @ColumnInfo(name = "player_name")
-    val name: String,
-
-    @ColumnInfo(name = "time")
-    val time: Long
+@Entity(tableName = "level")
+data class Level(
+    @ColumnInfo(name = "level")
+    val level: String
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null

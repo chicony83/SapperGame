@@ -1,17 +1,20 @@
 package com.chico.sapper.utils
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-fun launchIoNotReturn(task:suspend ()->Unit){
+fun launchIo(task: suspend () -> Unit) {
     CoroutineScope(Dispatchers.IO).launch {
         task()
     }
 }
-fun launchUINotReturn(task: suspend () -> Unit){
+
+fun launchUI(task: suspend () -> Unit) {
     CoroutineScope(Dispatchers.Main).launch {
         task()
     }
+}
+suspend fun <R> launchForResult(task: suspend () -> R):R?{
+    return CoroutineScope(Dispatchers.IO).async {
+        task()
+    }.await()
 }

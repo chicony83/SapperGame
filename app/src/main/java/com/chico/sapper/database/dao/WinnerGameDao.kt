@@ -4,17 +4,17 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.chico.sapper.database.entity.EasyWinner
+import com.chico.sapper.database.entity.Winner
 
 @Dao
 interface WinnerGameDao {
 
     @Insert
-    suspend fun addEasyWinner(easyWinner: EasyWinner)
+    suspend fun addWinner(winner: Winner)
 
     @Delete
-    suspend fun deleteEasyWinner(easyWinner: EasyWinner)
+    suspend fun deleteEasyWinner(winner: Winner)
 
-    @Query("SELECT * FROM easy_winner_table")
-    suspend fun getAllEasyWinners(): List<EasyWinner>
+    @Query("SELECT * FROM winner_table")
+    suspend fun getAllEasyWinners(): List<Winner>
 }
