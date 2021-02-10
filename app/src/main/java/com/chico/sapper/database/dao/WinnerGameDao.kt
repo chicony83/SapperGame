@@ -13,8 +13,8 @@ interface WinnerGameDao {
     suspend fun addWinner(winner: Winner)
 
     @Delete
-    suspend fun deleteEasyWinner(winner: Winner)
+    suspend fun deleteWinner(winner: Winner)
 
-    @Query("SELECT * FROM winner_table")
-    suspend fun getAllEasyWinners(): List<Winner>
+    @Query("SELECT * FROM winner_table WHERE level_game = (:i)")
+    suspend fun getWinners(i: Int): List<Winner>
 }

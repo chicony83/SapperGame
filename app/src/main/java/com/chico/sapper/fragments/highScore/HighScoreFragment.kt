@@ -19,6 +19,7 @@ import com.chico.sapper.interfaces.CallBackInterface
 import com.chico.sapper.utils.launchForResult
 import com.chico.sapper.utils.launchIo
 import com.chico.sapper.utils.launchUI
+import kotlin.properties.Delegates
 
 class HighScoreFragment : Fragment(), View.OnClickListener {
     private var callBackInterface: CallBackInterface? = null
@@ -29,6 +30,7 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     private lateinit var highScoreToHighScoreMenuButton: Button
     private lateinit var highScoreState: String
     private lateinit var result: List<Winner>
+    private var level by Delegates.notNull<Int>()
 
     @SuppressLint("ResourceType")
     override fun onCreateView(
@@ -61,24 +63,51 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val db: WinnerGameDao = db.getDB(requireActivity()).winnerGameDao()
+//        when (highScoreState) {
+//            HighScoreState.VERY_EASY.toString() -> {
         when (highScoreState) {
-            HighScoreState.VERY_EASY.toString() -> {
-                launchIo {
-                    launchForResult {
-                        result = db.getAllEasyWinners()
-
-                        launchUI {
-                            winnersTextView.text = result.toString()
-                        }
-                    }
-                }
-                setTextOnTextView(getString(R.string.buttonVeryEasy_text))
-            }
-            HighScoreState.EASY.toString() -> setTextOnTextView(getString(R.string.buttonEasy_text))
-            HighScoreState.NORMAL.toString() -> setTextOnTextView(getString(R.string.buttonNormal_text))
-            HighScoreState.HARD.toString() -> setTextOnTextView(getString(R.string.buttonHard_text))
+            HighScoreState.VERY_EASY.toString() -> level = 0
+            HighScoreState.EASY.toString() -> level = 1
+            HighScoreState.NORMAL.toString() -> level = 2
+            HighScoreState.HARD.toString() ->level = 3
         }
+        launchIo {
+            launchForResult {
+                result = db.getWinners(level)
+
+                launchUI {
+                    winnersTextView.text = result.toString()
+                }
+            }
+        }
+        setTextOnTextView(getString(R.string.buttonVeryEasy_text))
+
+//        HighScoreState.EASY.toString() -> setTextOnTextView(getString(R.string.buttonEasy_text))
+//        HighScoreState.NORMAL.toString() -> setTextOnTextView(getString(R.string.buttonNormal_text))
+//        HighScoreState.HARD.toString() -> setTextOnTextView(getString(R.string.buttonHard_text))
+
     }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        val db: WinnerGameDao = db.getDB(requireActivity()).winnerGameDao()
+//        when (highScoreState) {
+//            HighScoreState.VERY_EASY.toString() -> {
+//                launchIo {
+//                    launchForResult {
+//                        result = db.getWinners(0)
+//
+//                        launchUI {
+//                            winnersTextView.text = result.toString()
+//                        }
+//                    }
+//                }
+//                setTextOnTextView(getString(R.string.buttonVeryEasy_text))
+//            }
+//            HighScoreState.EASY.toString() -> setTextOnTextView(getString(R.string.buttonEasy_text))
+//            HighScoreState.NORMAL.toString() -> setTextOnTextView(getString(R.string.buttonNormal_text))
+//            HighScoreState.HARD.toString() -> setTextOnTextView(getString(R.string.buttonHard_text))
+//        }
+//    }
 
     //    @SuppressLint("ResourceType")
     private fun setTextOnTextView(buttonText: String) {
