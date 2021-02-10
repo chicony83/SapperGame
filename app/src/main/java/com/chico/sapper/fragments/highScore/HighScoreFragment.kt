@@ -51,7 +51,6 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
         val bundle = arguments
         highScoreState =
             bundle?.getString(BundleStringsNames.HIGH_SCORE_STATE.toString()).toString()
-//        Log.i("TAG", "result = $result")
         bundle?.clear()
 
 
@@ -63,13 +62,23 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val db: WinnerGameDao = db.getDB(requireActivity()).winnerGameDao()
-//        when (highScoreState) {
-//            HighScoreState.VERY_EASY.toString() -> {
         when (highScoreState) {
-            HighScoreState.VERY_EASY.toString() -> level = 0
-            HighScoreState.EASY.toString() -> level = 1
-            HighScoreState.NORMAL.toString() -> level = 2
-            HighScoreState.HARD.toString() ->level = 3
+            HighScoreState.VERY_EASY.toString() -> {
+                setTextOnTextView(getString(R.string.buttonVeryEasy_text))
+                level = 0
+            }
+            HighScoreState.EASY.toString() -> {
+                setTextOnTextView(getString(R.string.buttonEasy_text))
+                level = 1
+            }
+            HighScoreState.NORMAL.toString() -> {
+                setTextOnTextView(getString(R.string.buttonNormal_text))
+                level = 2
+            }
+            HighScoreState.HARD.toString() -> {
+                setTextOnTextView(getString(R.string.buttonHard_text))
+                level = 3
+            }
         }
         launchIo {
             launchForResult {
@@ -81,37 +90,10 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
             }
         }
         setTextOnTextView(getString(R.string.buttonVeryEasy_text))
-
-//        HighScoreState.EASY.toString() -> setTextOnTextView(getString(R.string.buttonEasy_text))
-//        HighScoreState.NORMAL.toString() -> setTextOnTextView(getString(R.string.buttonNormal_text))
-//        HighScoreState.HARD.toString() -> setTextOnTextView(getString(R.string.buttonHard_text))
-
     }
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        val db: WinnerGameDao = db.getDB(requireActivity()).winnerGameDao()
-//        when (highScoreState) {
-//            HighScoreState.VERY_EASY.toString() -> {
-//                launchIo {
-//                    launchForResult {
-//                        result = db.getWinners(0)
-//
-//                        launchUI {
-//                            winnersTextView.text = result.toString()
-//                        }
-//                    }
-//                }
-//                setTextOnTextView(getString(R.string.buttonVeryEasy_text))
-//            }
-//            HighScoreState.EASY.toString() -> setTextOnTextView(getString(R.string.buttonEasy_text))
-//            HighScoreState.NORMAL.toString() -> setTextOnTextView(getString(R.string.buttonNormal_text))
-//            HighScoreState.HARD.toString() -> setTextOnTextView(getString(R.string.buttonHard_text))
-//        }
-//    }
 
-    //    @SuppressLint("ResourceType")
+
     private fun setTextOnTextView(buttonText: String) {
-//        Log.i("TAG", "text = $buttonText")
         bottomText.text = buttonText
     }
 
