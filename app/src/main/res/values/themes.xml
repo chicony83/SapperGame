@@ -35,7 +35,7 @@
     <style name="Theme.SapperGame.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ButtonsNormal">
-        <item name="android:textSize">@dimen/H4</item>
+        <item name="android:textSize">@dimen/H3</item>
         <item name="android:layout_margin">@dimen/marginHalfNormal</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -59,7 +59,11 @@
         <item name="android:layout_marginBottom">@dimen/marginNormal</item>
         <item name="android:textSize">@dimen/H1</item>
     </style>
-    <style name="HighScoreLayout">
 
+    <style name="H2" parent="CenterText">
+        <item name="android:layout_marginTop">@dimen/marginHalfNormal</item>
+        <item name="android:layout_marginBottom">@dimen/marginHalfNormal</item>
+        <item name="android:textSize">@dimen/H2</item>
     </style>
+
 </resources>

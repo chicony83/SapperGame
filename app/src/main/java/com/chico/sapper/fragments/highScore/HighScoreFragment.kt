@@ -34,7 +34,7 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     private lateinit var result: List<Winner>
     private var level by Delegates.notNull<Int>()
 
-    private lateinit var recyclerViewHolder:RecyclerView
+    private lateinit var recyclerViewHolder: RecyclerView
 
     @SuppressLint("ResourceType")
     override fun onCreateView(
@@ -57,7 +57,7 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
             bundle?.getString(BundleStringsNames.HIGH_SCORE_STATE.toString()).toString()
         bundle?.clear()
 
-        getSettingHighScore()
+        getSettingHighScoreFragment()
 
         return rootView
     }
@@ -76,36 +76,34 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
-        setTextOnTextView(getString(R.string.buttonVeryEasy_text))
     }
 
 
-    private fun getSettingHighScore() {
+    private fun getSettingHighScoreFragment() {
         when (highScoreState) {
-            HighScoreState.VERY_EASY.toString() -> {
-                setTextOnTextView(getString(R.string.buttonVeryEasy_text))
-                level = 0
-            }
-            HighScoreState.EASY.toString() -> {
-                setTextOnTextView(getString(R.string.buttonEasy_text))
-                level = 1
-            }
-            HighScoreState.NORMAL.toString() -> {
-                setTextOnTextView(getString(R.string.buttonNormal_text))
-                level = 2
-            }
-            HighScoreState.HARD.toString() -> {
-                setTextOnTextView(getString(R.string.buttonHard_text))
-                level = 3
-            }
+            HighScoreState.VERY_EASY.toString() -> setSettings(0)
+            HighScoreState.EASY.toString() -> setSettings(1)
+            HighScoreState.NORMAL.toString() -> setSettings(2)
+            HighScoreState.HARD.toString() -> setSettings(3)
         }
+    }
+
+    private fun setSettings(l: Int) {
+        var text = ""
+        when (l) {
+            0->text = getString(R.string.buttonVeryEasy_text)
+            1 -> text = getString(R.string.buttonEasy_text)
+            2 -> text = getString(R.string.buttonNormal_text)
+            3 -> text = getString(R.string.buttonHard_text)
+        }
+        level = l
+        setTextOnTextView(buttonText = text)
     }
 
 
     private fun setTextOnTextView(buttonText: String) {
         bottomText.text = buttonText
     }
-
 
     fun setCallBackInterface(callBackInterface: CallBackInterface) {
         this.callBackInterface = callBackInterface
@@ -122,5 +120,4 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     private fun callBack(buttonName: FragmentsButtonNames) {
         callBackInterface?.callBackFunction(buttonName)
     }
-
 }

@@ -46,8 +46,8 @@
 
     <Button
         android:id="@+id/highScore_to_mainMenu_button"
+        style="@style/ButtonsNormal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_margin="@dimen/marginNormal"
         android:text="back"
         app:layout_constraintBottom_toBottomOf="parent" />

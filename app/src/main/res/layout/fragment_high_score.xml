@@ -8,17 +8,16 @@
 
     <TextView
         android:id="@+id/bottomText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/H1"
         android:textColor="@color/white"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/marginNormal"
-        android:layout_marginEnd="@dimen/marginNormal"
+        android:layout_margin="@dimen/marginNormal"
         android:clipToPadding="false"
         android:padding="@dimen/marginNormal"
         app:layout_constraintBottom_toTopOf="@+id/highScore_to_highScoreMenu_button"
@@ -27,8 +26,8 @@
 
     <Button
         android:id="@+id/highScore_to_highScoreMenu_button"
+        style="@style/ButtonsNormal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_margin="@dimen/marginNormal"
         android:text="back"
         app:layout_constraintBottom_toBottomOf="parent" />
