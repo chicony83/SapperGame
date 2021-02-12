@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chico.sapper.R
-import com.chico.sapper.WinnerAdapter
+import com.chico.sapper.recyclerView.WinnerAdapter
 import com.chico.sapper.database.dao.WinnerGameDao
 import com.chico.sapper.database.db
 import com.chico.sapper.database.entity.Winner
@@ -28,14 +28,13 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     private var callBackInterface: CallBackInterface? = null
 
     private lateinit var bottomText: TextView
-    private lateinit var winnersTextView: TextView
 
     private lateinit var highScoreToHighScoreMenuButton: Button
     private lateinit var highScoreState: String
     private lateinit var result: List<Winner>
     private var level by Delegates.notNull<Int>()
 
-    private lateinit var recyclerView:RecyclerView
+    private lateinit var recyclerViewHolder:RecyclerView
 
     @SuppressLint("ResourceType")
     override fun onCreateView(
@@ -49,7 +48,7 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
             rootView.findViewById(R.id.highScore_to_highScoreMenu_button)
         bottomText = rootView.findViewById(R.id.bottomText)
 
-//        winnersTextView = rootView.findViewById(R.id.winners_TextView)
+        recyclerViewHolder = rootView.findViewById(R.id.recyclerView_holder)
 
         highScoreToHighScoreMenuButton.setOnClickListener(this)
 
@@ -58,18 +57,30 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
             bundle?.getString(BundleStringsNames.HIGH_SCORE_STATE.toString()).toString()
         bundle?.clear()
 
-
+        getSettingHighScore()
 
         return rootView
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val db: WinnerGameDao = db.getDB(requireActivity()).winnerGameDao()
 
-        recyclerView = requireActivity().findViewById(R.id.recyclerView_holder)
+        launchIo {
+            launchForResult {
+                result = db.getWinners(level)
 
+                launchUI {
+                    recyclerViewHolder.adapter = WinnerAdapter(winnerList = result)
+                    recyclerViewHolder.layoutManager = LinearLayoutManager(context)
+                }
+            }
+        }
+        setTextOnTextView(getString(R.string.buttonVeryEasy_text))
+    }
+
+
+    private fun getSettingHighScore() {
         when (highScoreState) {
             HighScoreState.VERY_EASY.toString() -> {
                 setTextOnTextView(getString(R.string.buttonVeryEasy_text))
@@ -88,19 +99,6 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
                 level = 3
             }
         }
-        launchIo {
-            launchForResult {
-                result = db.getWinners(level)
-
-                launchUI {
-
-                    recyclerView.adapter = WinnerAdapter(winnerList = result)
-                    recyclerView.layoutManager = LinearLayoutManager(context)
-//                    winnersTextView.text = result.toString()
-                }
-            }
-        }
-        setTextOnTextView(getString(R.string.buttonVeryEasy_text))
     }
 
 

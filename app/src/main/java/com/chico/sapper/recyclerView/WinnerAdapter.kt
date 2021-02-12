@@ -1,10 +1,11 @@
-package com.chico.sapper
+package com.chico.sapper.recyclerView
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.chico.sapper.R
 import com.chico.sapper.database.entity.Winner
 
 class WinnerAdapter(private val winnerList:List<Winner>) : RecyclerView.Adapter<WinnerAdapter.WinnerViewHolder>() {
