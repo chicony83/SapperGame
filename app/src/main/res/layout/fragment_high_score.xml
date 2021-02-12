@@ -8,24 +8,29 @@
 
     <TextView
         android:id="@+id/bottomText"
-        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/winners_TextView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/marginNormal"
+        android:layout_marginEnd="@dimen/marginNormal"
+        android:clipToPadding="false"
+        android:padding="@dimen/marginNormal"
         app:layout_constraintBottom_toTopOf="@+id/highScore_to_highScoreMenu_button"
-        app:layout_constraintTop_toBottomOf="@+id/bottomText" />
+        app:layout_constraintTop_toBottomOf="@+id/bottomText"
+        tools:listitem="@layout/recyclerview_item" />
 
     <Button
         android:id="@+id/highScore_to_highScoreMenu_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="back"
         android:layout_margin="@dimen/marginNormal"
+        android:text="back"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

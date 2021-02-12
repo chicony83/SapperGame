@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chico.sapper.R
+import com.chico.sapper.WinnerAdapter
 import com.chico.sapper.database.dao.WinnerGameDao
 import com.chico.sapper.database.db
 import com.chico.sapper.database.entity.Winner
@@ -32,6 +35,8 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     private lateinit var result: List<Winner>
     private var level by Delegates.notNull<Int>()
 
+    private lateinit var recyclerView:RecyclerView
+
     @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +49,7 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
             rootView.findViewById(R.id.highScore_to_highScoreMenu_button)
         bottomText = rootView.findViewById(R.id.bottomText)
 
-        winnersTextView = rootView.findViewById(R.id.winners_TextView)
+//        winnersTextView = rootView.findViewById(R.id.winners_TextView)
 
         highScoreToHighScoreMenuButton.setOnClickListener(this)
 
@@ -62,6 +67,9 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val db: WinnerGameDao = db.getDB(requireActivity()).winnerGameDao()
+
+        recyclerView = requireActivity().findViewById(R.id.recyclerView_holder)
+
         when (highScoreState) {
             HighScoreState.VERY_EASY.toString() -> {
                 setTextOnTextView(getString(R.string.buttonVeryEasy_text))
@@ -85,7 +93,10 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
                 result = db.getWinners(level)
 
                 launchUI {
-                    winnersTextView.text = result.toString()
+
+                    recyclerView.adapter = WinnerAdapter(winnerList = result)
+                    recyclerView.layoutManager = LinearLayoutManager(context)
+//                    winnersTextView.text = result.toString()
                 }
             }
         }
