@@ -15,6 +15,6 @@ interface WinnerGameDao {
     @Delete
     suspend fun deleteWinner(winner: Winner)
 
-    @Query("SELECT * FROM winner_table WHERE level_game = (:i)")
+    @Query("SELECT * FROM winner_table WHERE level_game = (:i) order by time ASC")
     suspend fun getWinners(i: Int): List<Winner>
 }
