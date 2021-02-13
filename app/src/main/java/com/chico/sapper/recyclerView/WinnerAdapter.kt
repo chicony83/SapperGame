@@ -7,9 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.chico.sapper.R
 import com.chico.sapper.database.entity.Winner
+import com.chico.sapper.utils.ParseTime
 
 class WinnerAdapter(private val winnerList:List<Winner>) : RecyclerView.Adapter<WinnerAdapter.WinnerViewHolder>() {
-
+val parseTime = ParseTime()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WinnerViewHolder {
         val itemView = LayoutInflater
             .from(parent.context)
@@ -26,7 +27,12 @@ class WinnerAdapter(private val winnerList:List<Winner>) : RecyclerView.Adapter<
         val currentItem = winnerList[position]
 
         holder.winnerNameText.text = currentItem.name.toString()
-        holder.winnerTimeText.text = currentItem.time.toString()
+//        holder.winnerTimeText.text = currentItem.time.toString()
+
+        val pTime = parseTime.parseLongToTime(currentItem.time)
+
+        holder.winnerTimeText.text = pTime
+
     }
 
     override fun getItemCount()= winnerList.size
