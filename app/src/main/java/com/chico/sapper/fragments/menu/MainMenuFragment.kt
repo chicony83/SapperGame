@@ -84,7 +84,7 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showDialogFirstLaunch() {
-        if(isFirstLaunch==false){
+        if(isFirstLaunch){
             val firstLaunchDialogFragment = FirstLaunchDialogFragment(sharedPreferences)
             val manager = childFragmentManager
             firstLaunchDialogFragment.show(manager,"first launch")
