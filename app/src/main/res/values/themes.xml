@@ -42,6 +42,9 @@
         <item name="android:layout_weight">1</item>
         <item name="android:scaleType">center</item>
     </style>
+    <style name="WhatDoButtons" parent="ButtonsNormal">
+        <item name="android:textSize">@dimen/H4</item>
+    </style>
 
     <style name="EndGameLayout" parent="Theme.SapperGame">
         <item name="android:layout_width">match_parent</item>

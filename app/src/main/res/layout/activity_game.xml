@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toBottomOf="@+id/whatDoLayout"
         app:layout_constraintEnd_toEndOf="@+id/game_elements_holder"
         app:layout_constraintStart_toStartOf="@+id/game_elements_holder"
         app:layout_constraintTop_toTopOf="@+id/informationLayout"
@@ -37,12 +37,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toBottomOf="@+id/whatDoLayout"
         app:layout_constraintTop_toTopOf="@+id/informationLayout"
         tools:ignore="IncludeLayoutParam" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/whatDoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -51,17 +51,17 @@
 
         <Button
             android:id="@+id/button_open"
-            style="@style/ButtonsNormal"
+            style="@style/WhatDoButtons"
             android:text="@string/buttonOpen_text" />
 
         <Button
             android:id="@+id/button_mayBe"
-            style="@style/ButtonsNormal"
+            style="@style/WhatDoButtons"
             android:text="@string/buttonMayBe_text" />
 
         <Button
             android:id="@+id/button_mineIsHire"
-            style="@style/ButtonsNormal"
+            style="@style/WhatDoButtons"
             android:text="@string/buttonMineIsHere_text" />
 
     </LinearLayout>

@@ -89,7 +89,6 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
             val manager = childFragmentManager
             firstLaunchDialogFragment.show(manager,"first launch")
             isFirstLaunch = false
-
         }
     }
 
