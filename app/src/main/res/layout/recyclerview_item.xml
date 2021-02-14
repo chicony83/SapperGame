@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/marginNormal"
     android:layout_marginBottom="@dimen/marginNormal">
 
-    <LinearLayout
+    <RelativeLayout
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,18 +14,22 @@
 
         <TextView
             android:id="@+id/numberOfItem_cardView"
-            style="@style/recyclerItems"
+            style="@style/RecyclerItems"
+            android:layout_centerVertical="true"
             tool:text="1"/>
 
         <TextView
             android:id="@+id/nameWinner_cardView"
-            style="@style/recyclerItems"
+            style="@style/RecyclerItems"
+            android:layout_toRightOf="@id/numberOfItem_cardView"
             tool:text="winner name" />
 
         <TextView
             android:id="@+id/timeWinner_cardView"
-            style="@style/recyclerItems"
+            style="@style/RecyclerItems"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/marginDouble"
             tool:text="0:10:25:5" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

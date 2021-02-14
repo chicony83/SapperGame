@@ -34,5 +34,7 @@
     <string name="buttonSave_text">сохранить</string>
 
     <string name="high_score_fragment">Рекорды</string>
+    <string name="time_text">время</string>
+    <string name="player_name_text">имя игрока</string>
 
 </resources>

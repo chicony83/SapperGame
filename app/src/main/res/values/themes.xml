@@ -70,8 +70,11 @@
         <item name="android:layout_marginBottom">@dimen/marginHalfNormal</item>
         <item name="android:textSize">@dimen/H2</item>
     </style>
-    <style name="recyclerItems" parent="WrapContent">
+    <style name="RecyclerItems" parent="WrapContent">
         <item name="android:layout_margin">@dimen/marginHalfNormal</item>
+        <item name="android:textSize">@dimen/H2</item>
+    </style>
+    <style name="RecyclerHeader" parent="WrapContent">
         <item name="android:textSize">@dimen/H2</item>
     </style>
 

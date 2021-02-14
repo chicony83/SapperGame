@@ -14,7 +14,6 @@
     <string name="buttonMayBe_text">may be?</string>
     <string name="buttonMineIsHere_text">mine is hire!</string>
 
-
     <string name="buttonVeryEasy_text">Very easy</string>
     <string name="buttonEasy_text">Easy</string>
     <string name="buttonNormal_text">Normal</string>
@@ -42,5 +41,7 @@
     <string name="selectTheme_bottom_text">Select theme</string>
 
     <string name="high_score_fragment">High score</string>
+    <string name="time_text">time</string>
+    <string name="player_name_text">player name</string>
 
 </resources>

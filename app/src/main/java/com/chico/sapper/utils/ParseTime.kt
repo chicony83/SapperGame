@@ -9,6 +9,14 @@ class ParseTime {
         val minute = seconds / 60
         val hour = minute / 60
 
-        return "$hour : $minute : $seconds: $millis"
+        if (minute > 0) {
+
+            if (hour > 0) return String.format("%02d:%02d:%02d:%02d", hour, minute, seconds, millis)
+
+            return String.format("%02d:%02d:%02d", minute, seconds, millis)
+
+        } else return String.format("%02d:%02d", seconds, millis)
+
     }
+
 }
