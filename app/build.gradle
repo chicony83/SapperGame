@@ -12,8 +12,8 @@ android {
         applicationId "com.chico.sapper"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 10
-        versionName "0.3"
+        versionCode 11
+        versionName "0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
