@@ -1,4 +1,4 @@
-package com.chico.sapper.fragments.highScore
+package com.chico.sapper.ui.highScore
 
 import android.annotation.SuppressLint
 import android.os.Bundle

@@ -7,7 +7,33 @@
 
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.chico.sapper.fragments.menu.MainMenuFragment"
+        android:name="com.chico.sapper.ui.menu.MainMenuFragment"
         android:label="fragment_main_menu"
-        tools:layout="@layout/fragment_main_menu"/>
+        tools:layout="@layout/fragment_main_menu">
+        <action
+            android:id="@+id/action_mainMenuFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_highScoreMenuFragment"
+            app:destination="@id/highScoreMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.chico.sapper.ui.menu.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/highScoreMenuFragment"
+        android:name="com.chico.sapper.ui.highScore.HighScoreMenuFragment"
+        android:label="fragment_high_score_menu"
+        tools:layout="@layout/fragment_high_score_menu" >
+        <action
+            android:id="@+id/action_highScoreMenuFragment_to_highScoreFragment"
+            app:destination="@id/highScoreFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/highScoreFragment"
+        android:name="com.chico.sapper.ui.highScore.HighScoreFragment"
+        android:label="fragment_high_score"
+        tools:layout="@layout/fragment_high_score" />
 </navigation>

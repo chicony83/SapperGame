@@ -15,12 +15,12 @@ import com.chico.sapper.dto.enums.BundleStringsNames
 import com.chico.sapper.dto.enums.FragmentsButtonNames
 import com.chico.sapper.dto.enums.HighScoreState
 import com.chico.sapper.dto.enums.Themes
-import com.chico.sapper.fragments.highScore.HighScoreFragment
-import com.chico.sapper.fragments.highScore.HighScoreMenuFragment
-import com.chico.sapper.fragments.menu.MainMenuFragment
-import com.chico.sapper.fragments.menu.SettingFragment
-import com.chico.sapper.fragments.menu.SplashScreenFragment
 import com.chico.sapper.interfaces.CallBackInterface
+import com.chico.sapper.ui.highScore.HighScoreFragment
+import com.chico.sapper.ui.highScore.HighScoreMenuFragment
+import com.chico.sapper.ui.menu.MainMenuFragment
+import com.chico.sapper.ui.menu.SettingFragment
+import com.chico.sapper.ui.menu.SplashScreenFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
 
         sharedPreferences()
 
-        val db: WinnerGameDao = db.getDB(this).winnerGameDao()
+//        val db: WinnerGameDao = db.getDB(this).winnerGameDao()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         val editor = sharedPreferences.edit()
 
         var spCounter = sharedPreferences.getInt(spCounterLaunch, 0)
-        var themeCurrent = sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())
+//        var themeCurrent = sharedPreferences.getString(spTheme, Themes.CLASSIC.toString())
 
         spCounter++
 
@@ -99,6 +99,11 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
     }
 
     override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
         if (isDoubleBackOnPressedOnce) {
             super.onBackPressed()
             moveTaskToBack(true);
@@ -108,6 +113,7 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         this.isDoubleBackOnPressedOnce = true
         Toast.makeText(this, "press back again to exit", Toast.LENGTH_SHORT).show()
         Handler().postDelayed({ isDoubleBackOnPressedOnce = false }, 2000)
+
     }
 
     private fun startActivity(splashScreenFragment: SplashScreenFragment) {
@@ -120,8 +126,10 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
     private fun changeFragment(addFragment: Fragment, remFragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .remove(remFragment)
+
+//            .remove(remFragment)
             .replace(R.id.fragment_holder, addFragment)
+
             .commit()
     }
 
@@ -141,19 +149,18 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
                 startHighShoreFragment(highScoreFragment, args)
             }
             FragmentsButtonNames.HIGH_SCORE_NORMAL -> {
-                setHighScoreState(HighScoreState.NORMAL,args)
-                startHighShoreFragment(highScoreFragment,args)
+                setHighScoreState(HighScoreState.NORMAL, args)
+                startHighShoreFragment(highScoreFragment, args)
             }
             FragmentsButtonNames.HIGH_SCORE_HARD -> {
-                setHighScoreState(HighScoreState.HARD,args)
-                startHighShoreFragment(highScoreFragment,args)
+                setHighScoreState(HighScoreState.HARD, args)
+                startHighShoreFragment(highScoreFragment, args)
             }
         }
     }
 
     private fun setHighScoreState(state: HighScoreState, args: Bundle): Bundle {
         args.putString(BundleStringsNames.HIGH_SCORE_STATE.toString(), state.toString())
-//        Log.i("TAG", "set State = $state")
         return args
     }
 
@@ -162,9 +169,12 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         startFragment(highScoreFragment)
     }
 
+    @SuppressLint("WrongConstant")
     private fun startFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.alpha_in, R.anim.alpha_out)
+            .addToBackStack(null)
             .replace(R.id.fragment_holder, fragment)
             .commit()
     }

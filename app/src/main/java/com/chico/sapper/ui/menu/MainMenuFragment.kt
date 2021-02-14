@@ -1,4 +1,4 @@
-package com.chico.sapper.fragments.menu
+package com.chico.sapper.ui.menu
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -118,10 +118,10 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     private fun startGameActivity(v: View?) {
         val levelGame = translateToIndex(v!!.id)
         val intent = Intent(activity, GameActivity::class.java)
-
         intent.putExtra("LEVEL_GAME", levelGame)
 
         startActivity(intent)
+        activity?.overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
     }
 
     private fun translateToIndex(id: Int): Int {

@@ -1,7 +1,6 @@
-package com.chico.sapper.fragments.highScore
+package com.chico.sapper.ui.highScore
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

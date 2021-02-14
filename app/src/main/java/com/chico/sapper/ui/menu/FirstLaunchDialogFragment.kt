@@ -1,10 +1,9 @@
-package com.chico.sapper.fragments.menu
+package com.chico.sapper.ui.menu
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.InputFilter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment

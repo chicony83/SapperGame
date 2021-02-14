@@ -572,6 +572,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("IS_MENU_STARTING", true)
         startActivity(intent)
+        overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
     }
 
     private fun setColorPrimaryVariant(button1: Button, button2: Button) {
