@@ -1,6 +1,5 @@
 package com.chico.sapper.utils
 
-
 class ParseTime {
 
     fun parseLongToTime(timeInMills: Long): String {

@@ -17,7 +17,7 @@
         android:id="@+id/textView4"
         style="@style/RecyclerHeader"
         android:layout_marginLeft="@dimen/marginTriple"
-        android:text="@string/player_name_text"
+        android:text="@string/playerName_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bottomText" />
 

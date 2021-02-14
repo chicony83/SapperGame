@@ -8,13 +8,10 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.chico.sapper.database.dao.WinnerGameDao
-import com.chico.sapper.database.db
 import com.chico.sapper.dto.SharedPreferencesConst
 import com.chico.sapper.dto.enums.BundleStringsNames
 import com.chico.sapper.dto.enums.FragmentsButtonNames
 import com.chico.sapper.dto.enums.HighScoreState
-import com.chico.sapper.dto.enums.Themes
 import com.chico.sapper.interfaces.CallBackInterface
 import com.chico.sapper.ui.highScore.HighScoreFragment
 import com.chico.sapper.ui.highScore.HighScoreMenuFragment
@@ -113,7 +110,6 @@ class MainActivity : AppCompatActivity(), CallBackInterface {
         this.isDoubleBackOnPressedOnce = true
         Toast.makeText(this, "press back again to exit", Toast.LENGTH_SHORT).show()
         Handler().postDelayed({ isDoubleBackOnPressedOnce = false }, 2000)
-
     }
 
     private fun startActivity(splashScreenFragment: SplashScreenFragment) {

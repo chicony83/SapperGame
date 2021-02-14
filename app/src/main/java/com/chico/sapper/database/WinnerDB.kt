@@ -15,7 +15,6 @@ import com.chico.sapper.database.entity.Winner
 abstract class WinnerDB : RoomDatabase(){
 
     abstract fun winnerGameDao():WinnerGameDao
-
 }
 
 object db{

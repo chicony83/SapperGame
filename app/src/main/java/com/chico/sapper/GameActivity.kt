@@ -23,13 +23,11 @@ import com.chico.sapper.dto.ImagesDB
 import com.chico.sapper.dto.SharedPreferencesConst
 import com.chico.sapper.dto.Touch
 import com.chico.sapper.dto.enums.CellState
-import com.chico.sapper.dto.enums.LevelGame
 import com.chico.sapper.dto.enums.Themes
 import com.chico.sapper.dto.enums.WhatDo
 import com.chico.sapper.logics.FindEmptyCells
 import com.chico.sapper.settings.CurrentGameSetting
 import com.chico.sapper.settings.SettingLevels
-import com.chico.sapper.utils.ParseTime
 import com.chico.sapper.utils.launchIo
 import com.chico.sapper.viewModel.GameTime
 import com.chico.sapper.viewModel.MyViewModel
@@ -42,7 +40,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private var settingLevels = SettingLevels()
     private val currentGameSetting = CurrentGameSetting()
     private val metrics = Metrics()
-    private val parseTime = ParseTime()
     private val modificationDB = ModificationDB()
 
     private lateinit var gameTime: GameTime
@@ -93,8 +90,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var timeStart by Delegates.notNull<Long>()
 
-    //    private var timeCurrent by Delegates.notNull<Long>()
-//    private var timePreviousUpdate: Long = 0
     private var winnerGameTime: Long = 0
 
     private var isGameRun = false
@@ -106,7 +101,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var job: Job
 
     private var gameLevel by Delegates.notNull<Int>()
-    private var explodedCell = -1
 
     private val SP_NAME = SharedPreferencesConst().SP_NAME
     private val SP_THEME = SharedPreferencesConst().THEME
@@ -211,7 +205,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         timeStart = getCurrentTimeInMillis()
 
         gameTime = GameTime(timeStart, viewModelProvider, isGameRun)
-//        timePreviousUpdate = getCurrentTimeInMillis()
         job = CoroutineScope(Dispatchers.IO).launch {
             gameTime.timeGo()
         }
@@ -390,7 +383,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         buttonMineIsHire.setOnClickListener(null)
         gameElementsHolder.setOnClickListener(null)
 
-
         if (isWin) {
             val gameTime = timePassedValue.text.toString()
             timeOfEndGameValue.text = gameTime
@@ -398,9 +390,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             val db: WinnerGameDao = db.getDB(this).winnerGameDao()
 
             if (playerName.isNotEmpty()) {
-                when (gameLevel) {
-
-                }
                 playerNameValue.visibility = View.VISIBLE
                 playerNameValue.text = playerName
                 val winner = Winner(

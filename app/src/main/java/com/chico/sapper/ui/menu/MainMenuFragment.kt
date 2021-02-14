@@ -36,17 +36,12 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
     private val spName = SharedPreferencesConst().SP_NAME
     private val spIsFirstLaunch = SharedPreferencesConst().IS_FIRST_LAUNCH
 
-
-//    private val spPlayerName = SharedPreferencesConst().PLAYER_NAME
-//    private var playerName = ""
-
     private var isFirstLaunch by Delegates.notNull<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_main_menu, container, false)
 
         veryEasyGameButton = rootView.findViewById<Button>(R.id.veryEasy_game_button)
@@ -75,7 +70,6 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
         showDialogFirstLaunch()
 
         setSharedPreferenceData()
-//        if ()
     }
 
     private fun setSharedPreferenceData() {
@@ -100,7 +94,6 @@ class MainMenuFragment : Fragment(), View.OnClickListener {
 
     private fun getSharedPreferencesData() {
         isFirstLaunch = sharedPreferences.getBoolean(spIsFirstLaunch.toString(), true)
-//        playerName = sharedPreferences.getString(spPlayerName.toString()," ")
     }
 
     override fun onClick(v: View?) {

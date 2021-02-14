@@ -35,6 +35,6 @@
 
     <string name="high_score_fragment">Рекорды</string>
     <string name="time_text">время</string>
-    <string name="player_name_text">имя игрока</string>
+    <string name="playerName_text">имя игрока</string>
 
 </resources>

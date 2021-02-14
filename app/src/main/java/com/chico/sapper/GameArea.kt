@@ -1,13 +1,3 @@
-/*--------------gameArea
-* when shirtArea [y][x]
-* 0-shirt
-* 1-open Cell
-*
-* when minesArea[y][x]
-* 0-mine
-* 1 to 9 mine/s near
-* */
-
 package com.chico.sapper
 
 import com.chico.sapper.settings.CurrentGameSetting

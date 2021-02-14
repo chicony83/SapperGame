@@ -3,7 +3,6 @@ package com.chico.sapper.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.chico.sapper.dto.enums.LevelGame
 
 @Entity(tableName = "winner_table")
 data class Winner(

@@ -78,7 +78,6 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
     private fun getSettingHighScoreFragment() {
         when (highScoreState) {
             HighScoreState.VERY_EASY.toString() -> setSettings(0)
@@ -99,7 +98,6 @@ class HighScoreFragment : Fragment(), View.OnClickListener {
         level = l
         setTextOnTextView(buttonText = text)
     }
-
 
     private fun setTextOnTextView(buttonText: String) {
         bottomText.text = buttonText
